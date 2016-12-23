@@ -17,7 +17,13 @@ html, body {
 }
 #topbar {
     background-color: #15212d;
-    height: 20px;
+    width: 100%;
+    color: #fff;
+    line-height: 1;
+    font-size: 70%;
+    text-align: right;
+    padding: 3px 20px;
+    display: table;
 }
 #main {
     width: 100%;
