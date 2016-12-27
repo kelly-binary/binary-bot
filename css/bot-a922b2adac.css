@@ -353,8 +353,8 @@ select.tour-highlight {
   display: none;
 }
 
-#topbar .wrapper {
-	margin: 0 auto;
+.wrapper {
+	padding: 0 10px 0 0;
 }
 #select_language {
 	z-index: 999;
