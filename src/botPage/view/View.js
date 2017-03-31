@@ -26,7 +26,7 @@ let chartType = 'line'
 const pipSize = 2
 let dataType = 'ticks'
 let granularity = 60
-let contractForChart = null
+let contract = null
 let chartComponent
 let listeners = {}
 
@@ -73,7 +73,7 @@ const updateChart = () => {
 
   const isMinHeight = $(window).height() <= 360
 
-  if (chartComponent && dataType === 'ticks' && contractForChart) {
+  if (chartComponent && dataType === 'ticks' && contract) {
     const { chart } = chartComponent
     const { dataMax } = chart.xAxis[0].getExtremes()
     const { minRange } = chart.xAxis[0].options
@@ -85,7 +85,7 @@ const updateChart = () => {
     <BinaryChart
     className="trade-chart"
     id="trade-chart0"
-    contract={dataType === 'ticks' ? contractForChart : false}
+    contract={contract && contract.underlying === symbol && dataType === 'ticks' ? contract : null}
     pipSize={pipSize}
     shiftMode="dynamic"
     ticks={chartData}
@@ -501,13 +501,13 @@ export default class View {
       }
     })
 
-    globalObserver.register('bot.contract', contract => {
-      if (contract) {
-        this.tradeInfo.addContract(contract)
-        if (contract.is_sold) {
-          contractForChart = null
+    globalObserver.register('bot.contract', c => {
+      if (c) {
+        this.tradeInfo.addContract(c)
+        if (c.is_sold) {
+          contract = null
         } else {
-          contractForChart = contract
+          contract = c
         }
       }
     })
