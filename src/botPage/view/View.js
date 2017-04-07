@@ -498,6 +498,7 @@ export default class View {
         globalObserver.emit('log.revenue', {
           user,
           profit: info.profit,
+          contract: info.contract,
         })
       }
     })
