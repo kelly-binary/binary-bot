@@ -1,9 +1,8 @@
 import 'babel-polyfill'
-import $ from 'jquery'
 import { setAppId, oauthLogin } from '../common/appId'
 import { load as loadLang } from '../common/lang'
+import '../common/binary-ui/dropdown'
 
-window.$ = $ // eslint-disable-line no-undef
 loadLang()
 setAppId()
 oauthLogin(() => {
