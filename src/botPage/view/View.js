@@ -8,6 +8,7 @@ import {
   get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
 import { LiveApi } from 'binary-live-api'
+import 'jquery-ui/ui/widgets/dialog'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translate } from '../../common/i18n'
@@ -319,12 +320,17 @@ export default class View {
           .hide()
       })
 
-    $('.panel')
-      .hide()
-      .drags()
 
-    $('.panel .content')
-      .mousedown(e => e.stopPropagation()) // prevent content to trigger draggable
+    $('.draggable-dialog')
+      .hide()
+      .dialog({
+        resizable: false,
+        autoOpen: false,
+        width: 800,
+        height: 650,
+        closeText: '',
+        classes: { 'ui-dialog-titlebar-close': 'icon-close' },
+      })
 
     ReactDOM.render(
       <SaveXml
@@ -357,8 +363,9 @@ export default class View {
         this.blockly.cleanUp()
       })
 
-    $('#showSummary')
-      .click(() => $('#summaryPanel').show())
+    const showSummary = () => $('#summaryPanel').dialog('open')
+
+    $('#showSummary').click(showSummary)
 
     $('#loadXml')
       .click(() => {
@@ -386,6 +393,7 @@ export default class View {
     const startBot = (limitations) => {
       $('#stopButton').show()
       $('#runButton').hide()
+      showSummary()
       this.blockly.run(limitations)
     }
 
