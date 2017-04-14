@@ -1,11 +1,11 @@
-import 'babel-polyfill'
-import { setAppId, oauthLogin } from '../common/appId'
-import { load as loadLang } from '../common/lang'
-import '../common/binary-ui/dropdown'
+import 'babel-polyfill';
+import { setAppId, oauthLogin } from '../common/appId';
+import { load as loadLang } from '../common/lang';
+import '../common/binary-ui/dropdown';
 
-loadLang()
-setAppId()
+loadLang();
+setAppId();
 oauthLogin(() => {
-  $('.show-on-load').show()
-  $('.barspinner').hide()
-})
+  $('.show-on-load').show();
+  $('.barspinner').hide();
+});
