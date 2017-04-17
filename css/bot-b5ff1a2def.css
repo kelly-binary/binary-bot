@@ -77,7 +77,7 @@
 
 .binary-chart-submenu {
   border-radius: 3px;
-  background: white;
+  background: #ffffff;
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1);
   padding: 0.5em; }
 
@@ -168,7 +168,7 @@
 
 .inverse .binary-chart-button svg, .inverse
 .binary-chart-picker-item svg {
-  fill: white; }
+  fill: #ffffff; }
 
 .binary-chart-info-bar {
   display: none; }
@@ -438,7 +438,7 @@
     padding: 2.5px 6px;
     color: #000000; }
   #toolbox .toolbox-button:hover {
-    color: #2a3052; }
+    background-color: #dddddd; }
   #toolbox .toolbox-button:focus {
     outline: none; }
   #toolbox .box.is-dragover {
@@ -820,4 +820,22 @@ html, body {
 .show-on-load {
   display: none; }
 
-/*# sourceMappingURL=bot-5a03b63991.css.map */
+#summaryDisplay {
+  display: inline;
+  color: white; }
+
+#summaryDisplay > div {
+  display: inline-table;
+  width: 90px;
+  height: 100%;
+  padding: 10px 0;
+  font-size: 11pt; }
+
+#summaryDisplay > div > span {
+  display: block; }
+
+.intro-login-logout {
+  display: inline;
+  float: right; }
+
+/*# sourceMappingURL=bot-b5ff1a2def.css.map */

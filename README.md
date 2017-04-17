@@ -10,6 +10,8 @@ Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
 ## Development
 
 ```
+git clone https://github.com/binary-com/binary-bot.git
+cd binary-bot
 npm install
 npm start
 ```
@@ -49,6 +51,8 @@ Please send us your inquiries through marketing@binary.com
 [Money Management](https://gist.github.com/aminmarashi/8cfc8554f894311e9a80480d28882bf2)
 
 [Tools](https://gist.github.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0)
+
+[Random Uploads](https://gist.github.com/aminmarashi/09d5aa04eef3bd372264da6044355805)
 
 ### Binary Bot Gist
 Find all above sample blocks and more in [here](https://gist.github.com/aminmarashi)
