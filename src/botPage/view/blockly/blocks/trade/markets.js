@@ -5,8 +5,8 @@ import config from '../../../../../common/const'
 import { updateInputList } from '../../utils'
 
 export default () => {
-  const symbols = bot.symbolApi.activeSymbols.getSymbols()
-  Object.keys(symbols).forEach(k => {
+  const symbols = bot.symbol.activeSymbols.getSymbols()
+  for (const k of Object.keys(symbols)) {
     Blockly.Blocks[k] = {
       init: function init() {
         this.appendStatementInput('CONDITION')
@@ -38,18 +38,18 @@ export default () => {
             const condition = this.getChildren()[0]
             const tradeType = condition.type
             const categories = config.conditionsCategory
-            Object.keys(categories).forEach(cat => {
+            for (const cat of Object.keys(categories)) {
               if (categories[cat].indexOf(tradeType) >= 0) {
                 market.setFieldValue(cat, 'TRADETYPECAT_LIST')
                 market.setFieldValue(tradeType, 'TRADETYPE_LIST')
                 updateInputList(market)
               }
-            })
-            condition.inputList.forEach(input => {
+            }
+            for (const input of condition.inputList) {
               if (input.connection && input.connection.targetConnection) {
                 market.getInput(input.name).connection.connect(input.connection.targetConnection)
               }
-            })
+            }
           }
           this.dispose()
           Blockly.Events.setGroup(false)
@@ -58,5 +58,5 @@ export default () => {
       },
     }
     Blockly.JavaScript[k] = () => ''
-  })
+  }
 }

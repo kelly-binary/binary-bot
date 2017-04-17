@@ -42,13 +42,16 @@ Blockly.Blocks.trade = {
   onchange: function onchange(ev) {
     if (ev.type === 'create') {
       setBlockTextColor(this)
-      ev.ids.forEach(blockId => {
+      for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
-
-        if (block && block.type === 'trade' && !deleteBlockIfExists(block)) {
-          backwardCompatibility(block)
+        if (block) {
+          if (block.type === 'trade') {
+            if (!deleteBlockIfExists(block)) {
+              backwardCompatibility(block)
+            }
+          }
         }
-      })
+      }
     }
   },
 }

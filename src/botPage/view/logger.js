@@ -1,5 +1,4 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import { getToken } from 'binary-common-utils/lib/storageManager'
 import { translate } from '../../common/i18n'
 
 const shown = []
@@ -53,22 +52,12 @@ export const notifyError = (error) => {
 
 export const logHandler = () => {
   // catch known errors and log them
-  ['api.error', 'BlocklyError', 'RuntimeError', 'LimitsReached'].forEach(errorType =>
+  for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError', 'LimitsReached']) {
     observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
       const message = notifyError(error)
       amplitude.getInstance().logEvent(errorType, {
         message,
       })
-    }))
-
-  const token = $('.account-id').first().attr('value')
-  const accountName = getToken(token).account_name
-  if (typeof amplitude !== 'undefined') {
-    amplitude.getInstance().setUserId(accountName)
-  }
-  if (typeof trackJs !== 'undefined') {
-    trackJs.configure({
-      userId: accountName,
     })
   }
 
@@ -94,31 +83,29 @@ export const logHandler = () => {
     })
   }
 
-  ['success', 'info', 'warn', 'error'].forEach(type => {
+  for (const type of ['success', 'info', 'warn', 'error']) {
     observeForLog(type, 'right')
     observeForLog(type, 'left')
-  })
+  }
 
-  const logList = [
-    'log.bot.start',
-    'log.bot.login',
-    'log.bot.proposal',
-    'log.purchase.start',
-    'log.trade.purchase',
-    'log.trade.update',
-    'log.trade.finish',
-  ]
+  for (const event of [
+      'log.bot.start', 'log.bot.login', 'log.bot.proposal',
+      'log.bot.stop', 'log.purchase.start', 'log.purchase.purchase',
+      'log.purchase.win', 'log.purchase.loss',
+      'log.trade.purchase', 'log.trade.update', 'log.trade.finish']) {
+    observer.register(event, (d) => console.log(event, d)) // eslint-disable-line no-console
+  }
 
-  logList.forEach(event =>
-    observer.register(event, d => console.log(event, d))) // eslint-disable-line no-console
+  for (const event of ['log.bot.login', 'log.trade.finish']) {
+    observer.register(event, (d) => amplitude.getInstance().logEvent(event, d))
+  }
 
-  const amplitudeList = ['log.bot.login', 'log.trade.finish']
-
-  amplitudeList.forEach(event =>
-    observer.register(event, d => amplitude.getInstance().logEvent(event, d)))
-
-  observer.register('log.revenue', data => {
-    const { user, profit, contract } = data
+  observer.register('log.revenue', (data) => {
+    const {
+      user,
+      profit,
+      contract,
+    } = data
     if (typeof amplitude !== 'undefined') {
       if (!user.isVirtual) {
         const revenue = new amplitude.Revenue()

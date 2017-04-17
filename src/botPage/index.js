@@ -50,11 +50,13 @@ class BotPage {
       shouldRestartOnError: bot.shouldRestartOnError.bind(bot),
       restartOnError: bot.restartOnError.bind(bot),
       stop: () => {
-        intervals.forEach(i => clearInterval(i))
-        timeouts.forEach(i => clearTimeout(i))
-
-        timeouts.length = 0
-        intervals.length = 0
+        for (const i of intervals) {
+          clearInterval(i)
+        }
+        for (const i of timeouts) {
+          clearTimeout(i)
+        }
+        timeouts.length = intervals.length = 0
         bot.stop()
       },
       showCode: () => {
@@ -69,7 +71,6 @@ class BotPage {
       getBalance: (balanceType) => (balanceType === 'STR' ? bot.balanceStr : bot.balance),
       notifyError,
       setInterval: (f, n) => intervals.push(setInterval(f, n)),
-      setTimeoutInside: (f, n) => timeouts.push(setTimeout(bot.context.wrap(f), n)),
       setTimeout: (f, n) => timeouts.push(setTimeout(f, n)),
     }
 

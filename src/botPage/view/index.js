@@ -17,23 +17,14 @@ import { getLanguage } from '../../common/lang'
 import { Tour } from './tour'
 
 let realityCheckTimeout
-let ticks = []
-let currentSymbol
-let currentStyle = 'ticks'
-let currentGranularity
-let api
-let chartComp
 let editMode = false
 let mode = 'execute'
 let mobileMenuVisible = false
-
-const addBalanceForToken = token => {
-  api.authorize(token).then(() => {
-    api.send({ forget_all: 'balance' }).then(() => {
-      api.subscribeToBalance()
-    })
-  })
-}
+let ticks = []
+let currentSymbol = 'R_100'
+let currentStyle = 'ticks'
+let currentGranularity
+let api
 
 const mapHistoryTicks = history => {
   const { times, prices } = history
@@ -132,8 +123,7 @@ const addResizeListener = (element, fn) => {
       if (getComputedStyle(element).position === 'static') {
         element.style.position = 'relative' // eslint-disable-line no-param-reassign
       }
-      element.__resizeTrigger__ = document.createElement('object') // eslint-disable-line no-param-reassign
-      const obj = element.__resizeTrigger__
+      const obj = element.__resizeTrigger__ = document.createElement('object') // eslint-disable-line no-param-reassign
       obj.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;')
       obj.__resizeElement__ = element
       obj.onload = objectLoad
@@ -147,15 +137,24 @@ const addResizeListener = (element, fn) => {
 }
 
 const initializeApi = () => {
-  api = new LiveApi({
-    language: getStorage('lang') || 'en',
-    appId: getStorage('appId') || 1,
+  api = new LiveApi()
+  api.events.on('ohlc', response => {
+    const newTick = response.ohlc
+    const lastCandle = ticks.slice(-1)[0]
+    const getTime = candle => candle.open_time || candle.epoch
+    ticks = (getTime(lastCandle) === getTime(newTick)) ?
+      [...ticks.slice(0, ticks.length - 1), newTick] :
+      ticks.concat([newTick])
   })
-  api.events.on('balance', response => {
-    const { balance: { balance, currency } } = response
 
-    $('.topMenuBalance').text(`${balance} ${currency}`)
+  api.events.on('tick', response => {
+    const newTick = response.tick
+    ticks = ticks.concat([{ epoch: +newTick.epoch, quote: +newTick.quote }])
   })
+
+  api
+    .getTickHistory('R_100', { subscribe: 1, end: 'latest', count: 1000, style: 'ticks' })
+    .then(r => (ticks = mapHistoryTicks(r.history)))
 }
 
 export default class View {
@@ -189,10 +188,7 @@ export default class View {
     } else {
       loginButton.hide()
       accountList.show()
-
-      addBalanceForToken(tokenList[0].token)
-
-      tokenList.forEach(tokenInfo => {
+      for (const tokenInfo of tokenList) {
         let prefix = ''
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
@@ -205,7 +201,7 @@ export default class View {
           $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
             '<div class="separator-line-thin-gray"></div>')
         }
-      })
+      }
     }
   }
   setFileBrowser() {
@@ -227,14 +223,14 @@ export default class View {
         files = e.target.files
       }
       files = [...files]
-      files.forEach(file => {
+      for (const file of files) {
         if (file.type.match('text/xml')) {
           readFile(file, dropEvent)
         } else {
           observer.emit('ui.log.info', `${
           translate('File is not supported:')} ${file.name}`)
         }
-      })
+      }
     }
 
     const handleDragOver = (e) => {
@@ -361,7 +357,7 @@ export default class View {
     }
 
     const logout = () => {
-      logoutAllTokens().then(() => {
+      logoutAllTokens(() => {
         this.updateTokenList()
         observer.emit('ui.log.info', translate('Logged you out!'))
         clearRealityCheck()
@@ -466,7 +462,8 @@ export default class View {
       <SaveXml
         onClick={hideCollapseMenu}
         onSave={(filename, collection) => this.blockly.save(filename, collection)}
-      />, $('#saveXml')[0])
+      />
+      , $('#saveXml')[0])
 
     $('#undo')
       .click(() => {
@@ -510,6 +507,7 @@ export default class View {
       .click(() => {
         logout()
         hideRealityCheck()
+        $('.logout').hide()
       })
 
     $('#continue-trading')
@@ -550,7 +548,8 @@ export default class View {
       .click(e => {
         hideCollapseMenu()
         stop(e)
-      }).hide()
+      })
+      .hide()
 
     $('#resetButton')
       .click(() => {
@@ -581,8 +580,6 @@ export default class View {
         $newType.html($oldTypeText)
         $newID.html($oldIDText)
         $newID.attr('value', $oldValue)
-        $('.topMenuBalance').text('\u2002')
-        addBalanceForToken($('#main-account .account-id').attr('value'))
       })
 
     $('#login')
@@ -594,7 +591,7 @@ export default class View {
 
     $('#statement-reality-check').click(() => {
       document.location =
-        `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`
+        `https://www.binary.com/${getLanguage()}/user/statementws.html`
     })
     $(document).keydown((e) => {
       if (e.which === 189) { // -
@@ -623,12 +620,30 @@ export default class View {
       })
   }
   updateChart(info) {
-    if (chartComp && currentStyle === 'ticks' && this.contractForChart) {
-      const { chart } = chartComp
-      const { dataMax } = chart.xAxis[0].getExtremes()
-      const { minRange } = chart.xAxis[0].options
+    const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
 
+    const zoomInMax = (ev, chart) => {
+      const {
+        dataMax,
+      } = chart.xAxis[0].getExtremes()
+      const {
+        minRange,
+      } = chart.xAxis[0].options
       chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
+    }
+
+    const events = [
+      {
+        type: 'zoom-in-max',
+        handler: zoomInMax,
+      },
+    ]
+
+    if (isLine() && this.contractForChart) {
+      const chartDiv = document.getElementById('trade-chart0')
+      if (chartDiv) {
+        chartDiv.dispatchEvent(new Event('zoom-in-max'))
+      }
     }
     const isMinHeight = $(window).height() <= 360
 
@@ -638,7 +653,7 @@ export default class View {
       return new Promise((r, e) => {
         api.unsubscribeFromAllTicks().then(() => 0, () => 0)
         api.unsubscribeFromAllCandles().then(() => 0, () => 0)
-        api.getTickHistory(currentSymbol, { subscribe: 1, end: 'latest', count: 1000, granularity, style })
+        api.getTickHistory(currentSymbol, { subscribe: 1, end: 'latest', count: 100, granularity, style })
           .then(resp => {
             let data
             if (style === 'ticks') {
@@ -653,28 +668,29 @@ export default class View {
       })
     }
 
-    if (info.symbol && currentSymbol !== info.symbol) {
+    if (currentSymbol !== info.symbol) {
       currentSymbol = info.symbol
       getData(undefined, undefined, currentStyle, currentGranularity)
     }
 
-    chartComp = ReactDOM.render(
+    ReactDOM.render(
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
-      contract={currentStyle === 'ticks' ? this.contractForChart : false}
+      contract={isLine() ? this.contractForChart : false}
       pipSize={info.pipSize}
-      shiftMode="dynamic"
+      shiftMode="static"
       ticks={ticks}
       getData={getData}
       type={this.chartType}
+      events={events}
       hideToolbar={isMinHeight}
       hideTimeFrame={isMinHeight}
       onTypeChange={(type) => (this.chartType = type)}
       />, $('#chart')[0])
   }
   addEventHandlers() {
-    ['api.error', 'BlocklyError', 'RuntimeError'].forEach(errorType =>
+    for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
       observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
         if (error.error && error.error.code === 'InvalidToken') {
           removeAllTokens()
@@ -688,7 +704,8 @@ export default class View {
             />
             , document.getElementById('restartTimeout'))
         }
-      }))
+      })
+    }
 
     observer.register('bot.stop', () => {
       $('#runButton').show()
@@ -696,16 +713,8 @@ export default class View {
     })
 
     observer.register('bot.tradeInfo', (tradeInfo) => {
-      Object.assign(this.tradeInfo.tradeInfo, tradeInfo)
-
-      if ('profit' in tradeInfo) {
-        const token = $('.account-id').first().attr('value')
-        const user = getToken(token)
-        observer.emit('log.revenue', {
-          user,
-          profit: tradeInfo.profit,
-          contract: tradeInfo.contract,
-        })
+      for (const key of Object.keys(tradeInfo)) {
+        this.tradeInfo.tradeInfo[key] = tradeInfo[key]
       }
       this.tradeInfo.update()
     })

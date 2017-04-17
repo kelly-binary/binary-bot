@@ -6,9 +6,7 @@ import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
 
 const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount)
-
 const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max
-
 const getNumField = (block, fieldName) => {
   let field = block.getInputTargetBlock(fieldName)
   if (field !== null && field.type === 'math_number') {
@@ -18,7 +16,6 @@ const getNumField = (block, fieldName) => {
   }
   return ''
 }
-
 const insideHolder = (blockObj) => {
   const parent = findTopParentBlock(blockObj)
   if (blockObj.isInFlyout) {
@@ -29,9 +26,7 @@ const insideHolder = (blockObj) => {
   }
   return false
 }
-
 const getListField = (block, fieldName) => block.getFieldValue(fieldName)
-
 const conditionFields = (blockObj, ev) => {
   if ((ev.type === 'change' && ev.element === 'field')
     || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
@@ -43,7 +38,7 @@ const conditionFields = (blockObj, ev) => {
     const duration = getNumField(blockObj, 'DURATION')
     const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
     if (duration !== '') {
-      const minDuration = bot.symbolApi.getLimitation(symbol, tradeType).minDuration
+      const minDuration = bot.symbol.getLimitation(symbol, tradeType).minDuration
       const durationInSeconds = durationToSecond(duration + durationType)
       if (!durationInSeconds) {
         observer.emit('ui.log.warn', translate('Duration must be a positive integer'))
@@ -67,55 +62,111 @@ const conditionFields = (blockObj, ev) => {
       }
     }
     let inputMissing = false
-    blockObj.inputList.forEach(il => {
+    for (const il of blockObj.inputList) {
       if (il.connection && blockObj.getInputTargetBlock(il.name) === null) {
         inputMissing = true
       }
-    })
+    }
     if (!inputMissing) {
       observer.emit('tour:options')
     }
   }
 }
-
-const enableIfInside = (blockObj, condition, disableMsg) => {
-  const topParent = findTopParentBlock(blockObj)
-
-  if (insideHolder(blockObj) || (topParent && condition(topParent))) {
+export const insideTrade = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
     enable(blockObj)
-    return true
+  } else {
+    const topParent = findTopParentBlock(blockObj)
+    if (topParent && topParent.type !== 'trade') {
+      disable(blockObj,
+        `${name} ${translate('must be added inside the trade block')}`)
+    } else {
+      if (topParent && topParent.type === 'trade'
+        && blockObj.type === 'market') {
+        conditionFields(blockObj, ev)
+        observer.emit('tour:market')
+      }
+      enable(blockObj)
+    }
   }
-  disable(blockObj, disableMsg)
-  return false
 }
-
-const insideMain = (blockObj, ev, name, topName, topDesc) => enableIfInside(blockObj,
-  topParent => (topParent.type === topName),
-  `${name} ${translate('must be added inside:')} ${topDesc}`)
-
-export const insideTrade = (...args) =>
-  (insideMain(...args, 'trade', 'trade') && conditionFields(...args))
-
-export const insideBeforePurchase = (...args) =>
-  insideMain(...args, 'before_purchase', 'Before Purchase')
-
-export const insideDuringPurchase = (...args) =>
-  insideMain(...args, 'during_purchase', 'During Purchase')
-
-export const insideAfterPurchase = (...args) =>
-  insideMain(...args, 'after_purchase', 'After Purchase')
+export const insideBeforePurchase = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    enable(blockObj)
+  } else {
+    const topParent = findTopParentBlock(blockObj)
+    if (topParent && topParent.type !== 'before_purchase') {
+      disable(blockObj,
+        `${name} ${translate('must be added inside the before purchase block')}`)
+    } else {
+      if (topParent && topParent.type === 'before_purchase' && blockObj.type === 'purchase') {
+        observer.emit('tour:purchase')
+      }
+      enable(blockObj)
+    }
+  }
+}
+export const insideDuringPurchase = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    enable(blockObj)
+  } else {
+    const topParent = findTopParentBlock(blockObj)
+    if (topParent && topParent.type !== 'during_purchase') {
+      disable(blockObj,
+        `${name} ${translate('must be added inside the during purchase block')}`)
+    } else {
+      enable(blockObj)
+    }
+  }
+}
+export const insideAfterPurchase = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    enable(blockObj)
+  } else {
+    const topParent = findTopParentBlock(blockObj)
+    if (topParent && topParent.type !== 'after_purchase') {
+      disable(blockObj,
+        `${name} ${translate('must be added inside the after purchase block')}`)
+    } else {
+      if (topParent && topParent.type === 'after_purchase' && blockObj.type === 'trade_again') {
+        observer.emit('tour:trade_again')
+      }
+      enable(blockObj)
+    }
+  }
+}
 
 const getScopeNames = (scopes) => scopes.map((n) => config.scopeNames[n])
 
-export const insideScope = (blockObj, ev, name, scopes) => enableIfInside(blockObj,
-  topParent => (scopes.includes(topParent.type)),
-  `${name} ${translate('must be added inside')}: (${getScopeNames(scopes)})`)
+export const insideScope = (blockObj, ev, name, scopes) => {
+  if (insideHolder(blockObj)) {
+    enable(blockObj)
+  } else {
+    const topParent = findTopParentBlock(blockObj)
+    if (topParent && scopes.indexOf(topParent.type) < 0) {
+      disable(blockObj,
+        `${name} ${
+        translate('must be added inside')
+        }: (${getScopeNames(scopes)})`)
+    } else {
+      enable(blockObj)
+    }
+  }
+}
 
-export const mainScope = (blockObj, ev, name) => {
-  insideScope(blockObj, ev, name, [
-    'during_purchase',
+export const tickScope = (blockObj, ev, name) => {
+  insideScope(blockObj, ev, name, ['during_purchase',
     'before_purchase',
+    'timeout',
+    'interval',
+    'tick_analysis'])
+}
+
+export const timeScope = (blockObj, ev, name) => {
+  insideScope(blockObj, ev, name, ['before_purchase',
+    'during_purchase',
     'after_purchase',
-    'tick_analysis',
-  ])
+    'timeout',
+    'interval',
+    'tick_analysis'])
 }

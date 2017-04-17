@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
-import { observer } from 'binary-common-utils/lib/observer'
 import ws from '../../../../common/mock/websocket'
 import _Symbol from '../index'
 
 describe('symbol', () => {
-  const api = new CustomApi(observer, ws)
+  const api = new CustomApi(ws)
   describe('Error Handling', () => {
     it('initializing is needed for symbol functions', () => {
       expect(() => {
@@ -28,7 +27,7 @@ describe('symbol', () => {
   })
   describe('Checking functions', () => {
     let symbol
-    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       symbol = new _Symbol(api)
       symbol.initPromise.then(() => {
         done()
@@ -58,5 +57,8 @@ describe('symbol', () => {
       expect(symbol.isConditionAllowedInSymbol('frxeurusd', 'fake'))
         .not.to.be.ok
     })
+  })
+  after(() => {
+    api.destroy()
   })
 })

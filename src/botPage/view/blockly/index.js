@@ -14,7 +14,7 @@ let toolbox = null
 
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
-  topBlocks.forEach(block => {
+  for (const block of topBlocks) {
     if (!isMainBlock(block.type)
       && [
         'block_holder',
@@ -24,22 +24,18 @@ const disableStrayBlocks = () => {
         'loader',
         'procedures_defreturn',
         'procedures_defnoreturn',
-      ].indexOf(block.type) < 0 && !block.disabled) {
+      ].indexOf(block.type) < 0
+      && !block.disabled) {
       disable(block,
         translate('Blocks must be inside block holders, main blocks or functions'))
     }
-  })
+  }
 }
-
-const setBeforeUnload = off =>
-  (window.onbeforeunload = off ? null :
-    () => 'You have some unsaved blocks, do you want to save them before you exit?')
 
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
-    setBeforeUnload()
     if (ev.type === 'create') {
-      ev.ids.forEach(blockId => {
+      for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
         if (block.type === 'market') {
           observer.emit('tour:market_created')
@@ -56,7 +52,7 @@ const disposeBlocksWithLoaders = () => {
         if (block.type === 'trade_again') {
           observer.emit('tour:trade_again_created')
         }
-      })
+      }
     }
     if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
       && ev.group !== 'undo') {
@@ -69,8 +65,9 @@ const loadWorkspace = (xml) => {
   Blockly.Events.setGroup('load')
   Blockly.mainWorkspace.clear()
   addLoadersFirst(xml).then(() => {
-    Array.from(xml.children).forEach(block =>
-      backwardCompatibility(block))
+    for (const block of Array.prototype.slice.call(xml.children)) {
+      backwardCompatibility(block)
+    }
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
     fixCollapsedBlocks()
     observer.emit('ui.log.success',
@@ -86,12 +83,12 @@ const loadBlocks = (xml, dropEvent = {}) => {
   Blockly.Events.setGroup('load')
   addLoadersFirst(xml).then((loaders) => {
     const addedBlocks = [...loaders]
-    Array.from(xml.children).forEach(block => {
+    for (const block of Array.prototype.slice.call(xml.children)) {
       const newBlock = addDomAsBlock(block)
       if (newBlock) {
         addedBlocks.push(newBlock)
       }
-    })
+    }
     cleanUpOnLoad(addedBlocks, dropEvent)
     fixCollapsedBlocks()
     observer.emit('ui.log.success',
@@ -142,7 +139,6 @@ export default class _Blockly {
           this.zoomOnPlusMinus()
           Blockly.mainWorkspace.clearUndo()
           disposeBlocksWithLoaders()
-          setTimeout(() => setBeforeUnload(true), 0)
           toolbox = Blockly.mainWorkspace.toolbox_
           Blockly.mainWorkspace.toolbox_ = null
           resizeToolbox()
@@ -164,7 +160,7 @@ export default class _Blockly {
     Blockly.Events.setGroup(true)
     const topBlocks = Blockly.mainWorkspace.getTopBlocks(true)
     let cursorY = 0
-    topBlocks.forEach(block => {
+    for (const block of topBlocks) {
       if (block.getSvgRoot().style.display !== 'none') {
         const xy = block.getRelativeToSurfaceXY()
         block.moveBy(-xy.x, cursorY - xy.y)
@@ -172,7 +168,7 @@ export default class _Blockly {
         cursorY = block.getRelativeToSurfaceXY().y +
         block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
       }
-    })
+    }
     Blockly.Events.setGroup(false)
     // Fire an event to allow scrollbars to resize.
     Blockly.mainWorkspace.resizeContents()
@@ -213,8 +209,9 @@ export default class _Blockly {
         }
       }
     }
-    Object.keys(Blockly.Blocks).forEach(blockName =>
-      addDownloadToMenu(Blockly.Blocks[blockName]))
+    for (const blockName of Object.keys(Blockly.Blocks)) {
+      addDownloadToMenu(Blockly.Blocks[blockName])
+    }
   }
   resetWorkspace() {
     Blockly.Events.setGroup(true)
@@ -245,14 +242,13 @@ export default class _Blockly {
     }
   }
   save(filename, collection) {
-    setBeforeUnload(true)
     const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
-    Array.from(xml.children).forEach(blockDom => {
+    for (const blockDom of Array.prototype.slice.call(xml.children)) {
       const block = Blockly.mainWorkspace.getBlockById(blockDom.getAttribute('id'))
       if ('loaderId' in block) {
         blockDom.remove()
       }
-    })
+    }
     save(filename, collection, xml)
   }
   run(limitations = {}) {

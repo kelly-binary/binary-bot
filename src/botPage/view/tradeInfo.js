@@ -23,18 +23,22 @@ export default class TradeInfo {
     this.update()
   }
   update() {
-    Object.keys(this.tradeInfo).forEach(key => {
-      $(`.${key}`).text(this.tradeInfo[key])
+    for (const key of Object.keys(this.tradeInfo)) {
+      $(`.${key}`)
+        .text(this.tradeInfo[key])
       if (key === 'totalProfit') {
         if (+this.tradeInfo[key] > 0) {
-          $(`.${key}`).css('color', 'green')
+          $(`.${key}`)
+            .css('color', 'green')
         } else if (+this.tradeInfo[key] < 0) {
-          $(`.${key}`).css('color', 'red')
+          $(`.${key}`)
+            .css('color', 'red')
         } else {
-          $(`.${key}`).css('color', 'black')
+          $(`.${key}`)
+            .css('color', 'black')
         }
       }
-    })
+    }
   }
   add(_trade) {
     const trade = clone(_trade)

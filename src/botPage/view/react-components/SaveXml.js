@@ -24,6 +24,7 @@ export class SaveXml extends PureComponent {
       />
       {this.state.dialogVisible ?
         <SaveAs
+
           onClose={() => this.setState({ dialogVisible: false })}
           onSave={(...args) => {
             this.setState({ dialogVisible: false })

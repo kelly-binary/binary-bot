@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-import { mainScope } from '../../relationChecker'
+import { tickScope } from '../../relationChecker'
 import { translate } from '../../../../../common/i18n'
 
 Blockly.Blocks.last_digit = {
@@ -12,9 +12,9 @@ Blockly.Blocks.last_digit = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    mainScope(this, ev, 'Tick Value')
+    tickScope(this, ev, 'Tick Value')
   },
 }
 Blockly.JavaScript.last_digit = () => [
-  'Number(Bot.expect.tick(Bot.expect.notEmptyArray(this.ticksObj.ticks).slice(-1)[0]).quote.toFixed(this.ticksObj.pipSize).slice(-1)[0])',
+  'Number(Bot.expect.tick(Bot.expect.notEmptyArray(this.ticks.ticks).slice(-1)[0]).quote.toFixed(this.ticks.pipSize).slice(-1)[0])',
   Blockly.JavaScript.ORDER_ATOMIC]

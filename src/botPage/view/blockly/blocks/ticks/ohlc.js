@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-import { mainScope } from '../../relationChecker'
+import { tickScope } from '../../relationChecker'
 import { translate } from '../../../../../common/i18n'
 
 Blockly.Blocks.ohlc = {
@@ -12,7 +12,7 @@ Blockly.Blocks.ohlc = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    mainScope(this, ev, 'Candles List')
+    tickScope(this, ev, 'Candles List')
   },
 }
-Blockly.JavaScript.ohlc = () => ['Bot.expect.notEmptyArray(this.ticksObj.ohlc)', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.ohlc = () => ['Bot.expect.notEmptyArray(this.ticks.ohlc)', Blockly.JavaScript.ORDER_ATOMIC]

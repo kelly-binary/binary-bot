@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wupwb4
 import { translate } from '../../../../../../common/i18n'
 import { insideMainBlocks } from '../../../utils'
-import { mainScope } from '../../../relationChecker'
+import { timeScope } from '../../../relationChecker'
 
 Blockly.Blocks.timeout = {
   init: function init() {
@@ -19,19 +19,17 @@ Blockly.Blocks.timeout = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    mainScope(this, ev, translate('Run After n Seconds'))
+    timeScope(this, ev, translate('Run After n Seconds'))
   },
 }
 
 Blockly.JavaScript.timeout = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'TIMEOUTSTACK')
   const seconds = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_ATOMIC)
-  const isInside = insideMainBlocks(block)
-
   return `
-    Bot.setTimeout${isInside ? 'Inside' : ''}(function (){
+    Bot.setTimeout(function (){
       ${stack}
-    }, (${seconds ? `(${seconds}) *` : ''} 1000));
-    ${isInside ? 'return;' : ''}
+    }.bind(this), (${seconds ? `(${seconds}) *` : ''} 1000));
+    ${insideMainBlocks(block) ? 'return;' : ''}
   `
 }

@@ -28,16 +28,6 @@ git pull
 npm install
 ```
 
-## Think you found a bug?
-
-There's a chance that we already know about it and doing our best to fix it. To find out you can search our [GitHub issues](https://github.com/binary-com/binary-bot/issues)
-
-Not satisfied yet? Please create a new issue, and explain to us what is the nature of the problem and how to reproduce [here](https://github.com/binary-com/binary-bot/issues/new)
-
-## We'd love to hear from you
-
-Please send us your inquiries through marketing@binary.com
-
 ## Sample Blocks
 
 [Misc. Examples](https://gist.github.com/aminmarashi/dfabc8eadfaf77bf270b0318f03ea8bb)

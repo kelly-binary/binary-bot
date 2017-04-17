@@ -25,8 +25,9 @@ Blockly.Blocks.loader = {
       } else {
         const loader = Blockly.mainWorkspace.getBlockById(ev.blockId)
         if (loader && loader.loadedByMe) {
-          loader.loadedByMe.forEach(blockId =>
-            recoverDeletedBlock(Blockly.mainWorkspace.getBlockById(blockId)))
+          for (const blockId of loader.loadedByMe) {
+            recoverDeletedBlock(Blockly.mainWorkspace.getBlockById(blockId))
+          }
         }
       }
     }
