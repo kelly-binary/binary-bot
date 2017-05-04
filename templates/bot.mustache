@@ -130,8 +130,10 @@
         <div class="table-scroll">
           <div id="tradeInfo"></div>
         </div>
-        <div id="chart"></div>
       </div>
+    </div>
+    <div id="chartPanel" class="draggable-dialog">
+      <div id="chart"></div>
     </div>
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
@@ -148,6 +150,7 @@
       <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
       <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
       <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
+      <button title="Open charts" id="chartButton" class="toolbox-button icon-chart-line"></button>
     </div>
     {{> bundle}} {{> bot}}
   </body>

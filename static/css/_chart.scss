@@ -3,9 +3,11 @@
 
 .highcharts-container {
   width: 100% !important;
+  height: 100% !important;
 
   svg {
     width: 100% !important;
+    height: 100% !important;
   }
 }
 
@@ -61,6 +63,7 @@
 .trade-chart,
 .contract-chart {
   .binary-chart-zoom-controls {
+    margin-top: -40px !important;
     visibility: hidden;
     animation: 2s fadeIn !important;
     animation-fill-mode: forwards;
