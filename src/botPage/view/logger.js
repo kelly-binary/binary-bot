@@ -1,13 +1,18 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { getToken } from 'binary-common-utils/lib/storageManager';
 import { translate } from '../../common/i18n';
+import TradeLogs from './logs';
 
+const tradeLog = new TradeLogs();
 const log = (type, ...args) => {
+  let l = {};
   if (type === 'warn') {
     console.warn(...args); // eslint-disable-line no-console
   } else {
     console.log(...args); // eslint-disable-line no-console
   }
+  const timestamp = new Date().toTimeString().substr(0, 8);
+  tradeLog.addLog(timestamp, type, ...args);
 };
 
 const shown = [];

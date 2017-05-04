@@ -59,7 +59,28 @@
   }
 }
 
-.dialog-content{
+#log {
+  table {
+    th, td {
+      text-align: left !important;
+      padding: 10px !important;
+    }
+    .warn {
+      background: #FBEED5;
+    }
+    .success {
+      background: #DFF0D8;
+    }
+    .error {
+      background: #F2DEDE;
+    }
+    .info {
+      background: #D9EDF7;
+    }
+  }
+}
+
+.dialog-content {
 	padding: 0 15px 15px 15px;
 	background: white;
 	cursor: default;
