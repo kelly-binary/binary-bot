@@ -141,3 +141,15 @@ html, body {
 .show-on-load {
   display: none;
 }
+
+#summary {
+  display: inline-flex;
+  color: white;
+  font-size: 14px;
+  .summary-header {
+    display: block;
+  }
+  .summary-item {
+    width:  100px;
+  }
+}
