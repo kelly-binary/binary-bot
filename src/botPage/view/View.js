@@ -413,6 +413,7 @@ export default class View {
 
     globalObserver.register('bot.contract', c => {
       if (c) {
+        $('#chartPanel').dialog({ title: c.display_name });
         this.tradeInfo.addContract(c);
         if (c.is_sold) {
           this.chart.setContract(null);

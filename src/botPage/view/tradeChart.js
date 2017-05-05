@@ -75,14 +75,13 @@ export default class TradeChart {
   getSymbol() {
     return this.symbol;
   }
+  getContractDisplayName() {
+    return this.contract.display_name;
+  }
   setContract(c) {
     this.contract = c;
   }
   updateChart() {
-    if (!$('#summaryPanel:visible').length) {
-      return;
-    }
-
     const isMinHeight = $(window).height() <= 360;
 
     if (this.chartComponent && this.dataType === 'ticks' && this.contract) {
