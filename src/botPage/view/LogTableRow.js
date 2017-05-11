@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 export default class LogRow extends PureComponent {
   static propTypes = {
     log: PropTypes.shape({
+      id: PropTypes.number,
       timestamp: PropTypes.string,
       type: PropTypes.string,
       message: PropTypes.string,

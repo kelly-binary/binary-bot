@@ -256,6 +256,7 @@ export default class View {
       height: Math.min(document.body.offsetHeight, 650),
       closeText: '',
       classes: { 'ui-dialog-titlebar-close': 'icon-close' },
+      resizable: true,
     });
 
     $('#save-xml').click(() =>

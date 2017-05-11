@@ -22,7 +22,7 @@ export default class LogTable extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.rows.size !== this.state.rows.size) {
       const $tableScroll = $('.scrollable');
-      $tableScroll.scrollTop($tableScroll.scrollHeight);
+      $tableScroll.scrollTop($tableScroll[0].scrollHeight);
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -62,7 +62,7 @@ export default class LogTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.state.rows.map(r => <LogTableRow log={r.log} />)}
+          {this.state.rows.map(r => <LogTableRow key={r.id} log={r.log} />)}
         </tbody>
       </table>
     );
