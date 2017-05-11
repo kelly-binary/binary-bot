@@ -27,9 +27,9 @@ export default class TradeInfo {
       $(`.${key}`).text(this.tradeInfo[key]);
       if (key === 'totalProfit') {
         if (+this.tradeInfo[key] > 0) {
-          $(`.${key}`).css('color', 'green');
+          $(`.${key}`).css('color', '#2E8836');
         } else if (+this.tradeInfo[key] < 0) {
-          $(`.${key}`).css('color', 'red');
+          $(`.${key}`).css('color', '#FF3E41');
         } else {
           $(`.${key}`).css('color', 'black');
         }

@@ -15,7 +15,9 @@
 
 .draggable-dialog {
   display: none;
-
+  min-width: 350px;
+  min-height: 400px;
+  position: relative;
   .content {
     padding: 0 15px 15px 15px;
     background: $white;
