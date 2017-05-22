@@ -1,4 +1,4 @@
-import TradeEngine from '../NewTradeEngine';
+import TradeEngine from '../SagaTradeEngine';
 import { noop, subtractFixed, createDetails } from '../tools';
 import TicksInterface from './TicksInterface';
 import ToolsInterface from './ToolsInterface';
