@@ -1,12 +1,26 @@
-import { eventChannel, END } from 'redux-saga';
+import { eventChannel } from 'redux-saga';
 
-const dataStream = ({ $scope: { api }, type }) =>
+let key;
+
+const dataStream = ({ $scope: { api, tickService }, type, symbol }) =>
     eventChannel(emit => {
-        api.events.on(type, ({ [type]: payload }) => emit(payload));
+        if (type === 'tick') {
+            key = tickService.monitor({
+                symbol,
+                callback({ [type]: payload }) {
+                    emit(payload);
+                },
+            });
+        } else {
+            api.events.on(type, ({ [type]: payload }) => emit(payload));
+        }
 
         return () => {
-            emit(END);
-            api.events.ignoreAll(type);
+            if (type === 'tick') {
+                tickService.stopMonitor({ symbol, key });
+            } else {
+                api.events.ignoreAll(type);
+            }
         };
     });
 
