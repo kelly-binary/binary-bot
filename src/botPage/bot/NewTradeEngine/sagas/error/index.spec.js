@@ -1,5 +1,5 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
-import { expectSaga } from 'redux-saga-test-plan';
+import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import error from './';
 
@@ -12,7 +12,6 @@ describe('error saga', () => {
             .run();
     });
     it('should do nothing in case of non-error type', () => {
-        const gen = error({ type: 'SOMETHING' });
-        expect(gen.next().done).toEqual(true);
+        testSaga(error, { type: 'SOMETHING' }).next().isDone();
     });
 });
