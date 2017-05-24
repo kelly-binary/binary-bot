@@ -18,8 +18,8 @@ class Bot {
         this.store.dispatch({ type: actions.INIT_SAGA, payload: { token, initOption, $scope: this.$scope } });
         return waitForCondition(this.store, state => state.stage === states.INITIALIZED);
     }
-    start() {
-        console.log(this.store.getState());
+    start(tradeOption) {
+        this.store.dispatch({ type: actions.START_SAGA, payload: { tradeOption, $scope: this.$scope } });
     }
 }
 
