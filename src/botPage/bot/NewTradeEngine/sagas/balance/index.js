@@ -5,8 +5,12 @@ import requestBalance from './requestBalance';
 
 export default function* balance(arg) {
     const { $scope } = arg;
-    yield call(requestBalance, arg);
-    const channel = yield call(dataStream, { $scope, type: 'balance' });
-    const payload = yield take(channel);
-    yield put({ type: actions.BALANCE_RECEIVED, payload });
+    try {
+        yield call(requestBalance, arg);
+        const channel = yield call(dataStream, { $scope, type: 'balance' });
+        const payload = yield take(channel);
+        yield put({ type: actions.BALANCE_RECEIVED, payload });
+    } catch (payload) {
+        yield put({ type: actions.BALANCE_RECEIVED_ERROR, payload, error: true });
+    }
 }
