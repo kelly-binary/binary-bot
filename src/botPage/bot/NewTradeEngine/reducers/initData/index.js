@@ -2,7 +2,7 @@ import * as actions from '../../constants/actions';
 
 const initData = (state = {}, action) => {
     switch (action.type) {
-        case actions.INIT:
+        case actions.INIT_DATA:
             return action.payload;
         default:
             return state;

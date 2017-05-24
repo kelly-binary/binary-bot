@@ -5,6 +5,6 @@ import error from './error';
 
 export default function* rootSaga() {
     yield takeEvery('*', error);
-    const { payload } = yield take(actions.INIT);
+    const { payload } = yield take(actions.INIT_SAGA);
     yield fork(init, payload);
 }

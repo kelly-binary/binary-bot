@@ -6,8 +6,8 @@ describe('initData reducer', () => {
     it('initData should be empty', () => {
         expect((state = initData(state, { type: actions.INVALID }))).toEqual({});
     });
-    it('INIT should set initData', () => {
-        expect((state = initData(state, { type: actions.INIT, payload: { someData: true } }))).toEqual({
+    it('INIT_DATA should set initData', () => {
+        expect((state = initData(state, { type: actions.INIT_DATA, payload: { someData: true } }))).toEqual({
             someData: true,
         });
     });

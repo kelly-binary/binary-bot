@@ -1,5 +1,4 @@
 export const STOPPED = 'STOPPED';
-export const INITIALIZING = 'INITIALIZING';
 export const INITIALIZED = 'INITIALIZED';
 export const STARTED = 'STARTED';
 export const PROPOSALS_READY = 'PROPOSALS_READY';

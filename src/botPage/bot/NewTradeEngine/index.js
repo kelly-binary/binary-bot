@@ -15,8 +15,11 @@ class Bot {
         sagaMiddleware.run(sagas);
     }
     init(token, initOption) {
-        this.store.dispatch({ type: actions.INIT, payload: { token, initOption, $scope: this.$scope } });
+        this.store.dispatch({ type: actions.INIT_SAGA, payload: { token, initOption, $scope: this.$scope } });
         return waitForCondition(this.store, state => state.stage === states.INITIALIZED);
+    }
+    start() {
+        console.log(this.store.getState());
     }
 }
 
