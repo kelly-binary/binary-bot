@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import sagaMonitor from './sagaMonitor';
 import * as actions from './constants/actions';
 import * as states from './constants/states';
 import waitForCondition from './waitForCondition';
@@ -9,7 +10,7 @@ import sagas from './sagas';
 class Bot {
     constructor($scope) {
         this.$scope = $scope;
-        const sagaMiddleware = createSagaMiddleware();
+        const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
         this.store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
         sagaMiddleware.run(sagas);
     }

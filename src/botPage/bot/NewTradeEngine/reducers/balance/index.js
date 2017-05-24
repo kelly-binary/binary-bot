@@ -8,7 +8,7 @@ const initialState = {
 const init = (state = initialState, action) => {
     switch (action.type) {
         case actions.BALANCE_RECEIVED:
-            return action.data;
+            return action.payload;
         default:
             return state;
     }

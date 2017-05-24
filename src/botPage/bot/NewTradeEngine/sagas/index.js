@@ -1,7 +1,8 @@
-import { takeEvery } from 'redux-saga/effects';
+import { take, fork } from 'redux-saga/effects';
 import * as actions from '../constants/actions';
 import init from './init';
 
 export default function* rootSaga() {
-    yield takeEvery(actions.INIT, init);
+    const { payload } = yield take(actions.INIT);
+    yield fork(init, payload);
 }

@@ -12,5 +12,6 @@ function* tickLoop(channel) {
 
 export default function* tick({ $scope, symbol }) {
     const channel = yield call(dataStream, { $scope, type: 'tick', symbol });
-    yield fork(tickLoop, channel);
+    const task = yield fork(tickLoop, channel);
+    return task;
 }
