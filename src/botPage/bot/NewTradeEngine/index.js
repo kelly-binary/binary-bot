@@ -16,7 +16,7 @@ class Bot {
     }
     init(token, initOption) {
         this.store.dispatch({ type: actions.INIT, payload: { token, initOption, $scope: this.$scope } });
-        return waitForCondition(this.store, state => state.sage === states.INITIALIZED);
+        return waitForCondition(this.store, state => state.stage === states.INITIALIZED);
     }
 }
 
