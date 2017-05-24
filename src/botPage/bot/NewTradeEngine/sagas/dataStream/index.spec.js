@@ -2,19 +2,20 @@ import createScope from '../createScope';
 import dataStream from './';
 
 const $scope = createScope();
-const { tickService, api } = $scope;
+const { ticksService, api } = $scope;
 
 describe('Tick stream', () => {
     const symbol = 'R_100';
     const type = 'tick';
-    const payload = { payload: 'some text' };
-    const data = { [type]: payload };
+    const epoch = 123456;
+    const payload = { epoch };
+    const data = [payload];
 
     const channel = dataStream({ $scope, type, symbol });
 
     it('Should emit the lasttick', async () => {
         const taken = new Promise(resolve => channel.take(resolve));
-        tickService.emit(data);
+        ticksService.emit(data);
         const received = await taken;
         expect(received).toEqual(payload);
     });
@@ -22,7 +23,7 @@ describe('Tick stream', () => {
     it('Should not emit last tick after cancellation', async () => {
         const taken = new Promise(resolve => channel.take(resolve));
         channel.close();
-        tickService.emit(data);
+        ticksService.emit(data);
         const received = await taken;
         expect(received).not.toEqual(payload);
     });

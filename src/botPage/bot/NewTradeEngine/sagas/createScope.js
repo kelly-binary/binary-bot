@@ -16,7 +16,7 @@ export default function createScope() {
         },
     };
 
-    const tickService = {
+    const ticksService = {
         monitor({ callback }) {
             this.callback = callback;
             return 'key';
@@ -30,5 +30,5 @@ export default function createScope() {
             }
         },
     };
-    return { api, tickService };
+    return { api, ticksService };
 }

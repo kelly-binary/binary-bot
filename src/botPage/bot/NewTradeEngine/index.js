@@ -1,14 +1,21 @@
-import createStoreWithScope from './createStoreWithScope';
-import initializer from './actors/initializer';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import * as actions from './constants/actions';
+import * as states from './constants/states';
+import waitForCondition from './waitForCondition';
+import rootReducer from './reducers/';
+import sagas from './sagas';
 
 class Bot {
     constructor($scope) {
         this.$scope = $scope;
-        this.store = createStoreWithScope(this.$scope);
+        const sagaMiddleware = createSagaMiddleware();
+        this.store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+        sagaMiddleware.run(sagas);
     }
-    async init(token, initOptions) {
-        const data = { token, initOptions };
-        await initializer({ data, store: this.store });
+    init(token, initOption) {
+        this.store.dispatch({ type: actions.INIT, payload: { token, initOption, $scope: this.$scope } });
+        return waitForCondition(this.store, state => state.sage === states.INITIALIZED);
     }
 }
 
