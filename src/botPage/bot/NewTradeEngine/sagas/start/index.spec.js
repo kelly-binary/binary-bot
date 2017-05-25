@@ -1,7 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
-import { start, stageSelector, tradeOptionSelector } from './';
+import start, { stageSelector, tradeOptionSelector } from './';
 
 describe('start saga', () => {
     const twoContracts = {
@@ -12,10 +12,11 @@ describe('start saga', () => {
     };
     it('should not have any effect if it\'s not INITIALIZED', () => {
         testSaga(start, twoContracts)
-            .next()
+            .next({ stage: 'STOPPED' })
             .select(stageSelector)
             .next(states.STOPPED)
             .put({ type: actions.START, payload: twoContracts })
+            .next()
             .isDone();
     });
     it('should not start if it\'s the same trade option', () => {
@@ -39,6 +40,7 @@ describe('start saga', () => {
             .select(tradeOptionSelector)
             .next(twoContracts)
             .put({ type: actions.REQUEST_ONE_PROPOSAL })
+            .next()
             .isDone();
     });
     it('should START and REQUEST_TWO_PROPOSALS', () => {
@@ -51,6 +53,7 @@ describe('start saga', () => {
             .select(tradeOptionSelector)
             .next(oneContract)
             .put({ type: actions.REQUEST_TWO_PROPOSALS })
+            .next()
             .isDone();
     });
 });
