@@ -475,6 +475,10 @@ export default class View {
         $('#logButton').click(() => {
             $('#logPanel').dialog('open');
         });
+
+        $('#chartButton').click(() => {
+            $('#chartPanel').dialog('open');
+        });
     }
     stop() {
         this.blockly.stop();

@@ -124,8 +124,11 @@
             </tr>
           </tbody>
         </table>
-        <div id="chart"></div>
       </div>
+    </div>
+
+    <div id="chartPanel" class="draggable-dialog" title="Chart">
+      <div id="chart"></div>
     </div>
 
     <div id="tradeInfoPanel" class="draggable-dialog" title="Trades">
@@ -154,6 +157,7 @@
 
       <button title="Trade info" id="tradeInfoButton" class="toolbox-button"></button>
       <button title="Trading history" id="logButton" class="toolbox-button icon-stop"></button>
+      <button title="Chart" id="chartButton" class="toolbox-button icon-stop"></button>
     </div>
     <div id="footer"></div>
     {{> bundle}} {{> bot}}
