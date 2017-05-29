@@ -12,7 +12,7 @@ import {
 } from 'binary-common-utils/lib/storageManager';
 import { LiveApi } from 'binary-live-api';
 import 'jquery-ui/ui/widgets/dialog';
-import TradeInfo from './tradeInfo';
+import TradeInfo from './react-components/TradeTable/tradeInfo';
 import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
@@ -466,6 +466,10 @@ export default class View {
                     e.preventDefault();
                 }
             }
+        });
+
+        $('#tradeInfoButton').click(() => {
+            $('#tradeInfoPanel').dialog('open');
         });
 
         $('#logButton').click(() => {

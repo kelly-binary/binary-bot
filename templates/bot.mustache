@@ -124,17 +124,16 @@
             </tr>
           </tbody>
         </table>
-        <h3>
-          <span data-i18n-text="Trades"></span>
-        </h3>
-        <div class="table-scroll">
-          <div id="tradeInfo"></div>
-        </div>
         <div id="chart"></div>
-        <div id="logPanel" class="draggable-dialog" title="Log">
-          <div id="logTable" class="logTable-scroll"></div>
-        </div>
       </div>
+    </div>
+
+    <div id="tradeInfoPanel" class="draggable-dialog" title="Trades">
+      <div id="tradeInfo" class="table-scroll"></div>
+    </div>
+    
+    <div id="logPanel" class="draggable-dialog" title="Log">
+      <div id="logTable" class="logTable-scroll"></div>
     </div>
 
     <form id="fileUploadForm" style="display: none;">
@@ -152,6 +151,8 @@
       <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
       <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
       <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
+
+      <button title="Trade info" id="tradeInfoButton" class="toolbox-button"></button>
       <button title="Trading history" id="logButton" class="toolbox-button icon-stop"></button>
     </div>
     <div id="footer"></div>

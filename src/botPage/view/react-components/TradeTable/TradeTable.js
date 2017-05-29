@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'immutable';
-import { translate } from '../../common/i18n';
+import { translate } from '../../../../common/i18n';
 import TradeTableRow from './TradeTableRow';
 
 export default class TradeTable extends Component {
