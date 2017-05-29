@@ -145,3 +145,19 @@ html, body {
 .show-on-load {
   display: none;
 }
+
+#summary {
+  ul {
+    display: flex;
+    li {
+      padding: 10px 25px;
+    }
+  }
+  display: inline-flex;
+  color: white;
+  font-size: 14px;
+  .summary-header {
+    display: block;
+    color: $brand-orange;
+  }
+}

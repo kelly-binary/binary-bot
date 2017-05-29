@@ -371,10 +371,6 @@ export default class View {
             this.blockly.cleanUp();
         });
 
-        const showSummary = () => $('#summaryPanel').dialog('open');
-
-        $('#showSummary').click(showSummary);
-
         $('#loadXml').click(() => {
             $('#files').click();
         });
@@ -397,7 +393,6 @@ export default class View {
         const startBot = limitations => {
             $('#stopButton').show();
             $('#runButton').hide();
-            showSummary();
             this.blockly.run(limitations);
         };
 
