@@ -17,9 +17,9 @@ import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
 import Chart from './Dialogs/Chart';
+import Log from './Dialogs/Log';
 import { getLanguage } from '../../common/lang';
 import { symbolPromise } from './shared';
-import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 
@@ -102,7 +102,6 @@ const resetRealityCheck = token => {
 
 const limits = new Limits();
 const saveDialog = new Save();
-// const chart = new Chart();
 
 const updateTokenList = () => {
     const tokenList = getTokenList();
@@ -139,9 +138,10 @@ const updateTokenList = () => {
 };
 export default class View {
     constructor() {
-        logHandler();
         this.tradeInfo = new TradeInfo();
         this.chart = new Chart();
+        this.log = new Log();
+
         this.initPromise = new Promise(resolve => {
             symbolPromise.then(() => {
                 updateTokenList();
@@ -375,7 +375,7 @@ export default class View {
         });
 
         $('#logButton').click(() => {
-            $('#logPanel').dialog('open');
+            this.log.open();
         });
 
         $('#chartButton').click(() => {
