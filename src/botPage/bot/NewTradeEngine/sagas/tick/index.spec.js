@@ -1,33 +1,21 @@
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { expectSaga } from 'redux-saga-test-plan';
-import * as actions from '../../constants/actions';
-import createScope from '../createScope';
+import { testSaga } from 'redux-saga-test-plan';
+import { eventChannel } from 'redux-saga';
 import dataStream from '../dataStream';
+import tickLoop from './tickLoop';
 import tick from './';
 
-describe('tick channel', () => {
-    const $scope = createScope();
-    const symbol = 'R_100';
-    const arg = { $scope, type: 'tick', symbol };
-    const fakeChannel = dataStream(arg);
-    const epoch = 123456;
-    const ticks = [{ epoch, quote: '1' }, { epoch: epoch + 1, quote: '2' }];
+const $scope = {};
+const symbol = 'R_100';
+const fakeChannel = eventChannel(() => () => {});
 
-    it('should put NEW_TICK with lastTick', () =>
-        expectSaga(tick, { $scope, symbol })
-            .provide([
-                [matchers.call(dataStream, arg), fakeChannel],
-                {
-                    take({ channel }, next) {
-                        if (channel === fakeChannel) {
-                            return ticks.shift();
-                        }
-                        return next();
-                    },
-                },
-            ])
-            .put({ type: actions.NEW_TICK, payload: { lastTick: epoch } })
-            .put({ type: actions.NEW_TICK, payload: { lastTick: epoch + 1 } })
-            .take(actions.NEW_TICK)
-            .run());
+describe('tick saga', () => {
+    it('should initiate tickLoop', () => {
+        testSaga(tick, { $scope, symbol })
+            .next()
+            .call(dataStream, { $scope, symbol, type: 'tick' })
+            .next(fakeChannel)
+            .fork(tickLoop, fakeChannel)
+            .next()
+            .isDone();
+    });
 });
