@@ -1,45 +1,38 @@
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
+import { testSaga } from 'redux-saga-test-plan';
+import { eventChannel } from 'redux-saga';
 import * as actions from '../../constants/actions';
-import createScope from '../createScope';
 import dataStream from '../dataStream';
 import requestBalance from './requestBalance';
 import balance from './';
 
-describe('balance channel', () => {
-    const $scope = createScope();
-    const token = 'some token';
-    const arg = { $scope, token, type: 'balance' };
-    const fakeChannel = dataStream(arg);
+const $scope = {};
+const token = 'some token';
+const arg = { $scope, token, type: 'balance' };
+const fakeChannel = eventChannel(() => () => {});
+const payload = { payload: { balance: '12.00', currency: 'USD' } };
 
-    it('should requestBalance, take the first balance and put BALANCE_RECEIVED', () => {
-        const payload = { balance: '12.00', currency: 'USD' };
-        expectSaga(balance, arg)
-            .provide([
-                [matchers.call.fn(requestBalance), {}],
-                [matchers.call(dataStream, arg), fakeChannel],
-                {
-                    take({ channel }, next) {
-                        if (channel === fakeChannel) {
-                            return payload;
-                        }
-                        return next();
-                    },
-                },
-            ])
+describe('balance saga', () => {
+    it('should create a dataStream for balance', () => {
+        testSaga(balance, { ...arg, token })
+            .next()
             .call(requestBalance, arg)
-            .call(dataStream, arg)
+            .next()
+            .call(dataStream, { $scope, type: 'balance' })
+            .next(fakeChannel)
             .take(fakeChannel)
+            .next(payload)
             .put({ type: actions.BALANCE_RECEIVED, payload })
-            .run();
+            .next()
+            .isDone();
     });
-
     it('should put BALANCE_RECEIVED_ERROR with the thrown error', () => {
-        const payload = new Error('some error');
+        const errorPayload = new Error('some error');
 
         testSaga(balance, { ...arg, token: 'some invalid token' })
             .next()
-            .throw(payload)
-            .put({ type: actions.BALANCE_RECEIVED_ERROR, payload, error: true });
+            .throw(errorPayload)
+            .put({ type: actions.BALANCE_RECEIVED_ERROR, payload: errorPayload, error: true })
+            .next()
+            .isDone();
     });
 });
