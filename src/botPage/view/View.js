@@ -12,11 +12,11 @@ import {
 import { LiveApi } from 'binary-live-api';
 import 'jquery-ui/ui/widgets/dialog';
 import TradeInfo from './react-components/TradeTable/tradeInfo';
-import Chart from './react-components/Chart/Chart';
 import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
+import Chart from './Dialogs/Chart';
 import { getLanguage } from '../../common/lang';
 import { symbolPromise } from './shared';
 import logHandler from './logger';
@@ -102,6 +102,7 @@ const resetRealityCheck = token => {
 
 const limits = new Limits();
 const saveDialog = new Save();
+// const chart = new Chart();
 
 const updateTokenList = () => {
     const tokenList = getTokenList();
@@ -255,15 +256,6 @@ export default class View {
             $(this).parent().hide();
         });
 
-        $('.draggable-dialog').hide().dialog({
-            resizable: true,
-            autoOpen : false,
-            width    : Math.min(document.body.offsetWidth, 800),
-            height   : Math.min(document.body.offsetHeight, 650),
-            closeText: '',
-            classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
-        });
-
         $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
 
         $('#undo').click(() => {
@@ -387,7 +379,7 @@ export default class View {
         });
 
         $('#chartButton').click(() => {
-            $('#chartPanel').dialog('open');
+            this.chart.open();
         });
     }
     stop() {
@@ -418,11 +410,6 @@ export default class View {
         globalObserver.register('bot.contract', c => {
             if (c) {
                 this.tradeInfo.addContract(c);
-                if (c.is_sold) {
-                    this.chart.setContract(null);
-                } else {
-                    this.chart.setContract(c);
-                }
             }
         });
     }
