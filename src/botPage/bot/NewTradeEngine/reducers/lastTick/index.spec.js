@@ -7,8 +7,8 @@ describe('lastTick reducer', () => {
         expect((state = lastTick(state, { type: actions.INVALID }))).toEqual(0);
     });
     it('NEW_TICK should set lastTick to a number', () => {
-        expect((state = lastTick(state, { type: actions.NEW_TICK, payload: new Date().getTime() }))).toEqual(
-            expect.any(Number)
-        );
+        expect(
+            (state = lastTick(state, { type: actions.NEW_TICK, payload: { lastTick: new Date().getTime() } }))
+        ).toEqual(expect.any(Number));
     });
 });

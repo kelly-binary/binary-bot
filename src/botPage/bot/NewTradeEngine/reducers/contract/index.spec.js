@@ -8,7 +8,7 @@ describe('contract reducer', () => {
     });
     it('actions.RECEIVE_OPEN_CONTRACT should set contract', () => {
         expect(
-            (state = contract(state, { type: actions.RECEIVE_OPEN_CONTRACT, data: { id: 'oi1joi3ejoij' } }))
+            (state = contract(state, { type: actions.RECEIVE_OPEN_CONTRACT, payload: { id: 'oi1joi3ejoij' } }))
         ).toEqual({
             id: 'oi1joi3ejoij',
         });
