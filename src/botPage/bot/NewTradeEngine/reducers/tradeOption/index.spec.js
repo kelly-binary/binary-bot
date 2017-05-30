@@ -7,7 +7,7 @@ describe('tradeOption reducer', () => {
         expect((state = tradeOption(state, { type: actions.INVALID }))).toEqual({});
     });
     it('actions.START should set tradeOption', () => {
-        expect((state = tradeOption(state, { type: actions.START, data: { someData: true } }))).toEqual({
+        expect((state = tradeOption(state, { type: actions.START, payload: { someData: true } }))).toEqual({
             someData: true,
         });
     });
