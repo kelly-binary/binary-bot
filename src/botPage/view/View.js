@@ -11,13 +11,13 @@ import {
 } from 'binary-common-utils/lib/storageManager';
 import { LiveApi } from 'binary-live-api';
 import 'jquery-ui/ui/widgets/dialog';
-import TradeInfo from './react-components/TradeTable/tradeInfo';
 import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
 import Chart from './Dialogs/Chart';
 import Log from './Dialogs/Log';
+import TradeInfo from './Dialogs/TradeInfo';
 import { getLanguage } from '../../common/lang';
 import { symbolPromise } from './shared';
 import Tour from './tour';
@@ -371,7 +371,7 @@ export default class View {
         });
 
         $('#tradeInfoButton').click(() => {
-            $('#tradeInfoPanel').dialog('open');
+            this.tradeInfo.open();
         });
 
         $('#logButton').click(() => {
@@ -391,25 +391,6 @@ export default class View {
                 removeAllTokens();
                 updateTokenList();
                 this.stop();
-            }
-        });
-
-        globalObserver.register('bot.info', info => {
-            this.tradeInfo.addInfo(info);
-            if ('profit' in info) {
-                const token = $('.account-id').first().attr('value');
-                const user = getToken(token);
-                globalObserver.emit('log.revenue', {
-                    user,
-                    profit  : info.profit,
-                    contract: info.contract,
-                });
-            }
-        });
-
-        globalObserver.register('bot.contract', c => {
-            if (c) {
-                this.tradeInfo.addContract(c);
             }
         });
     }

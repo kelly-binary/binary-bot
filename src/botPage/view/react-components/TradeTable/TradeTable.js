@@ -82,7 +82,7 @@ export default class TradeTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.state.rows.slice(-50).map(r => <TradeTableRow trade={r} />)}
+                    {this.state.rows.slice(-50).map(r => <TradeTableRow key={r.id} trade={r} />)}
                 </tbody>
             </table>
         );

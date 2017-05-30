@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default class TradeRow extends PureComponent {
     static propTypes = {
         trade: PropTypes.shape({
-            id           : PropTypes.string,
+            id           : PropTypes.number,
             reference    : PropTypes.string,
             contract_type: PropTypes.string,
             entry_tick   : PropTypes.string,
