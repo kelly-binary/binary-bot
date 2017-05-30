@@ -7,8 +7,8 @@ describe('contractId reducer', () => {
         expect((state = contractId(state, { type: actions.INVALID }))).toEqual('');
     });
     it('PURCHASE_SUCCESSFULLY should set contractId', () => {
-        expect(
-            (state = contractId(state, { type: actions.PURCHASE_SUCCESSFULLY, payload: { contractId: 'contractId' } }))
-        ).toEqual('contractId');
+        expect((state = contractId(state, { type: actions.PURCHASE_SUCCESSFULLY, payload: 'contractId' }))).toEqual(
+            'contractId'
+        );
     });
 });
