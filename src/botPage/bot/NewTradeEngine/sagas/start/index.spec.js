@@ -12,7 +12,7 @@ describe('start saga', () => {
     };
     it('should not have any effect if it\'s not INITIALIZED', () => {
         testSaga(start, twoContracts)
-            .next({ stage: 'STOPPED' })
+            .next()
             .select(stageSelector)
             .next(states.STOPPED)
             .put({ type: actions.START, payload: twoContracts })
@@ -24,10 +24,10 @@ describe('start saga', () => {
             .next()
             .select(stageSelector)
             .next(states.INITIALIZED)
-            .put({ type: actions.START, payload: oneContract })
-            .next()
             .select(tradeOptionSelector)
             .next(oneContract)
+            .put({ type: actions.START, payload: oneContract })
+            .next()
             .isDone();
     });
     it('should START and REQUEST_ONE_PROPOSAL', () => {
@@ -35,10 +35,10 @@ describe('start saga', () => {
             .next()
             .select(stageSelector)
             .next(states.INITIALIZED)
-            .put({ type: actions.START, payload: oneContract })
-            .next()
             .select(tradeOptionSelector)
             .next(twoContracts)
+            .put({ type: actions.START, payload: oneContract })
+            .next()
             .put({ type: actions.REQUEST_ONE_PROPOSAL })
             .next()
             .isDone();
@@ -48,10 +48,10 @@ describe('start saga', () => {
             .next()
             .select(stageSelector)
             .next(states.INITIALIZED)
-            .put({ type: actions.START, payload: twoContracts })
-            .next()
             .select(tradeOptionSelector)
             .next(oneContract)
+            .put({ type: actions.START, payload: twoContracts })
+            .next()
             .put({ type: actions.REQUEST_TWO_PROPOSALS })
             .next()
             .isDone();

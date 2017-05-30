@@ -33,15 +33,18 @@ export const stageSelector = ({ stage }) => stage;
 export const tradeOptionSelector = ({ tradeOption }) => tradeOption;
 
 export default function* start(tradeOption) {
+    const contractTypes = tradeOption.contractTypes;
     const stage = yield select(stageSelector);
-    yield put({ type: actions.START, payload: tradeOption });
+    const startEffect = put({ type: actions.START, payload: tradeOption });
 
     if (stage !== states.INITIALIZED) {
+        yield startEffect;
         return;
     }
 
     const currentTradeOption = yield select(tradeOptionSelector);
-    const { contractTypes } = tradeOption;
+
+    yield startEffect;
 
     if (isTradeOptionTheSame(currentTradeOption, tradeOption)) {
         return;
