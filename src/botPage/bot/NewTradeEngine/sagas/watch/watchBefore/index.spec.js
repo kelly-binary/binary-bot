@@ -7,7 +7,7 @@ import watchBefore from './';
 describe('watching before', () => {
     const lastTick = 123456;
 
-    it('should exit scope if neither PROPOSALS_READY nor STARTED', () => {
+    it('should EXIT_SCOPE if neither PROPOSALS_READY nor STARTED', () => {
         testSaga(watchBefore)
             .next()
             .select(selectors.stageSelector)
