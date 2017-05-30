@@ -1,7 +1,8 @@
 import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
-import start, { stageSelector, tradeOptionSelector } from './';
+import { stageSelector, tradeOptionSelector } from '../selectors';
+import start from './';
 
 describe('start saga', () => {
     const twoContracts = {

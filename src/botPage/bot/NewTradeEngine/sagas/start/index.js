@@ -1,6 +1,7 @@
 import { select, put } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
+import { stageSelector, tradeOptionSelector } from '../selectors';
 
 const isTradeOptionTheSame = (oldOpt, newOpt) =>
     [
@@ -27,10 +28,6 @@ const isTradeOptionTheSame = (oldOpt, newOpt) =>
         }
         return false;
     });
-
-export const stageSelector = ({ stage }) => stage;
-
-export const tradeOptionSelector = ({ tradeOption }) => tradeOption;
 
 export default function* start(tradeOption) {
     const contractTypes = tradeOption.contractTypes;
