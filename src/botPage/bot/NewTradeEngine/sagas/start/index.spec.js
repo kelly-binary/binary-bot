@@ -1,7 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
-import { stageSelector, tradeOptionSelector } from '../selectors';
+import * as selectors from '../selectors';
 import start from './';
 
 describe('start saga', () => {
@@ -14,7 +14,7 @@ describe('start saga', () => {
     it('should not have any effect if it\'s not INITIALIZED', () => {
         testSaga(start, twoContracts)
             .next()
-            .select(stageSelector)
+            .select(selectors.stageSelector)
             .next(states.STOPPED)
             .put({ type: actions.START, payload: twoContracts })
             .next()
@@ -23,9 +23,9 @@ describe('start saga', () => {
     it('should not start if it\'s the same trade option', () => {
         testSaga(start, oneContract)
             .next()
-            .select(stageSelector)
+            .select(selectors.stageSelector)
             .next(states.INITIALIZED)
-            .select(tradeOptionSelector)
+            .select(selectors.tradeOptionSelector)
             .next(oneContract)
             .put({ type: actions.START, payload: oneContract })
             .next()
@@ -34,9 +34,9 @@ describe('start saga', () => {
     it('should START and REQUEST_ONE_PROPOSAL', () => {
         testSaga(start, oneContract)
             .next()
-            .select(stageSelector)
+            .select(selectors.stageSelector)
             .next(states.INITIALIZED)
-            .select(tradeOptionSelector)
+            .select(selectors.tradeOptionSelector)
             .next(twoContracts)
             .put({ type: actions.START, payload: oneContract })
             .next()
@@ -47,9 +47,9 @@ describe('start saga', () => {
     it('should START and REQUEST_TWO_PROPOSALS', () => {
         testSaga(start, twoContracts)
             .next()
-            .select(stageSelector)
+            .select(selectors.stageSelector)
             .next(states.INITIALIZED)
-            .select(tradeOptionSelector)
+            .select(selectors.tradeOptionSelector)
             .next(oneContract)
             .put({ type: actions.START, payload: twoContracts })
             .next()

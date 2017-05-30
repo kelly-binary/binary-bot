@@ -1,7 +1,7 @@
 import { select, put } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
-import { stageSelector, tradeOptionSelector } from '../selectors';
+import * as selectors from '../selectors';
 
 const isTradeOptionTheSame = (oldOpt, newOpt) =>
     [
@@ -31,7 +31,7 @@ const isTradeOptionTheSame = (oldOpt, newOpt) =>
 
 export default function* start(tradeOption) {
     const contractTypes = tradeOption.contractTypes;
-    const stage = yield select(stageSelector);
+    const stage = yield select(selectors.stageSelector);
     const startEffect = put({ type: actions.START, payload: tradeOption });
 
     if (stage !== states.INITIALIZED) {
@@ -39,7 +39,7 @@ export default function* start(tradeOption) {
         return;
     }
 
-    const currentTradeOption = yield select(tradeOptionSelector);
+    const currentTradeOption = yield select(selectors.tradeOptionSelector);
 
     yield startEffect;
 
