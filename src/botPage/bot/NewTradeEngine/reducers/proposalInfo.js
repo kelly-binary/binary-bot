@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import * as actions from '../constants/actions';
-import propertyReducer from './propertyReducer';
+import objectReducerCreator from './reducerCreators/object';
 
-const requestedProposals = propertyReducer({}, actions.REQUEST_PROPOSAL);
-const receivedProposals = propertyReducer({}, actions.RECEIVE_PROPOSAL);
-const forgottenProposals = propertyReducer({}, actions.FORGET_PROPOSAL);
+const requestedProposals = objectReducerCreator(actions.REQUESTED_PROPOSAL);
+const receivedProposals = objectReducerCreator(actions.RECEIVED_PROPOSAL);
+const forgottenProposals = objectReducerCreator(actions.FORGOTTEN_PROPOSAL);
 
 export default combineReducers({
     requestedProposals,
