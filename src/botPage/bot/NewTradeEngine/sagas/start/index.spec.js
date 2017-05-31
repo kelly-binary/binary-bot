@@ -2,17 +2,27 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
+import handleForgottenProposals from '../proposal/handleForgottenProposals';
+import handleProposalSubscription from '../proposal/handleProposalSubscription';
 import start from './';
 
+const twoContracts = {
+    contractTypes: ['PUT', 'CALL'],
+};
+const oneContract = {
+    contractTypes: ['PUT'],
+};
+
+const proposalID1 = 'proposalID1';
+const proposalID2 = 'proposalID2';
+const proposal1 = { id: '0' };
+const proposal2 = { id: '1' };
+const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
+const $scope = {};
+
 describe('start saga', () => {
-    const twoContracts = {
-        contractTypes: ['PUT', 'CALL'],
-    };
-    const oneContract = {
-        contractTypes: ['PUT'],
-    };
     it('should not have any effect if it\'s not INITIALIZED', () => {
-        testSaga(start, twoContracts)
+        testSaga(start, { $scope, twoContracts })
             .next()
             .select(selectors.stageSelector)
             .next(states.STOPPED)
@@ -21,7 +31,7 @@ describe('start saga', () => {
             .isDone();
     });
     it('should not start if it\'s the same trade option', () => {
-        testSaga(start, oneContract)
+        testSaga(start, { $scope, oneContract })
             .next()
             .select(selectors.stageSelector)
             .next(states.INITIALIZED)
@@ -31,8 +41,8 @@ describe('start saga', () => {
             .next()
             .isDone();
     });
-    it('should START and REQUEST_ONE_PROPOSAL', () => {
-        testSaga(start, oneContract)
+    it('should forget existing proposals and request for new proposals', () => {
+        testSaga(start, { $scope, oneContract })
             .next()
             .select(selectors.stageSelector)
             .next(states.INITIALIZED)
@@ -40,20 +50,13 @@ describe('start saga', () => {
             .next(twoContracts)
             .put({ type: actions.START, payload: oneContract })
             .next()
-            .put({ type: actions.REQUEST_ONE_PROPOSAL })
+            .select(selectors.proposalsSelector)
+            .next(payload)
+            .fork(handleForgottenProposals, { $scope, proposalID: proposalID1 })
             .next()
-            .isDone();
-    });
-    it('should START and REQUEST_TWO_PROPOSALS', () => {
-        testSaga(start, twoContracts)
+            .fork(handleForgottenProposals, { $scope, proposalID: proposalID2 })
             .next()
-            .select(selectors.stageSelector)
-            .next(states.INITIALIZED)
-            .select(selectors.tradeOptionSelector)
-            .next(oneContract)
-            .put({ type: actions.START, payload: twoContracts })
-            .next()
-            .put({ type: actions.REQUEST_TWO_PROPOSALS })
+            .fork(handleProposalSubscription, oneContract)
             .next()
             .isDone();
     });
