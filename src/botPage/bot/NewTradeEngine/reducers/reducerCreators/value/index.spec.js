@@ -6,7 +6,7 @@ const payload = { somethingElse: 'somethingElse' };
 
 const reducer = propertyReducer({ defaultState, actionType });
 
-describe('property reducer maker', () => {
+describe('value reducer creator', () => {
     it('should start with the default state', () =>
         expect(reducer(undefined, { type: 'INVALID' })).toEqual(defaultState));
     it('should save the payload for the actionType', () =>
