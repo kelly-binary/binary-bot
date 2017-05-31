@@ -1,8 +1,7 @@
 import objectReducerCreator from './';
 
 const actionType = 'SOME_ACTION';
-const defaultState = {};
-const reducer = objectReducerCreator(defaultState, actionType);
+const reducer = objectReducerCreator(actionType);
 const key1 = 'key1';
 const key2 = 'key2';
 const payload1 = { [key1]: 'value' };
@@ -13,7 +12,7 @@ describe('object reducer creator', () => {
     it('should create a reducer that handles update and remove of keys', () => {
         let state;
 
-        expect((state = reducer(state, { type: 'invalid' }))).toEqual(defaultState);
+        expect((state = reducer(state, { type: 'invalid' }))).toEqual({});
         expect((state = reducer(state, { type: `UPDATE_${actionType}`, payload: payload1 }))).toEqual(payload1);
         expect((state = reducer(state, { type: `UPDATE_${actionType}`, payload: payload2 }))).toEqual(payload2);
         expect((state = reducer(state, { type: `UPDATE_${actionType}`, payload: payload3 }))).toEqual({
