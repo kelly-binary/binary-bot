@@ -1,7 +1,7 @@
 import { put, call } from 'redux-saga/effects';
-import * as actions from '../../constants/actions';
+import * as actions from '../../../constants/actions';
 
-export default function* handleForgottenProposals({ $scope, proposalID }) {
+export default function* handleForgottenProposal({ $scope, proposalID }) {
     const { api } = $scope;
     yield put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload: { [proposalID]: '' } });
     try {

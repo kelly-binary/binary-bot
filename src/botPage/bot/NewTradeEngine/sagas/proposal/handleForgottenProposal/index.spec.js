@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
-import * as actions from '../../constants/actions';
-import handleForgottenProposals from './';
+import * as actions from '../../../constants/actions';
+import handleForgottenProposal from './';
 
 const proposalID = '123';
 const payload = { [proposalID]: '' };
@@ -10,9 +10,9 @@ const api = {
 const $scope = { api };
 const arg = { proposalID, $scope };
 const error = new Error('ErrorName');
-describe('handleForgottenProposals saga', () => {
+describe('handleForgottenProposal saga', () => {
     it('should dispatch forget proposal', () => {
-        testSaga(handleForgottenProposals, arg)
+        testSaga(handleForgottenProposal, arg)
             .next()
             .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
             .next()
@@ -23,7 +23,7 @@ describe('handleForgottenProposals saga', () => {
             .isDone();
     });
     it('should put FORGET_PROPOSAL_ERROR with the thrown error', () => {
-        testSaga(handleForgottenProposals, arg)
+        testSaga(handleForgottenProposal, arg)
             .next()
             .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
             .next()

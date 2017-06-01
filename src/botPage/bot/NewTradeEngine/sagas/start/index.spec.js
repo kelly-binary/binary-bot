@@ -2,7 +2,7 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
-import handleForgottenProposals from '../proposal/handleForgottenProposals';
+import handleForgottenProposal from '../proposal/handleForgottenProposal';
 import handleProposalSubscription from '../proposal/handleProposalSubscription';
 import start from './';
 
@@ -52,9 +52,9 @@ describe('start saga', () => {
             .next()
             .select(selectors.proposalsSelector)
             .next(payload)
-            .fork(handleForgottenProposals, { $scope, proposalID: proposalID1 })
+            .fork(handleForgottenProposal, { $scope, proposalID: proposalID1 })
             .next()
-            .fork(handleForgottenProposals, { $scope, proposalID: proposalID2 })
+            .fork(handleForgottenProposal, { $scope, proposalID: proposalID2 })
             .next()
             .fork(handleProposalSubscription, oneContract)
             .next()

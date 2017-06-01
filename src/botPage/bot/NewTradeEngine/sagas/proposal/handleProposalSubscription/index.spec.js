@@ -1,5 +1,5 @@
 import { testSaga } from 'redux-saga-test-plan';
-import * as actions from '../../constants/actions';
+import * as actions from '../../../constants/actions';
 import handleForgottenProposals from './';
 
 const proposalID = '123';
