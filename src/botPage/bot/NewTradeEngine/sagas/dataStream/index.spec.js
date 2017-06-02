@@ -40,7 +40,7 @@ describe('Data stream for other types', () => {
         const taken = new Promise(resolve => channel.take(resolve));
         api.events.emit(type, data);
         const received = await taken;
-        expect(received).toEqual(payload);
+        expect(received).toEqual(data);
     });
 
     it('Should not emit after cancellation', async () => {
@@ -48,6 +48,6 @@ describe('Data stream for other types', () => {
         channel.close();
         api.events.emit(type, data);
         const received = await taken;
-        expect(received).not.toEqual(payload);
+        expect(received).not.toEqual(data);
     });
 });

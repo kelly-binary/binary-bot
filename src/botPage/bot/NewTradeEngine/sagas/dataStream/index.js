@@ -12,7 +12,7 @@ const dataStream = ({ $scope: { api, ticksService }, type, symbol }) =>
                 },
             });
         } else {
-            api.events.on(type, ({ [type]: payload }) => emit(payload));
+            api.events.on(type, payload => emit(payload));
         }
 
         return () => {

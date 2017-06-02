@@ -3,8 +3,8 @@ import * as actions from '../../../../constants/actions';
 import * as selectors from '../../../selectors';
 
 export default function* handleProposalStream(channel) {
-    const propsoalResponse = yield take(channel);
-    const { passthrough: { uuid }, proposal } = propsoalResponse;
+    const proposalResponse = yield take(channel);
+    const { passthrough: { uuid }, proposal } = proposalResponse;
     const forgottenProposals = yield select(selectors.forgottenProposals);
     if (Object.keys(forgottenProposals).includes(uuid)) {
         return;

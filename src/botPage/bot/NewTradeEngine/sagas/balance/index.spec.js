@@ -9,7 +9,8 @@ const $scope = {};
 const token = 'some token';
 const arg = { $scope, token, type: 'balance' };
 const fakeChannel = eventChannel(() => () => {});
-const payload = { payload: { balance: '12.00', currency: 'USD' } };
+const payload = { balance: '12.00', currency: 'USD' };
+const data = { balance: payload };
 
 describe('balance saga', () => {
     it('should create a dataStream for balance', () => {
@@ -20,7 +21,7 @@ describe('balance saga', () => {
             .call(dataStream, { $scope, type: 'balance' })
             .next(fakeChannel)
             .take(fakeChannel)
-            .next(payload)
+            .next(data)
             .put({ type: actions.BALANCE_RECEIVED, payload })
             .next()
             .isDone();

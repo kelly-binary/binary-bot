@@ -10,11 +10,11 @@ const $scope = createScope();
 const token = 'some token';
 const arg = { $scope, token, type: 'balance' };
 const fakeChannel = dataStream(arg);
+const payload = { balance: '12.00', currency: 'USD' };
+const data = { balance: payload };
 
 describe('balance channel integration', () => {
     it('should put BALANCE_RECEIVED', () => {
-        const payload = { balance: '12.00', currency: 'USD' };
-
         expectSaga(balance, arg)
             .provide([
                 [matchers.call.fn(requestBalance), {}],
@@ -22,7 +22,7 @@ describe('balance channel integration', () => {
                 {
                     take({ channel }, next) {
                         if (channel === fakeChannel) {
-                            return payload;
+                            return data;
                         }
                         return next();
                     },
