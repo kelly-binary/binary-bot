@@ -1,5 +1,6 @@
-import handleForgottenProposal from '../proposal/handleForgottenProposal';
+import handleProposalSubscription from './';
 
+const $scope = {};
 const proposalID1 = 'proposalID1';
 const proposalID2 = 'proposalID2';
 const proposal1 = { id: '0' };
@@ -10,7 +11,7 @@ describe('handleProposalSubscription', () => {
     it('should request a new proposal and create a dataStream for proposals', () => {
         testSaga(handleProposalSubscription, { $scope, tradeOption })
             .next()
-            .select(selectors.proposals)
+            .select(selectors.receivedProposals)
             .next(payload)
             .fork(handleForgottenProposal, { $scope, proposalID: proposalID1 })
             .next()
