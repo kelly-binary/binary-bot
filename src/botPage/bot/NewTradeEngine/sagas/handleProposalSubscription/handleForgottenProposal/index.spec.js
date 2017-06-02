@@ -3,12 +3,16 @@ import * as actions from '../../../constants/actions';
 import handleForgottenProposal from './';
 
 const proposalID = '123';
-const payload = { [proposalID]: '' };
 const api = {
     unsubscribeByID() {},
 };
 const $scope = { api };
-const arg = { proposalID, $scope };
+const proposal = {
+    uuid: proposalID,
+    id  : '0123456',
+};
+const payload = { [proposalID]: '' };
+const arg = { proposal, $scope };
 const error = new Error('ErrorName');
 describe('handleForgottenProposal saga', () => {
     it('should dispatch forget proposal', () => {
@@ -16,7 +20,7 @@ describe('handleForgottenProposal saga', () => {
             .next()
             .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
             .next()
-            .call([api, api.unsubscribeByID], proposalID)
+            .call([api, api.unsubscribeByID], proposal.id)
             .next()
             .put({ type: `REMOVE_${actions.FORGOTTEN_PROPOSAL}`, payload: proposalID })
             .next()
@@ -27,7 +31,7 @@ describe('handleForgottenProposal saga', () => {
             .next()
             .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
             .next()
-            .call([api, api.unsubscribeByID], proposalID)
+            .call([api, api.unsubscribeByID], proposal.id)
             .next()
             .throw(error)
             .put({ type: `${actions.FORGOTTEN_PROPOSAL}_ERROR`, payload: error, error: true })
