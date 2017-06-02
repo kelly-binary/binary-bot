@@ -16,16 +16,18 @@ const proposalID2 = 'proposalID2';
 const proposal1 = { id: '0', uuid: proposalID1 };
 const proposal2 = { id: '1', uuid: proposalID2 };
 const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
-
+const uuids = [];
 const error = Error('some error');
+
+const arg = { tradeOption, $scope, uuids };
 
 describe('handleProposalSubscription', () => {
     it('should not forget propsoals if there is no proposalsReceived', () => {
-        testSaga(handleProposalSubscription, { $scope, tradeOption })
+        testSaga(handleProposalSubscription, arg)
             .next()
             .select(selectors.receivedProposals)
             .next({})
-            .fork(requestProposals, tradeOption)
+            .fork(requestProposals, arg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
             .next(fakeChannel)
@@ -36,7 +38,7 @@ describe('handleProposalSubscription', () => {
             .isDone();
     });
     it('should request a new proposal and create a dataStream for proposals', () => {
-        testSaga(handleProposalSubscription, { $scope, tradeOption })
+        testSaga(handleProposalSubscription, arg)
             .next()
             .select(selectors.receivedProposals)
             .next(payload)
@@ -44,7 +46,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .fork(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .fork(requestProposals, tradeOption)
+            .fork(requestProposals, arg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
             .next(fakeChannel)
@@ -55,7 +57,7 @@ describe('handleProposalSubscription', () => {
             .isDone();
     });
     it('should put RECEIVE_PROPOSAL_ERROR if requestProposals fails', () => {
-        testSaga(handleProposalSubscription, { $scope, tradeOption })
+        testSaga(handleProposalSubscription, arg)
             .next()
             .select(selectors.receivedProposals)
             .next(payload)
@@ -63,7 +65,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .fork(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .fork(requestProposals, tradeOption)
+            .fork(requestProposals, arg)
             .next()
             .throw(error)
             .put({ type: 'RECEIVE_PROPOSAL_ERROR', payload: error, error: true })

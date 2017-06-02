@@ -6,14 +6,14 @@ import handleProposalReady from './handleProposalReady';
 import handleProposalStream from './handleProposalStream';
 import handleForgottenProposal from './handleForgottenProposal';
 
-export default function* handleProposalSubscription({ tradeOption, $scope }) {
+export default function* handleProposalSubscription({ tradeOption, $scope, uuids }) {
     const receivedProposals = yield select(selectors.receivedProposals);
     const proposals = Object.values(receivedProposals);
     for (let i = 0; i < proposals.length; i++) {
         yield fork(handleForgottenProposal, { $scope, proposal: proposals[i] });
     }
     try {
-        yield fork(requestProposals, tradeOption);
+        yield call(requestProposals, { tradeOption, $scope, uuids });
         const channel = yield call(dataStream, { type: 'proposal', $scope });
         yield fork(handleProposalStream, channel);
         yield fork(handleProposalReady);

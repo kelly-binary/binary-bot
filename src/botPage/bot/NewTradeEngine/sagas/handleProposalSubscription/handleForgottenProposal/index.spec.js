@@ -14,6 +14,7 @@ const proposal = {
 const payload = { [proposalID]: '' };
 const arg = { proposal, $scope };
 const error = new Error('ErrorName');
+
 describe('handleForgottenProposal saga', () => {
     it('should dispatch forget proposal', () => {
         testSaga(handleForgottenProposal, arg)
