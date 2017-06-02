@@ -10,7 +10,7 @@ export const tradeOption = selectIn('tradeOption');
 
 export const lastTick = selectIn('lastTick');
 
-export const proposals = selectIn(['proposalInfo', 'receivedProposals']);
+export const receivedProposals = selectIn(['proposalInfo', 'receivedProposals']);
 
 export const forgottenProposals = selectIn(['proposalInfo', 'forgottenProposals']);
 

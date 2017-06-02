@@ -26,7 +26,7 @@ describe('selectors', () => {
     });
 
     it('should select receivedProposals from proposalInfo', () => {
-        expect(selectors.proposals(state)).toEqual(state.proposalInfo.receivedProposals);
+        expect(selectors.receivedProposals(state)).toEqual(state.proposalInfo.receivedProposals);
     });
 
     it('should select forgottenProposals from proposalInfo', () => {
