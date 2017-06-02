@@ -1,7 +1,8 @@
-import { select, put } from 'redux-saga/effects';
+import { select, put, fork } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
+import handleProposalSubscription from '../handleProposalSubscription';
 
 const isTradeOptionTheSame = (oldOpt, newOpt) =>
     [
@@ -29,8 +30,7 @@ const isTradeOptionTheSame = (oldOpt, newOpt) =>
         return false;
     });
 
-export default function* start(tradeOption) {
-    const contractTypes = tradeOption.contractTypes;
+export default function* start({ tradeOption, $scope }) {
     const stage = yield select(selectors.stage);
     const startEffect = put({ type: actions.START, payload: tradeOption });
 
@@ -47,9 +47,5 @@ export default function* start(tradeOption) {
         return;
     }
 
-    if (contractTypes.length === 2) {
-        yield put({ type: actions.REQUEST_TWO_PROPOSALS });
-    } else if (contractTypes.length === 1) {
-        yield put({ type: actions.REQUEST_ONE_PROPOSAL });
-    }
+    yield fork(handleProposalSubscription, { tradeOption, $scope });
 }
