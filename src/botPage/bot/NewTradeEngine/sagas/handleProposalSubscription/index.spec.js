@@ -20,6 +20,21 @@ const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
 const error = Error('some error');
 
 describe('handleProposalSubscription', () => {
+    it('should not forget propsoals if there is no proposalsReceived', () => {
+        testSaga(handleProposalSubscription, { $scope, tradeOption })
+            .next()
+            .select(selectors.receivedProposals)
+            .next({})
+            .fork(requestProposals, tradeOption)
+            .next()
+            .call(dataStream, { type: 'proposal', $scope })
+            .next(fakeChannel)
+            .fork(handleProposalStream, fakeChannel)
+            .next()
+            .fork(handleProposalReady)
+            .next()
+            .isDone();
+    });
     it('should request a new proposal and create a dataStream for proposals', () => {
         testSaga(handleProposalSubscription, { $scope, tradeOption })
             .next()
