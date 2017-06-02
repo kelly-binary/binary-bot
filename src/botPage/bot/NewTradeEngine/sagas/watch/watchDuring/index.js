@@ -4,7 +4,7 @@ import * as states from '../../../constants/states';
 import * as actions from '../../../constants/actions';
 
 export default function* watchBefore() {
-    const stage = yield select(selectors.stageSelector);
+    const stage = yield select(selectors.stage);
 
     if (stage !== states.STARTED && stage !== states.PROPOSALS_READY) {
         yield put({ type: actions.EXIT_SCOPE });

@@ -10,7 +10,7 @@ describe('watching before', () => {
     it('should EXIT_SCOPE if neither PROPOSALS_READY nor STARTED', () => {
         testSaga(watchBefore)
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.STOPPED)
             .put({ type: actions.EXIT_SCOPE })
             .next()
@@ -19,7 +19,7 @@ describe('watching before', () => {
     it('should wait for NEW_TICK if PROPOSALS_READY', () => {
         testSaga(watchBefore)
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.PROPOSALS_READY)
             .take(actions.NEW_TICK)
             .next({ payload: { lastTick } })
@@ -30,7 +30,7 @@ describe('watching before', () => {
     it('should wait for NEW_TICK and RECEIVE_PROPOSALS if STARTED', () => {
         testSaga(watchBefore)
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.STARTED)
             .take([actions.NEW_TICK, actions.RECEIVE_PROPOSALS])
             .next({ type: actions.NEW_TICK, payload: { lastTick } })

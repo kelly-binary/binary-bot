@@ -1,18 +1,12 @@
 import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
-import { stageSelector } from '../selectors';
+import { stage } from '../selectors';
 import watch from './';
 
 describe('watch saga', () => {
     describe('watching before', () => {
         it('should exit scope if neither PROPOSALS_READY nor STARTED', () => {
-            testSaga(watch, 'before')
-                .next()
-                .select(stageSelector)
-                .next()
-                .put({ type: actions.EXIT_SCOPE })
-                .next()
-                .isDone();
+            testSaga(watch, 'before').next().select(stage).next().put({ type: actions.EXIT_SCOPE }).next().isDone();
         });
         it.skip('should wait for NEW_TICK and PROPOSALS_READY if STARTED');
         it.skip('should wait for NEW_TICK if PROPOSALS_READY');

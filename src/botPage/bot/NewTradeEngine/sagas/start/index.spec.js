@@ -18,7 +18,7 @@ describe('start saga', () => {
     it('should not have any effect if it\'s not INITIALIZED', () => {
         testSaga(start, { $scope, twoContracts })
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.STOPPED)
             .put({ type: actions.START, payload: twoContracts })
             .next()
@@ -27,9 +27,9 @@ describe('start saga', () => {
     it('should not start if it\'s the same trade option', () => {
         testSaga(start, { $scope, oneContract })
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.INITIALIZED)
-            .select(selectors.tradeOptionSelector)
+            .select(selectors.tradeOption)
             .next(oneContract)
             .put({ type: actions.START, payload: oneContract })
             .next()
@@ -38,9 +38,9 @@ describe('start saga', () => {
     it('should forget existing proposals and request for new proposals', () => {
         testSaga(start, { $scope, oneContract })
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.INITIALIZED)
-            .select(selectors.tradeOptionSelector)
+            .select(selectors.tradeOption)
             .next(twoContracts)
             .put({ type: actions.START, payload: oneContract })
             .next()

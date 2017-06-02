@@ -10,7 +10,7 @@ describe('watching during', () => {
     it('should EXIT_SCOPE if neither SUCCESSFUL_PURCHASE nor OPEN_CONTRACT', () => {
         testSaga(watchDuring)
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.STOPPED)
             .put({ type: actions.EXIT_SCOPE })
             .next()
@@ -19,7 +19,7 @@ describe('watching during', () => {
     it.skip('should wait for RECEIVE_OPEN_CONTRACT if SUCCESSFUL_PURCHASE', () => {
         testSaga(watchDuring)
             .next()
-            .select(selectors.stageSelector)
+            .select(selectors.stage)
             .next(states.SUCCESSFUL_PURCHASE)
             .take(actions.RECEIVE_OPEN_CONTRACT)
             .next(openContracts[0])

@@ -33,7 +33,7 @@ describe('handleProposalStream saga', () => {
             .next()
             .take(fakeChannel)
             .next(newProposalResponse)
-            .select(selectors.forgottenProposalsSelector)
+            .select(selectIn(['proposalInfo', 'forgottenProposals']))
             .next(forgottenProposals)
             .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid]: proposal } })
             .next()
@@ -44,7 +44,7 @@ describe('handleProposalStream saga', () => {
             .next()
             .take(fakeChannel)
             .next(forgottenProposals[0])
-            .select(selectors.forgottenProposalsSelector)
+            .select(selectors.forgottenProposals)
             .next(forgottenProposals)
             .isDone();
     });

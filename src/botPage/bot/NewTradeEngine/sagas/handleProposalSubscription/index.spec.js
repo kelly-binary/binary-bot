@@ -10,7 +10,7 @@ describe('handleProposalSubscription', () => {
     it('should request a new proposal and create a dataStream for proposals', () => {
         testSaga(handleProposalSubscription, { $scope, tradeOption })
             .next()
-            .select(selectors.proposalsSelector)
+            .select(selectors.proposals)
             .next(payload)
             .fork(handleForgottenProposal, { $scope, proposalID: proposalID1 })
             .next()

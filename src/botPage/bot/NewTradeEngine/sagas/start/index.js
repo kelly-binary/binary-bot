@@ -31,7 +31,7 @@ const isTradeOptionTheSame = (oldOpt, newOpt) =>
 
 export default function* start(tradeOption) {
     const contractTypes = tradeOption.contractTypes;
-    const stage = yield select(selectors.stageSelector);
+    const stage = yield select(selectors.stage);
     const startEffect = put({ type: actions.START, payload: tradeOption });
 
     if (stage !== states.INITIALIZED) {
@@ -39,7 +39,7 @@ export default function* start(tradeOption) {
         return;
     }
 
-    const currentTradeOption = yield select(selectors.tradeOptionSelector);
+    const currentTradeOption = yield select(selectors.tradeOption);
 
     yield startEffect;
 
