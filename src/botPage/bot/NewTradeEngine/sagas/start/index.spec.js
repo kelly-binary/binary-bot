@@ -13,10 +13,11 @@ const oneContract = {
 };
 
 const $scope = {};
+const uuids = [];
 
 describe('start saga', () => {
     it('should not have any effect if it\'s not INITIALIZED', () => {
-        testSaga(start, { $scope, tradeOption: twoContracts })
+        testSaga(start, { $scope, tradeOption: twoContracts, uuids })
             .next()
             .select(selectors.stage)
             .next(states.STOPPED)
@@ -25,7 +26,7 @@ describe('start saga', () => {
             .isDone();
     });
     it('should not start if it\'s the same trade option', () => {
-        testSaga(start, { $scope, tradeOption: oneContract })
+        testSaga(start, { $scope, tradeOption: oneContract, uuids })
             .next()
             .select(selectors.stage)
             .next(states.INITIALIZED)
@@ -36,7 +37,7 @@ describe('start saga', () => {
             .isDone();
     });
     it('should forget existing proposals and request for new proposals', () => {
-        testSaga(start, { $scope, tradeOption: oneContract })
+        testSaga(start, { $scope, tradeOption: oneContract, uuids })
             .next()
             .select(selectors.stage)
             .next(states.INITIALIZED)
@@ -44,7 +45,7 @@ describe('start saga', () => {
             .next(twoContracts)
             .put({ type: actions.START, payload: oneContract })
             .next()
-            .fork(handleProposalSubscription, { tradeOption: oneContract, $scope })
+            .fork(handleProposalSubscription, { tradeOption: oneContract, $scope, uuids })
             .next()
             .isDone();
     });

@@ -30,7 +30,7 @@ const isTradeOptionTheSame = (oldOpt, newOpt) =>
         return false;
     });
 
-export default function* start({ tradeOption, $scope }) {
+export default function* start({ tradeOption, $scope, uuids }) {
     const stage = yield select(selectors.stage);
     const startEffect = put({ type: actions.START, payload: tradeOption });
 
@@ -47,5 +47,5 @@ export default function* start({ tradeOption, $scope }) {
         return;
     }
 
-    yield fork(handleProposalSubscription, { tradeOption, $scope });
+    yield fork(handleProposalSubscription, { tradeOption, $scope, uuids });
 }
