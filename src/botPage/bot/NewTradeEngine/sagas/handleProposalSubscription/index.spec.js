@@ -17,6 +17,8 @@ const proposal1 = { id: '0', uuid: proposalID1 };
 const proposal2 = { id: '1', uuid: proposalID2 };
 const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
 
+const error = Error('some error');
+
 describe('handleProposalSubscription', () => {
     it('should request a new proposal and create a dataStream for proposals', () => {
         testSaga(handleProposalSubscription, { $scope, tradeOption })
@@ -34,6 +36,22 @@ describe('handleProposalSubscription', () => {
             .fork(handleProposalStream, fakeChannel)
             .next()
             .fork(handleProposalReady)
+            .next()
+            .isDone();
+    });
+    it('should put RECEIVE_PROPOSAL_ERROR if requestProposals fails', () => {
+        testSaga(handleProposalSubscription, { $scope, tradeOption })
+            .next()
+            .select(selectors.receivedProposals)
+            .next(payload)
+            .fork(handleForgottenProposal, { $scope, proposal: proposal1 })
+            .next()
+            .fork(handleForgottenProposal, { $scope, proposal: proposal2 })
+            .next()
+            .fork(requestProposals, tradeOption)
+            .next()
+            .throw(error)
+            .put({ type: 'RECEIVE_PROPOSAL_ERROR', payload: error, error: true })
             .next()
             .isDone();
     });
