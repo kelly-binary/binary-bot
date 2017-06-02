@@ -2,8 +2,7 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
-import handleForgottenProposal from '../proposal/handleForgottenProposal';
-import handleProposalSubscription from '../proposal/handleProposalSubscription';
+import handleProposalSubscription from '../handleProposalSubscription';
 import start from './';
 
 const twoContracts = {
@@ -13,11 +12,6 @@ const oneContract = {
     contractTypes: ['PUT'],
 };
 
-const proposalID1 = 'proposalID1';
-const proposalID2 = 'proposalID2';
-const proposal1 = { id: '0' };
-const proposal2 = { id: '1' };
-const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
 const $scope = {};
 
 describe('start saga', () => {
@@ -49,12 +43,6 @@ describe('start saga', () => {
             .select(selectors.tradeOptionSelector)
             .next(twoContracts)
             .put({ type: actions.START, payload: oneContract })
-            .next()
-            .select(selectors.proposalsSelector)
-            .next(payload)
-            .fork(handleForgottenProposal, { $scope, proposalID: proposalID1 })
-            .next()
-            .fork(handleForgottenProposal, { $scope, proposalID: proposalID2 })
             .next()
             .fork(handleProposalSubscription, oneContract)
             .next()
