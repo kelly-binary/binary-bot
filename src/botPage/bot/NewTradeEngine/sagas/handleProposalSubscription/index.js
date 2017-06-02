@@ -1,13 +1,19 @@
-import { put, call } from 'redux-saga/effects';
-import * as actions from '../../../constants/actions';
+import { call, fork, select } from 'redux-saga/effects';
+import * as selectors from '../selectors';
+import dataStream from '../dataStream';
+import requestProposals from './requestProposals';
+import handleProposalReady from './handleProposalReady';
+import handleProposalStream from './handleProposalStream';
+import handleForgottenProposal from './handleForgottenProposal';
 
-export default function* handleForgottenProposals({ $scope, proposalID }) {
-    const { api } = $scope;
-    yield put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload: { [proposalID]: '' } });
-    try {
-        yield call([api, api.unsubscribeByID], proposalID);
-        yield put({ type: `REMOVE_${actions.FORGOTTEN_PROPOSAL}`, payload: proposalID });
-    } catch (error) {
-        yield put({ type: `${actions.FORGOTTEN_PROPOSAL}_ERROR`, payload: error, error: true });
+export default function* handleProposalSubscription({ tradeOption, $scope }) {
+    const receivedProposals = yield select(selectors.receivedProposals);
+    const proposals = Object.values(receivedProposals);
+    for (let i = 0; i < proposals.length; i++) {
+        yield fork(handleForgottenProposal, { $scope, proposal: proposals[i] });
     }
+    yield fork(requestProposals, tradeOption);
+    const channel = yield call(dataStream, { type: 'proposal', $scope });
+    yield fork(handleProposalStream, channel);
+    yield fork(handleProposalReady);
 }

@@ -32,6 +32,7 @@ describe('handleProposalSubscription', () => {
             .call(dataStream, { type: 'proposal', $scope })
             .next(fakeChannel)
             .fork(handleProposalStream, fakeChannel)
+            .next()
             .fork(handleProposalReady)
             .next()
             .isDone();
