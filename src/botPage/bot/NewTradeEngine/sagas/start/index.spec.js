@@ -2,7 +2,7 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
-import handleProposalSubscription from '../handleProposalSubscription';
+import handleProposalSubscription from './handleProposalSubscription';
 import start from './';
 
 const twoContracts = {

@@ -2,7 +2,7 @@ import { select, put, fork } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
-import handleProposalSubscription from '../handleProposalSubscription';
+import handleProposalSubscription from './handleProposalSubscription';
 
 const isTradeOptionTheSame = (oldOpt, newOpt) =>
     [
