@@ -20,7 +20,11 @@ class Bot {
     }
     start(startOption) {
         const { initData } = this.store.getState();
-        this.store.dispatch({ type: actions.START_SAGA, payload: { ...startOption, ...initData } });
+        const uuids = [getUUID(), getUUID()];
+        this.store.dispatch({
+            type   : actions.START_SAGA,
+            payload: { $scope: this.$scope, uuids, tradeOption: { ...startOption, ...initData } },
+        });
     }
     watch() {
         return new Promise(() => {});
