@@ -13,3 +13,5 @@ export const lastTick = selectIn('lastTick');
 export const proposals = selectIn(['proposalInfo', 'receivedProposals']);
 
 export const forgottenProposals = selectIn(['proposalInfo', 'forgottenProposals']);
+
+export const requestedProposals = selectIn(['proposalInfo', 'requestedProposals']);

@@ -8,6 +8,7 @@ const state = {
     proposalInfo: {
         receivedProposals : {},
         forgottenProposals: {},
+        requestedProposals: {},
     },
 };
 
@@ -30,5 +31,9 @@ describe('selectors', () => {
 
     it('should select forgottenProposals from proposalInfo', () => {
         expect(selectors.forgottenProposals(state)).toEqual(state.proposalInfo.receivedProposals);
+    });
+
+    it('should select requestedProposals from proposalInfo', () => {
+        expect(selectors.requestedProposals(state)).toEqual(state.proposalInfo.requestedProposals);
     });
 });
