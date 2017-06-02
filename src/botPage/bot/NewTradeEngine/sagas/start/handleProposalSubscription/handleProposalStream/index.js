@@ -1,6 +1,6 @@
 import { take, put, select } from 'redux-saga/effects';
-import * as actions from '../../../constants/actions';
-import * as selectors from '../../selectors';
+import * as actions from '../../../../constants/actions';
+import * as selectors from '../../../selectors';
 
 export default function* handleProposalStream(channel) {
     const propsoalResponse = yield take(channel);

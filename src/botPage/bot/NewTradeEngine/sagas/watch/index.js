@@ -1,4 +1,3 @@
-export default function* watch(name) {
-    if (name === 'before') {
-    }
+export default function* watch() {
+    yield 0;
 }

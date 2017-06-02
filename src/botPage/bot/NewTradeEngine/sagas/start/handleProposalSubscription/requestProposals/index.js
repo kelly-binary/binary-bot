@@ -1,4 +1,4 @@
-import { tradeOptionToProposal, doUntilDone } from '../../../../tools';
+import { tradeOptionToProposal, doUntilDone } from '../../../../../tools';
 
 export default function requestProposals({ tradeOption, $scope: { api }, uuids }) {
     const proposals = tradeOptionToProposal(tradeOption);

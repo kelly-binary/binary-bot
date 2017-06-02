@@ -27,15 +27,15 @@ describe('watching before', () => {
             .next()
             .isDone();
     });
-    it('should wait for NEW_TICK and RECEIVE_PROPOSALS if STARTED', () => {
+    it('should wait for NEW_TICK and RECEIVE_ALL_PROPOSALS if STARTED', () => {
         testSaga(watchBefore)
             .next()
             .select(selectors.stage)
             .next(states.STARTED)
-            .take([actions.NEW_TICK, actions.RECEIVE_PROPOSALS])
+            .take([actions.NEW_TICK, actions.RECEIVE_ALL_PROPOSALS])
             .next({ type: actions.NEW_TICK, payload: { lastTick } })
-            .take([actions.NEW_TICK, actions.RECEIVE_PROPOSALS])
-            .next({ type: actions.RECEIVE_PROPOSALS })
+            .take([actions.NEW_TICK, actions.RECEIVE_ALL_PROPOSALS])
+            .next({ type: actions.RECEIVE_ALL_PROPOSALS })
             .put({ type: actions.CONTINUE_SCOPE, payload: { timestamp: lastTick } })
             .next()
             .isDone();

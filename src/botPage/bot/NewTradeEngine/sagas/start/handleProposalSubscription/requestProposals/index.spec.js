@@ -1,5 +1,5 @@
-import createScope from '../../createScope';
-import { tradeOptionToProposal } from '../../../../tools';
+import createScope from '../../../createScope';
+import { tradeOptionToProposal } from '../../../../../tools';
 import requestProposals from './';
 
 const $scope = createScope();

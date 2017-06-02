@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/effects';
-import * as actions from '../../../constants/actions';
+import * as actions from '../../../../constants/actions';
 
 export default function* handleForgottenProposal({ $scope, proposal }) {
     const { uuid: proposalID, id } = proposal;

@@ -15,7 +15,7 @@ export default function* watchBefore() {
 
         yield put({ type: actions.CONTINUE_SCOPE, payload: { timestamp: lastTick } });
     } else if (stage === states.STARTED) {
-        const takeLastTickAndProposals = take([actions.NEW_TICK, actions.RECEIVE_PROPOSALS]);
+        const takeLastTickAndProposals = take([actions.NEW_TICK, actions.RECEIVE_ALL_PROPOSALS]);
 
         let proposalsReady = false;
         let lastTick = 0;
@@ -27,7 +27,7 @@ export default function* watchBefore() {
                 case actions.NEW_TICK:
                     lastTick = action.payload.lastTick;
                     break;
-                case actions.RECEIVE_PROPOSALS:
+                case actions.RECEIVE_ALL_PROPOSALS:
                     proposalsReady = true;
                     break;
                 default:

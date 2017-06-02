@@ -1,6 +1,6 @@
 import { call, fork, select, put } from 'redux-saga/effects';
-import * as selectors from '../selectors';
-import dataStream from '../dataStream';
+import * as selectors from '../../selectors';
+import dataStream from '../../dataStream';
 import requestProposals from './requestProposals';
 import handleProposalReady from './handleProposalReady';
 import handleProposalStream from './handleProposalStream';

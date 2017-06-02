@@ -13,7 +13,7 @@ const stage = (state = initialState, action) => {
         case actions.START:
         case actions.PURCHASE_UNSUCCESSFULLY:
             return states.STARTED;
-        case actions.RECEIVE_PROPOSALS:
+        case actions.RECEIVE_ALL_PROPOSALS:
             return states.PROPOSALS_READY;
         case actions.REQUEST_PURCHASE:
             return states.PURCHASING;

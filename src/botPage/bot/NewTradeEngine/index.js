@@ -27,6 +27,7 @@ class Bot {
             payload: { $scope: this.$scope, uuids, tradeOption: { ...startOption, ...initData } },
         });
     }
+    // eslint-disable-next-line class-methods-use-this
     watch() {
         return new Promise(() => {});
     }

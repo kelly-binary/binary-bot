@@ -1,11 +1,10 @@
 import { expectSaga } from 'redux-saga-test-plan';
-import { eventChannel } from 'redux-saga';
 import { select } from 'redux-saga/effects';
 import handleProposalSubscription from './';
-import * as actions from '../../constants/actions';
-import * as selectors from '../selectors';
-import createScope from '../createScope';
-// import { tradeOptionToProposal} from '../../../tools'
+import * as actions from '../../../constants/actions';
+import * as selectors from '../../selectors';
+import createScope from '../../createScope';
+// import { tradeOptionToProposal} from '../../../../tools'
 
 const $scope = createScope();
 const { api } = $scope;

@@ -1,7 +1,7 @@
 import { eventChannel } from 'redux-saga';
 import { testSaga } from 'redux-saga-test-plan';
-import dataStream from '../dataStream';
-import * as selectors from '../selectors';
+import dataStream from '../../dataStream';
+import * as selectors from '../../selectors';
 import requestProposals from './requestProposals';
 import handleProposalReady from './handleProposalReady';
 import handleProposalStream from './handleProposalStream';
