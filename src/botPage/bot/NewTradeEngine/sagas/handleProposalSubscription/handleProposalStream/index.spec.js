@@ -18,22 +18,25 @@ const newProposalResponse = {
     proposal,
 };
 
-const forgottenProposals = [
-    {
+const forgottenProposalResponse = {
+    passthrough: {
         uuid: '2',
     },
-    {
-        uuid: '3',
-    },
-];
+    proposal,
+};
+
+const forgottenProposals = {
+    '2': true,
+    '3': true,
+};
 
 describe('handleProposalStream saga', () => {
-    it('should wait for new data in the stream and call UPDATE_PROPOSAL', () => {
+    it('should wait for new data in the stream and call UPDATE_RECEIVED_PROPOSAL', () => {
         testSaga(handleProposalStream, fakeChannel)
             .next()
             .take(fakeChannel)
             .next(newProposalResponse)
-            .select(selectIn(['proposalInfo', 'forgottenProposals']))
+            .select(selectors.forgottenProposals)
             .next(forgottenProposals)
             .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid]: proposal } })
             .next()
@@ -43,7 +46,7 @@ describe('handleProposalStream saga', () => {
         testSaga(handleProposalStream, fakeChannel)
             .next()
             .take(fakeChannel)
-            .next(forgottenProposals[0])
+            .next(forgottenProposalResponse)
             .select(selectors.forgottenProposals)
             .next(forgottenProposals)
             .isDone();
