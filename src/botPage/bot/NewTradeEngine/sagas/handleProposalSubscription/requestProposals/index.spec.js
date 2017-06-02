@@ -18,12 +18,27 @@ const tradeOption = {
     duration_unit : 't',
 };
 
+const proposals = tradeOptionToProposal(tradeOption);
+
+const uuids = ['1', '2'];
+
 describe('requestProposals func', () => {
     it('should take tradeOption and request as many proposals as needed', () => {
-        const proposals = tradeOptionToProposal(tradeOption);
-        requestProposals({ $scope, tradeOption });
+        requestProposals({ $scope, tradeOption, uuids });
         expect(api.subscribeToPriceForContractProposal).toHaveBeenCalledTimes(2);
-        expect(api.subscribeToPriceForContractProposal).toBeCalledWith(proposals[0]);
-        expect(api.subscribeToPriceForContractProposal).toBeCalledWith(proposals[1]);
+        expect(api.subscribeToPriceForContractProposal).toBeCalledWith({
+            ...proposals[0],
+            passthrough: {
+                contractType: proposals[0].contract_type,
+                uuid        : uuids[0],
+            },
+        });
+        expect(api.subscribeToPriceForContractProposal).toBeCalledWith({
+            ...proposals[1],
+            passthrough: {
+                contractType: proposals[1].contract_type,
+                uuid        : uuids[1],
+            },
+        });
     });
 });
