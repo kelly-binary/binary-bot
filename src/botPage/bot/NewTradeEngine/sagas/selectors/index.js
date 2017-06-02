@@ -1,9 +1,15 @@
-export const stageSelector = ({ stage }) => stage;
+const selectIn = arg => {
+    const fields = [].concat(arg);
 
-export const tradeOptionSelector = ({ tradeOption }) => tradeOption;
+    return state => fields.reduce((obj, f) => obj[f], state);
+};
 
-export const lastTickSelector = ({ lastTick }) => lastTick;
+export const stage = selectIn('stage');
 
-export const proposalsSelector = ({ proposalInfo: { receivedProposals } }) => receivedProposals;
+export const tradeOption = selectIn('tradeOption');
 
-export const forgottenProposalsSelector = ({ proposalInfo: { forgottenProposals } }) => forgottenProposals;
+export const lastTick = selectIn('lastTick');
+
+export const proposals = selectIn(['proposalInfo', 'receivedProposals']);
+
+export const forgottenProposals = selectIn(['proposalInfo', 'forgottenProposals']);

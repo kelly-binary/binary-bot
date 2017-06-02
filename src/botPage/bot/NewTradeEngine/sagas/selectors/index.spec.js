@@ -6,28 +6,29 @@ const state = {
         contractTypes: ['CALL'],
     },
     proposalInfo: {
-        receivedProposals: {},
+        receivedProposals : {},
+        forgottenProposals: {},
     },
 };
 
 describe('selectors', () => {
     it('should select stage', () => {
-        expect(selectors.stageSelector(state)).toEqual(state.stage);
+        expect(selectors.stage(state)).toEqual(state.stage);
     });
 
     it('should select tradeOption', () => {
-        expect(selectors.tradeOptionSelector(state)).toEqual(state.tradeOption);
+        expect(selectors.tradeOption(state)).toEqual(state.tradeOption);
     });
 
     it('should select lastTick', () => {
-        expect(selectors.lastTickSelector(state)).toEqual(state.lastTick);
+        expect(selectors.lastTick(state)).toEqual(state.lastTick);
     });
 
     it('should select receivedProposals from proposalInfo', () => {
-        expect(selectors.proposalsSelector(state)).toEqual(state.proposalInfo.receivedProposals);
+        expect(selectors.proposals(state)).toEqual(state.proposalInfo.receivedProposals);
     });
 
     it('should select forgottenProposals from proposalInfo', () => {
-        expect(selectors.forgottenProposalsSelector(state)).toEqual(state.proposalInfo.receivedProposals);
+        expect(selectors.forgottenProposals(state)).toEqual(state.proposalInfo.receivedProposals);
     });
 });
