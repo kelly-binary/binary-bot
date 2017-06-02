@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { getUUID } from '../tools';
 import sagaMonitor from './sagaMonitor';
 import * as actions from './constants/actions';
 import * as states from './constants/states';
