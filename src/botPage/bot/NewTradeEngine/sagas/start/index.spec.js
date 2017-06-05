@@ -10,6 +10,7 @@ const twoContracts = {
     contractTypes: ['PUT', 'CALL'],
     amount       : 12.00,
 };
+
 const oneContract = {
     contractTypes: ['PUT'],
     amount       : 1,
@@ -17,9 +18,7 @@ const oneContract = {
 
 const $scope = {};
 
-const uuids = ['uuid1', 'uuid2'];
-const proposalRequests = tradeOptionToProposal(oneContract);
-const proposals = proposalRequests.map((request, i) => ({ request, uuid: uuids[i] }));
+const proposals = tradeOptionToProposal(oneContract);
 
 describe('start saga', () => {
     it('should not have any effect if it\'s not INITIALIZED', () => {
