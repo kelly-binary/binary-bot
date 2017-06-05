@@ -1,7 +1,7 @@
 import { doUntilDone } from '../../../../../tools';
 
-export default function requestProposals({ proposals, $scope: { api } }) {
-    proposals.forEach(({ request, uuid }) =>
+export default function requestProposals({ proposalRequests, $scope: { api } }) {
+    proposalRequests.forEach(({ request, uuid }) =>
         doUntilDone(() =>
             api.subscribeToPriceForContractProposal({
                 ...request,
