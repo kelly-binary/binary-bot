@@ -35,14 +35,17 @@ api.subscribeToPriceForContractProposal = proposal => {
 };
 
 describe('proposal subscription integration', () => {
-    it('should put RECEIVE ALL PROPOSALS', () => {
+    it('should put RECEIVE ALL PROPOSALS', () =>
         expectSaga(handleProposalSubscription, { tradeOption, $scope, uuids })
             .provide([
                 [select(selectors.forgottenProposals), {}],
                 [select(selectors.receivedProposals), {}],
                 [select(selectors.requestedProposals), requestedProposals],
             ])
+            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: expectedToReceivedProposals[0] })
+            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: expectedToReceivedProposals[1] })
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestedProposals[0] })
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestedProposals[1] })
             .put({ type: actions.RECEIVE_ALL_PROPOSALS })
-            .run();
-    });
+            .run());
 });

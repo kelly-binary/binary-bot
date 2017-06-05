@@ -14,11 +14,11 @@ const payload = { balance: '12.00', currency: 'USD' };
 const data = { balance: payload };
 
 describe('balance channel integration', () => {
-    it('should put BALANCE_RECEIVED', () => {
+    it('should put BALANCE_RECEIVED', () =>
         expectSaga(balance, arg)
             .provide([
                 [matchers.call.fn(requestBalance), {}],
-                [matchers.call(dataStream, arg), fakeChannel],
+                [matchers.call.fn(dataStream), fakeChannel],
                 {
                     take({ channel }, next) {
                         if (channel === fakeChannel) {
@@ -29,6 +29,5 @@ describe('balance channel integration', () => {
                 },
             ])
             .put({ type: actions.BALANCE_RECEIVED, payload })
-            .run();
-    });
+            .run());
 });
