@@ -1,4 +1,5 @@
 import { call, fork, select, put } from 'redux-saga/effects';
+import * as actions from '../../../constants/actions';
 import * as selectors from '../../selectors';
 import dataStream from '../../dataStream';
 import requestProposals from './requestProposals';
@@ -14,6 +15,9 @@ export default function* handleProposalSubscription({ proposals, $scope, uuids }
         yield fork(handleForgottenProposal, { $scope, proposal: receivedProposalsPayload[i] });
     }
     try {
+        for (let i = 0; i < uuids.length; i++) {
+            yield put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [uuids[i]]: true } });
+        }
         yield call(requestProposals, { proposals, $scope, uuids });
         const channel = yield call(dataStream, { type: 'proposal', $scope });
         yield fork(handleProposalStream, channel);

@@ -4,8 +4,8 @@ import * as selectors from '../../../selectors';
 import handleProposalReady from './';
 
 const proposalRequests = {
-    1: {},
-    2: {},
+    1: true,
+    2: true,
 };
 
 const proposal1 = {

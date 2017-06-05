@@ -1,5 +1,6 @@
 import { eventChannel } from 'redux-saga';
 import { testSaga } from 'redux-saga-test-plan';
+import * as actions from '../../../constants/actions';
 import dataStream from '../../dataStream';
 import * as selectors from '../../selectors';
 import requestProposals from './requestProposals';
@@ -15,10 +16,11 @@ const proposalID2 = 'proposalID2';
 const proposal1 = { id: '0', uuid: proposalID1 };
 const proposal2 = { id: '1', uuid: proposalID2 };
 const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
-const uuids = [];
+const uuids = [proposalID1, proposalID2];
 const error = Error('some error');
 
-const proposals = [];
+const proposals = [{ [proposalID1]: {} }, { [proposalID2]: {} }];
+
 const arg = { proposals, $scope, uuids };
 
 const requestProposalsArg = { proposals, $scope, uuids };
@@ -29,6 +31,10 @@ describe('handleProposalSubscription', () => {
             .next()
             .select(selectors.receivedProposals)
             .next({})
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID1]: true } })
+            .next()
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID2]: true } })
+            .next()
             .call(requestProposals, requestProposalsArg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
@@ -48,6 +54,10 @@ describe('handleProposalSubscription', () => {
             .next()
             .fork(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID1]: true } })
+            .next()
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID2]: true } })
+            .next()
             .call(requestProposals, requestProposalsArg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
@@ -66,6 +76,10 @@ describe('handleProposalSubscription', () => {
             .fork(handleForgottenProposal, { $scope, proposal: proposal1 })
             .next()
             .fork(handleForgottenProposal, { $scope, proposal: proposal2 })
+            .next()
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID1]: true } })
+            .next()
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID2]: true } })
             .next()
             .call(requestProposals, requestProposalsArg)
             .next()
