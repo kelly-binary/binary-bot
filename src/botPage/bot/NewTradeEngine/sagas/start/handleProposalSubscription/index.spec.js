@@ -16,14 +16,22 @@ const proposalID2 = 'proposalID2';
 const proposal1 = { id: '0', uuid: proposalID1 };
 const proposal2 = { id: '1', uuid: proposalID2 };
 const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
-const uuids = [proposalID1, proposalID2];
 const error = Error('some error');
 
-const proposals = [{ [proposalID1]: {} }, { [proposalID2]: {} }];
+const proposalRequest1 = {
+    contract_type: 'CALL',
+};
 
-const arg = { proposals, $scope, uuids };
+const proposalRequest2 = {
+    contract_type: 'PUT',
+};
 
-const requestProposalsArg = { proposals, $scope, uuids };
+const proposalRequests = [
+    { request: proposalRequest1, uuid: proposalID1 },
+    { request: proposalRequest2, uuid: proposalID2 },
+];
+
+const arg = { proposalRequests, $scope };
 
 describe('handleProposalSubscription', () => {
     it('should not forget propsoals if there is no proposalsReceived', () => {
@@ -35,7 +43,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID2]: true } })
             .next()
-            .call(requestProposals, requestProposalsArg)
+            .call(requestProposals, arg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
             .next(fakeChannel)
@@ -58,7 +66,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID2]: true } })
             .next()
-            .call(requestProposals, requestProposalsArg)
+            .call(requestProposals, arg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
             .next(fakeChannel)
@@ -81,7 +89,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalID2]: true } })
             .next()
-            .call(requestProposals, requestProposalsArg)
+            .call(requestProposals, arg)
             .next()
             .throw(error)
             .put({ type: 'RECEIVE_PROPOSAL_ERROR', payload: error, error: true })

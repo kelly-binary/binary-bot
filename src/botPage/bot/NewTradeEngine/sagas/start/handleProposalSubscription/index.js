@@ -7,7 +7,7 @@ import handleProposalReady from './handleProposalReady';
 import handleProposalStream from './handleProposalStream';
 import handleForgottenProposal from './handleForgottenProposal';
 
-export default function* handleProposalSubscription({ proposals, $scope, uuids }) {
+export default function* handleProposalSubscription({ proposalRequests, $scope }) {
     const receivedProposals = yield select(selectors.receivedProposals);
     const receivedProposalsPayload = Object.values(receivedProposals);
 
@@ -15,10 +15,10 @@ export default function* handleProposalSubscription({ proposals, $scope, uuids }
         yield fork(handleForgottenProposal, { $scope, proposal: receivedProposalsPayload[i] });
     }
     try {
-        for (let i = 0; i < uuids.length; i++) {
-            yield put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [uuids[i]]: true } });
+        for (let i = 0; i < proposalRequests.length; i++) {
+            yield put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalRequests[i].uuid]: true } });
         }
-        yield call(requestProposals, { proposals, $scope, uuids });
+        yield call(requestProposals, { proposalRequests, $scope });
         const channel = yield call(dataStream, { type: 'proposal', $scope });
         yield fork(handleProposalStream, channel);
         yield fork(handleProposalReady);
