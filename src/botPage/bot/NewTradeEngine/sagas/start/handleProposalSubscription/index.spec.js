@@ -9,7 +9,6 @@ import handleForgottenProposal from './handleForgottenProposal';
 import handleProposalSubscription from './';
 
 const fakeChannel = eventChannel(() => () => {});
-const tradeOption = {};
 const $scope = {};
 const proposalID1 = 'proposalID1';
 const proposalID2 = 'proposalID2';
@@ -19,7 +18,10 @@ const payload = { [proposalID1]: proposal1, [proposalID2]: proposal2 };
 const uuids = [];
 const error = Error('some error');
 
-const arg = { tradeOption, $scope, uuids };
+const proposals = [];
+const arg = { proposals, $scope, uuids };
+
+const requestProposalsArg = { proposals, $scope, uuids };
 
 describe('handleProposalSubscription', () => {
     it('should not forget propsoals if there is no proposalsReceived', () => {
@@ -27,7 +29,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .select(selectors.receivedProposals)
             .next({})
-            .fork(requestProposals, arg)
+            .call(requestProposals, requestProposalsArg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
             .next(fakeChannel)
@@ -46,7 +48,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .fork(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .fork(requestProposals, arg)
+            .call(requestProposals, requestProposalsArg)
             .next()
             .call(dataStream, { type: 'proposal', $scope })
             .next(fakeChannel)
@@ -65,7 +67,7 @@ describe('handleProposalSubscription', () => {
             .next()
             .fork(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .fork(requestProposals, arg)
+            .call(requestProposals, requestProposalsArg)
             .next()
             .throw(error)
             .put({ type: 'RECEIVE_PROPOSAL_ERROR', payload: error, error: true })

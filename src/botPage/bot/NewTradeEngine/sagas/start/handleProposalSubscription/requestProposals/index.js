@@ -1,7 +1,6 @@
-import { tradeOptionToProposal, doUntilDone } from '../../../../../tools';
+import { doUntilDone } from '../../../../../tools';
 
-export default function requestProposals({ tradeOption, $scope: { api }, uuids }) {
-    const proposals = tradeOptionToProposal(tradeOption);
+export default function requestProposals({ proposals, $scope: { api }, uuids }) {
     proposals.forEach((proposal, i) =>
         doUntilDone(() =>
             api.subscribeToPriceForContractProposal({

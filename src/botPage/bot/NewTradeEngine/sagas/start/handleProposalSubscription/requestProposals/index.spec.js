@@ -24,7 +24,7 @@ const uuids = ['1', '2'];
 
 describe('requestProposals func', () => {
     it('should take tradeOption and request as many proposals as needed', () => {
-        requestProposals({ $scope, tradeOption, uuids });
+        requestProposals({ $scope, proposals, uuids });
         expect(api.subscribeToPriceForContractProposal).toHaveBeenCalledTimes(2);
         expect(api.subscribeToPriceForContractProposal).toBeCalledWith({
             ...proposals[0],
