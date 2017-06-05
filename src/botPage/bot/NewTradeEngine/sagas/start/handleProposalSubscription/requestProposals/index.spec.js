@@ -13,7 +13,7 @@ const uuids = ['1', '2'];
 const proposalRequests = proposalRequestPayloads.map((request, i) => ({ request, uuid: uuids[i] }));
 
 describe('requestProposals func', () => {
-    it('should take tradeOption and request as many proposals as needed', () => {
+    it('should take proposals and request as many proposals as needed', () => {
         requestProposals({ $scope, proposalRequests });
         expect(api.subscribeToPriceForContractProposal).toHaveBeenCalledTimes(2);
         expect(api.subscribeToPriceForContractProposal).toBeCalledWith({
