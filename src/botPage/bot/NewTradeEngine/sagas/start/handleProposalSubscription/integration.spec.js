@@ -10,16 +10,6 @@ import dataStream from '../../dataStream';
 const $scope = createScope();
 const { api } = $scope;
 
-const tradeOption = {
-    candleInterval: 60,
-    contractTypes : ['DIGITEVEN', 'DIGITODD'],
-    symbol        : 'R_100',
-    amount        : 1,
-    currency      : 'USD',
-    duration      : 5,
-    duration_unit : 't',
-};
-
 const uuids = ['uuid1', 'uuid2'];
 const ids = ['id1', 'id2'];
 
@@ -58,7 +48,7 @@ api.subscribeToPriceForContractProposal = proposal => {
 };
 describe('proposal subscription integration', () => {
     it('should put RECEIVE ALL PROPOSALS', () =>
-        expectSaga(handleProposalSubscription, { tradeOption, $scope, uuids })
+        expectSaga(handleProposalSubscription, { proposals, $scope, uuids })
             .provide([
                 [matchers.call.fn(dataStream), fakeChannel],
                 [select(selectors.forgottenProposals), {}],
