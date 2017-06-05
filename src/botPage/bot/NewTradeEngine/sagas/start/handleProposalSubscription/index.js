@@ -9,6 +9,7 @@ import handleForgottenProposal from './handleForgottenProposal';
 export default function* handleProposalSubscription({ tradeOption, $scope, uuids }) {
     const receivedProposals = yield select(selectors.receivedProposals);
     const proposals = Object.values(receivedProposals);
+
     for (let i = 0; i < proposals.length; i++) {
         yield fork(handleForgottenProposal, { $scope, proposal: proposals[i] });
     }
