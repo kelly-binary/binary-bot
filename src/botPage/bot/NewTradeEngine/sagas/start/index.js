@@ -1,4 +1,4 @@
-import { select, put, fork } from 'redux-saga/effects';
+import { select, put, fork, call } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
@@ -31,7 +31,7 @@ const isTradeOptionTheSame = (oldOpt, newOpt) =>
         return false;
     });
 
-export default function* start({ tradeOption, $scope, uuids }) {
+export default function* start({ tradeOption, $scope }) {
     const stage = yield select(selectors.stage);
     const startEffect = put({ type: actions.START, payload: tradeOption });
 
@@ -47,6 +47,6 @@ export default function* start({ tradeOption, $scope, uuids }) {
     if (isTradeOptionTheSame(currentTradeOption, tradeOption)) {
         return;
     }
-    const proposals = tradeOptionToProposal(tradeOption);
-    yield fork(handleProposalSubscription, { proposals, $scope, uuids });
+    const proposals = yield call(tradeOptionToProposal, tradeOption);
+    yield fork(handleProposalSubscription, { proposals, $scope });
 }
