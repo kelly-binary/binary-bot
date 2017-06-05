@@ -26,8 +26,17 @@ class Bot {
         });
     }
     // eslint-disable-next-line class-methods-use-this
-    watch() {
-        return new Promise(() => {});
+    watch(watchName) {
+        return new Promise(resolve => {
+            const { [watchName]: { timestamp } } = this.store.getState();
+            const unsubscribe = this.store.subscribe(() => {
+                const { [watchName]: { timestamp: currentTimestamp, action } } = this.store.getState();
+                if (timestamp !== currentTimestamp) {
+                    resolve(action === actions.CONTINUE_SCOPE);
+                    unsubscribe();
+                }
+            });
+        });
     }
 }
 
