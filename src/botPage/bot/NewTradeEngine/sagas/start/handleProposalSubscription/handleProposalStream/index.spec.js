@@ -6,28 +6,30 @@ import handleProposalStream from './';
 
 const fakeChannel = eventChannel(() => () => {});
 
-const uuid = '1';
+const uuid1 = 'uuid1';
+const uuid2 = 'uuid2';
+
 const proposal = {
     amount: 1,
 };
 
-const newProposalResponse = {
+const proposalResponse1 = {
     passthrough: {
-        uuid,
+        uuid: uuid1,
     },
     proposal,
 };
 
 const forgottenProposalResponse = {
     passthrough: {
-        uuid: '2',
+        uuid: uuid2,
     },
     proposal,
 };
 
 const forgottenProposals = {
-    '2': true,
-    '3': true,
+    [uuid2]: true,
+    uuid3  : true,
 };
 
 describe('handleProposalStream saga', () => {
@@ -35,10 +37,18 @@ describe('handleProposalStream saga', () => {
         testSaga(handleProposalStream, fakeChannel)
             .next()
             .take(fakeChannel)
-            .next(newProposalResponse)
+            .next(proposalResponse1)
             .select(selectors.forgottenProposals)
             .next(forgottenProposals)
-            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid]: proposal } })
+            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid1]: proposal } })
+            .next()
+            .take(fakeChannel)
+            .next(proposalResponse1)
+            .select(selectors.forgottenProposals)
+            .next(forgottenProposals)
+            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid1]: proposal } })
+            .next()
+            .take(fakeChannel)
             .next()
             .isDone();
     });
@@ -49,6 +59,8 @@ describe('handleProposalStream saga', () => {
             .next(forgottenProposalResponse)
             .select(selectors.forgottenProposals)
             .next(forgottenProposals)
+            .take(fakeChannel)
+            .next()
             .isDone();
     });
 });

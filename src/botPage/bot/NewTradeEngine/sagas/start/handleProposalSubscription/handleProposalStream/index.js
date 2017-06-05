@@ -8,10 +8,10 @@ export default function* handleProposalStream(channel) {
         const { passthrough: { uuid }, proposal } = proposalResponse;
         const forgottenProposals = yield select(selectors.forgottenProposals);
 
-        if (Object.keys(forgottenProposals).includes(uuid)) {
-            return;
+        if (!Object.keys(forgottenProposals).includes(uuid)) {
+            yield put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid]: proposal } });
         }
-        yield put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid]: proposal } });
+
         proposalResponse = yield take(channel);
     }
 }
