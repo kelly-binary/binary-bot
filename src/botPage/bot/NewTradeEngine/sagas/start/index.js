@@ -47,6 +47,6 @@ export default function* start({ tradeOption, $scope }) {
     if (isTradeOptionTheSame(currentTradeOption, tradeOption)) {
         return;
     }
-    const proposals = yield call(tradeOptionToProposal, tradeOption);
-    yield fork(handleProposalSubscription, { proposals, $scope });
+    const proposalRequests = yield call(tradeOptionToProposal, tradeOption);
+    yield fork(handleProposalSubscription, { proposalRequests, $scope });
 }

@@ -18,7 +18,7 @@ const oneContract = {
 
 const $scope = {};
 
-const proposals = tradeOptionToProposal(oneContract);
+const proposalRequests = tradeOptionToProposal(oneContract);
 
 describe('start saga', () => {
     it('should not have any effect if it\'s not INITIALIZED', () => {
@@ -51,8 +51,8 @@ describe('start saga', () => {
             .put({ type: actions.START, payload: oneContract })
             .next()
             .call(tradeOptionToProposal, oneContract)
-            .next(proposals)
-            .fork(handleProposalSubscription, { proposals, $scope })
+            .next(proposalRequests)
+            .fork(handleProposalSubscription, { proposalRequests, $scope })
             .next()
             .isDone();
     });
