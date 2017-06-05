@@ -6,24 +6,29 @@ export const noop = () => {};
 
 const castBarrierToString = barrier => (barrier > 0 ? `+${barrier}` : `${barrier}`);
 
+export const getUUID = () => `${new Date().getTime() * Math.random()}`;
+
 export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => ({
-        duration_unit: tradeOption.duration_unit,
-        basis        : 'stake',
-        currency     : tradeOption.currency,
-        symbol       : tradeOption.symbol,
-        duration     : tradeOption.duration,
-        amount       : tradeOption.amount.toFixed(2),
-        contract_type: type,
-        ...(tradeOption.prediction !== undefined && {
-            barrier: tradeOption.prediction,
-        }),
-        ...(tradeOption.barrierOffset !== undefined && {
-            barrier: castBarrierToString(tradeOption.barrierOffset),
-        }),
-        ...(tradeOption.secondBarrierOffset !== undefined && {
-            barrier2: castBarrierToString(tradeOption.secondBarrierOffset),
-        }),
+        uuid   : getUUID(),
+        request: {
+            duration_unit: tradeOption.duration_unit,
+            basis        : 'stake',
+            currency     : tradeOption.currency,
+            symbol       : tradeOption.symbol,
+            duration     : tradeOption.duration,
+            amount       : tradeOption.amount.toFixed(2),
+            contract_type: type,
+            ...(tradeOption.prediction !== undefined && {
+                barrier: tradeOption.prediction,
+            }),
+            ...(tradeOption.barrierOffset !== undefined && {
+                barrier: castBarrierToString(tradeOption.barrierOffset),
+            }),
+            ...(tradeOption.secondBarrierOffset !== undefined && {
+                barrier2: castBarrierToString(tradeOption.secondBarrierOffset),
+            }),
+        },
     }));
 
 export const getDirection = ticks => {
@@ -161,5 +166,3 @@ export const createDetails = contract => {
         result,
     ];
 };
-
-export const getUUID = () => `${new Date().getTime() * Math.random()}`;
