@@ -1,5 +1,4 @@
 import createScope from '../../../createScope';
-import { tradeOptionToProposal } from '../../../../../tools';
 import requestProposals from './';
 
 const $scope = createScope();
@@ -8,18 +7,13 @@ const { api } = $scope;
 
 api.subscribeToPriceForContractProposal = jest.fn();
 
-const tradeOption = {
-    candleInterval: 60,
-    contractTypes : ['DIGITEVEN', 'DIGITODD'],
-    symbol        : 'R_100',
-    amount        : 1,
-    currency      : 'USD',
-    duration      : 5,
-    duration_unit : 't',
-};
-
+const proposalRequests = [
+    { contract_type: 'PUT' },
+    {
+        contract_type: 'CALL',
+    },
+];
 const uuids = ['1', '2'];
-const proposalRequests = tradeOptionToProposal(tradeOption);
 const proposals = proposalRequests.map((request, i) => ({ request, uuid: uuids[i] }));
 
 describe('requestProposals func', () => {
