@@ -4,16 +4,21 @@ import * as states from '../../constants/states';
 import * as selectors from '../selectors';
 import handleProposalSubscription from './handleProposalSubscription';
 import start from './';
+import { tradeOptionToProposal } from '../../../tools';
 
 const twoContracts = {
     contractTypes: ['PUT', 'CALL'],
+    amount       : 12.00,
 };
 const oneContract = {
     contractTypes: ['PUT'],
+    amount       : 1,
 };
 
 const $scope = {};
 const uuids = [];
+
+const proposals = tradeOptionToProposal(oneContract);
 
 describe('start saga', () => {
     it('should not have any effect if it\'s not INITIALIZED', () => {
@@ -45,7 +50,7 @@ describe('start saga', () => {
             .next(twoContracts)
             .put({ type: actions.START, payload: oneContract })
             .next()
-            .fork(handleProposalSubscription, { tradeOption: oneContract, $scope, uuids })
+            .fork(handleProposalSubscription, { proposals, $scope, uuids })
             .next()
             .isDone();
     });

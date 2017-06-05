@@ -3,6 +3,7 @@ import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
 import handleProposalSubscription from './handleProposalSubscription';
+import { tradeOptionToProposal } from '../../../tools';
 
 const isTradeOptionTheSame = (oldOpt, newOpt) =>
     [
@@ -46,6 +47,6 @@ export default function* start({ tradeOption, $scope, uuids }) {
     if (isTradeOptionTheSame(currentTradeOption, tradeOption)) {
         return;
     }
-
-    yield fork(handleProposalSubscription, { tradeOption, $scope, uuids });
+    const proposals = tradeOptionToProposal(tradeOption);
+    yield fork(handleProposalSubscription, { proposals, $scope, uuids });
 }
