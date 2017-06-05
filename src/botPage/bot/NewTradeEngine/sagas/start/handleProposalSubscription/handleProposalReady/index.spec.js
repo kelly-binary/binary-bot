@@ -4,15 +4,22 @@ import * as selectors from '../../../selectors';
 import handleProposalReady from './';
 
 const proposalRequests = {
-    1: true,
-    2: true,
+    uuid1: true,
+    uuid2: true,
+};
+
+const proposal3 = {
+    payload: { uuid3: {} },
+};
+const proposal4 = {
+    payload: { uuid4: {} },
 };
 
 const proposal1 = {
-    uuid: '1',
+    payload: { uuid1: {} },
 };
 const proposal2 = {
-    uuid: '2',
+    payload: { uuid2: {} },
 };
 
 describe('handleProposalReady saga', () => {
@@ -21,6 +28,10 @@ describe('handleProposalReady saga', () => {
             .next()
             .select(selectors.requestedProposals)
             .next(proposalRequests)
+            .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
+            .next(proposal3)
+            .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
+            .next(proposal4)
             .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
             .next(proposal1)
             .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
