@@ -10,7 +10,6 @@ import dataStream from '../../dataStream';
 const $scope = createScope();
 const { api } = $scope;
 
-const uuids = ['uuid1', 'uuid2'];
 const ids = ['id1', 'id2'];
 
 const expectedToReceivedProposals = {
@@ -34,7 +33,15 @@ const proposalResponses = [
         proposal: { id: ids[1] },
     },
 ];
-const requestedProposals = [];
+
+const requestedProposals = {
+    uuid1: true,
+    uuid2: true,
+};
+
+const requestProposalsList = Object.entries(requestedProposals).map(([uuid, val]) => ({ [uuid]: val }));
+
+const proposalRequests = [{ uuid: 'uuid1', request: {} }, { uuid: 'uuid2', request: {} }];
 
 const fakeChannel = dataStream({ $scope, type: 'proposal' });
 
@@ -42,13 +49,12 @@ let index = 0;
 
 const proposalResponseList = Object.entries(expectedToReceivedProposals).map(([u, p]) => ({ [u]: p }));
 
-api.subscribeToPriceForContractProposal = proposal => {
-    requestedProposals.push(proposal);
+api.subscribeToPriceForContractProposal = proposal =>
     api.events.emit('proposal', expectedToReceivedProposals[proposal.passthrough.uuid]);
-};
+
 describe('proposal subscription integration', () => {
     it('should put RECEIVE ALL PROPOSALS', () =>
-        expectSaga(handleProposalSubscription, { proposals, $scope, uuids })
+        expectSaga(handleProposalSubscription, { proposalRequests, $scope })
             .provide([
                 [matchers.call.fn(dataStream), fakeChannel],
                 [select(selectors.forgottenProposals), {}],
@@ -65,8 +71,8 @@ describe('proposal subscription integration', () => {
             ])
             .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: proposalResponseList[0] })
             .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: proposalResponseList[1] })
-            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestedProposals[0] })
-            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestedProposals[1] })
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestProposalsList[0] })
+            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestProposalsList[1] })
             .put({ type: actions.RECEIVE_ALL_PROPOSALS })
             .run());
 });
