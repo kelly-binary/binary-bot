@@ -4,33 +4,38 @@ import * as states from '../../../constants/states';
 import * as selectors from '../../selectors';
 import newTickWatcher from './';
 
+const newTick = 12345;
+
 describe('newTickWatcher saga', () => {
-    it('should EXIT_BEFORE_PURCHASE_SCOPE if stage is not STARTED or PROPSOALS_READY', () => {
-        testSaga(newTickWatcher)
-            .next()
-            .select(selectors.stage)
-            .next(states.STOPPED)
-            .put({ type: actions.EXIT_BEFORE_PURCHASE_SCOPE })
-            .next()
-            .isDone();
+    it('should do nothing if stage is INITIALIZED', () => {
+        testSaga(newTickWatcher, newTick).next().select(selectors.stage).next(states.INITIALIZED).isDone();
     });
-    it('should ENTER_BEFORE_PURCHASE_SCOPE if stage is PROPOSALS_READY', () => {
-        testSaga(newTickWatcher)
+    it('should UPDATE_BEFORE_SCOPE if stage is PROPOSALS_READY', () => {
+        testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
             .next(states.PROPOSALS_READY)
-            .put({ type: actions.ENTER_BEFORE_PURCHASE_SCOPE })
+            .put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: true } })
             .next()
             .isDone();
     });
-    it('should ENTER_BEFORE_PURCHASE_SCOPE after RECEIVE_ALL_PROPOSALS if stage is STARTED', () => {
-        testSaga(newTickWatcher)
+    it('should UPDATE_BEFORE_SCOPE after RECEIVE_ALL_PROPOSALS if stage is STARTED', () => {
+        testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
             .next(states.STARTED)
             .take(actions.RECEIVE_ALL_PROPOSALS)
             .next()
-            .put({ type: actions.ENTER_BEFORE_PURCHASE_SCOPE })
+            .put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: true } })
+            .next()
+            .isDone();
+    });
+    it('should UPDATE_BEFORE_SCOPE with stayInsideScope == false if stage is not STARTED, INITIALIZED, nor PROPOSALS_READY', () => {
+        testSaga(newTickWatcher, newTick)
+            .next()
+            .select(selectors.stage)
+            .next(states.SUCCESSFUL_PURCHASE)
+            .put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: false } })
             .next()
             .isDone();
     });
