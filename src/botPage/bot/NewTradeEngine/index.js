@@ -28,11 +28,11 @@ class Bot {
     // eslint-disable-next-line class-methods-use-this
     watch(watchName) {
         const { [watchName]: { timestamp } } = this.store.getState();
-        return waitForCondition(
-            this.store,
-            ({ [watchName]: { timestamp: newTimestamp, value } }) => newTimestamp !== timestamp && value,
-            ({ [watchName]: { timestamp: newTimestamp, value } }) => newTimestamp !== timestamp && !value
-        );
+
+        const createCondition = (stop = false) => ({ [watchName]: { timestamp: newTimestamp, stayInsideTheScope } }) =>
+            newTimestamp !== timestamp && ((stop && !stayInsideTheScope) || (!stop && stayInsideTheScope));
+
+        return waitForCondition(this.store, createCondition(false), createCondition(true));
     }
 }
 

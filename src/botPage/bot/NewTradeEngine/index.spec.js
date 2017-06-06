@@ -15,7 +15,7 @@ const store = {
     getState: () => ({
         stage : states.INITIALIZED,
         initData,
-        before: { timestamp: 1, value: true },
+        before: { timestamp: 1, stayInsideTheScope: true },
     }),
 };
 bot.store = store;
@@ -24,9 +24,9 @@ const startOption = { amount: 1 };
 
 describe('Bot API', () => {
     it('should dispatch INIT_SAGA', async () => {
-        const value = await bot.init(token, initOption);
+        const stayInsideTheScope = await bot.init(token, initOption);
         expect(bot.store.dispatch).toBeCalledWith({ type: actions.INIT_SAGA, payload: { token, initOption, $scope } });
-        expect(value).toEqual(true);
+        expect(stayInsideTheScope).toEqual(true);
     });
     it('should dispatch START_SAGA', () => {
         bot.start(startOption);
@@ -35,26 +35,26 @@ describe('Bot API', () => {
             payload: { $scope, tradeOption: { ...startOption, ...initData } },
         });
     });
-    it('should return a promise that resolves true by changes in watchName with value == true', async () => {
+    it('should resolve true by changes in [watchName] timestamp when stayInsideTheScope == true', async () => {
         store.subscribe = f => {
             setTimeout(() => {
-                store.getState = () => ({ before: { timestamp: 3, value: true } });
+                store.getState = () => ({ before: { timestamp: 3, stayInsideTheScope: true } });
                 f();
             }, 1000);
             return () => {};
         };
-        const value = await bot.watch('before');
-        expect(value).toEqual(true);
+        const stayInsideTheScope = await bot.watch('before');
+        expect(stayInsideTheScope).toEqual(true);
     });
-    it('should return a promise that resolves false by changes in watchName with value == false', async () => {
+    it('should resolve false by changes in [watchName] timestamp when stayInsideTheScope == false', async () => {
         store.subscribe = f => {
             setTimeout(() => {
-                store.getState = () => ({ before: { timestamp: 4, value: false } });
+                store.getState = () => ({ before: { timestamp: 4, stayInsideTheScope: false } });
                 f();
             }, 1000);
             return () => {};
         };
-        const value = await bot.watch('before');
-        expect(value).toEqual(false);
+        const stayInsideTheScope = await bot.watch('before');
+        expect(stayInsideTheScope).toEqual(false);
     });
 });
