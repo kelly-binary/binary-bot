@@ -35,7 +35,7 @@ describe('Bot API', () => {
             payload: { $scope, tradeOption: { ...startOption, ...initData } },
         });
     });
-    it('should return a promise that resolves by changes in watchName', async () => {
+    it('should return a promise that resolves true by changes in watchName with value == true', async () => {
         store.subscribe = f => {
             setTimeout(() => {
                 store.getState = () => ({ before: { timestamp: 3, value: true } });
@@ -45,5 +45,16 @@ describe('Bot API', () => {
         };
         const value = await bot.watch('before');
         expect(value).toEqual(true);
+    });
+    it('should return a promise that resolves false by changes in watchName with value == false', async () => {
+        store.subscribe = f => {
+            setTimeout(() => {
+                store.getState = () => ({ before: { timestamp: 4, value: false } });
+                f();
+            }, 1000);
+            return () => {};
+        };
+        const value = await bot.watch('before');
+        expect(value).toEqual(false);
     });
 });

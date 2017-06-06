@@ -27,20 +27,12 @@ class Bot {
     }
     // eslint-disable-next-line class-methods-use-this
     watch(watchName) {
-        return new Promise(resolve => {
-            const { [watchName]: { timestamp } } = this.store.getState();
-
-            const unsubscribe = this.store.subscribe(() => {
-                const { [watchName]: { timestamp: newTimestamp, value } } = this.store.getState();
-
-                if (newTimestamp === timestamp) {
-                    return;
-                }
-
-                resolve(value);
-                unsubscribe();
-            });
-        });
+        const { [watchName]: { timestamp } } = this.store.getState();
+        return waitForCondition(
+            this.store,
+            ({ [watchName]: { timestamp: newTimestamp, value } }) => newTimestamp !== timestamp && value,
+            ({ [watchName]: { timestamp: newTimestamp, value } }) => newTimestamp !== timestamp && !value
+        );
     }
 }
 
