@@ -29,12 +29,16 @@ class Bot {
     watch(watchName) {
         return new Promise(resolve => {
             const { [watchName]: { timestamp } } = this.store.getState();
+
             const unsubscribe = this.store.subscribe(() => {
-                const { [watchName]: { timestamp: currentTimestamp, action } } = this.store.getState();
-                if (timestamp !== currentTimestamp) {
-                    resolve(action === actions.CONTINUE_SCOPE);
-                    unsubscribe();
+                const { [watchName]: { timestamp: newTimestamp, value } } = this.store.getState();
+
+                if (newTimestamp === timestamp) {
+                    return;
                 }
+
+                resolve(value);
+                unsubscribe();
             });
         });
     }
