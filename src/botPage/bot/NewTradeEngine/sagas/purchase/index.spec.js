@@ -8,7 +8,7 @@ const $scope = {};
 
 const contractType = 'CALL';
 
-const selectedProposal = { contract_type: 'CALL' };
+const selectedProposal = { contractType: 'CALL' };
 
 const receivedProposals = {
     uuid1: {},
