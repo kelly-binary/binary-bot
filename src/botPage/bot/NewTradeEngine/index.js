@@ -26,7 +26,8 @@ class Bot {
         });
     }
     // eslint-disable-next-line class-methods-use-this
-    watch(watchName) {
+    watch(arg) {
+        const watchName = arg === 'before' ? 'waitingForPurchase' : 'waitingForSell';
         const { [watchName]: { timestamp } } = this.store.getState();
 
         const createCondition = (stop = false) => ({ [watchName]: { timestamp: newTimestamp, stayInsideTheScope } }) =>

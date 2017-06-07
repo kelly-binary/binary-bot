@@ -9,14 +9,23 @@ export default function* newTickWatcher(newTick) {
         case states.INITIALIZED:
             break;
         case states.PROPOSALS_READY:
-            yield put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: true } });
+            yield put({
+                type   : actions.UPDATE_WAITING_FOR_PURCHASE,
+                payload: { timestamp: newTick, stayInsideScope: true },
+            });
             break;
         case states.STARTED:
             yield take(actions.RECEIVE_ALL_PROPOSALS);
-            yield put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: true } });
+            yield put({
+                type   : actions.UPDATE_WAITING_FOR_PURCHASE,
+                payload: { timestamp: newTick, stayInsideScope: true },
+            });
             break;
         default:
-            yield put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: false } });
+            yield put({
+                type   : actions.UPDATE_WAITING_FOR_PURCHASE,
+                payload: { timestamp: newTick, stayInsideScope: false },
+            });
             break;
     }
 }

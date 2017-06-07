@@ -10,32 +10,32 @@ describe('newTickWatcher saga', () => {
     it('should do nothing if stage is INITIALIZED', () => {
         testSaga(newTickWatcher, newTick).next().select(selectors.stage).next(states.INITIALIZED).isDone();
     });
-    it('should UPDATE_BEFORE_SCOPE if stage is PROPOSALS_READY', () => {
+    it('should UPDATE_WAITING_FOR_PURCHASE if stage is PROPOSALS_READY', () => {
         testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
             .next(states.PROPOSALS_READY)
-            .put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: true } })
+            .put({ type: actions.UPDATE_WAITING_FOR_PURCHASE, payload: { timestamp: newTick, stayInsideScope: true } })
             .next()
             .isDone();
     });
-    it('should UPDATE_BEFORE_SCOPE after RECEIVE_ALL_PROPOSALS if stage is STARTED', () => {
+    it('should UPDATE_WAITING_FOR_PURCHASE after RECEIVE_ALL_PROPOSALS if stage is STARTED', () => {
         testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
             .next(states.STARTED)
             .take(actions.RECEIVE_ALL_PROPOSALS)
             .next()
-            .put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: true } })
+            .put({ type: actions.UPDATE_WAITING_FOR_PURCHASE, payload: { timestamp: newTick, stayInsideScope: true } })
             .next()
             .isDone();
     });
-    it('should UPDATE_BEFORE_SCOPE with stayInsideScope == false if stage is not STARTED, INITIALIZED, nor PROPOSALS_READY', () => {
+    it('should UPDATE_WAITING_FOR_PURCHASE with stayInsideScope == false if stage is not STARTED, INITIALIZED, nor PROPOSALS_READY', () => {
         testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
             .next(states.SUCCESSFUL_PURCHASE)
-            .put({ type: actions.UPDATE_BEFORE_SCOPE, payload: { timestamp: newTick, stayInsideScope: false } })
+            .put({ type: actions.UPDATE_WAITING_FOR_PURCHASE, payload: { timestamp: newTick, stayInsideScope: false } })
             .next()
             .isDone();
     });

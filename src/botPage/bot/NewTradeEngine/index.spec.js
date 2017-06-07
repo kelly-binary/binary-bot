@@ -13,9 +13,9 @@ const store = {
         return () => {};
     },
     getState: () => ({
-        stage : states.INITIALIZED,
+        stage             : states.INITIALIZED,
         initData,
-        before: { timestamp: 1, stayInsideTheScope: true },
+        waitingForPurchase: { timestamp: 1, stayInsideTheScope: true },
     }),
 };
 bot.store = store;
@@ -38,7 +38,7 @@ describe('Bot API', () => {
     it('should resolve true by changes in [watchName] timestamp when stayInsideTheScope == true', async () => {
         store.subscribe = f => {
             setTimeout(() => {
-                store.getState = () => ({ before: { timestamp: 3, stayInsideTheScope: true } });
+                store.getState = () => ({ waitingForPurchase: { timestamp: 3, stayInsideTheScope: true } });
                 f();
             }, 1000);
             return () => {};
@@ -49,7 +49,7 @@ describe('Bot API', () => {
     it('should resolve false by changes in [watchName] timestamp when stayInsideTheScope == false', async () => {
         store.subscribe = f => {
             setTimeout(() => {
-                store.getState = () => ({ before: { timestamp: 4, stayInsideTheScope: false } });
+                store.getState = () => ({ waitingForPurchase: { timestamp: 4, stayInsideTheScope: false } });
                 f();
             }, 1000);
             return () => {};

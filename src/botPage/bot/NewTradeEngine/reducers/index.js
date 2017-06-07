@@ -7,6 +7,7 @@ import stage from './stage';
 import tradeOption from './tradeOption';
 import contractId from './contractId';
 import proposalInfo from './proposalInfo';
+import waitingForPurchase from './waitingForPurchase';
 
 export default combineReducers({
     initData,
@@ -17,4 +18,5 @@ export default combineReducers({
     tradeOption,
     contractId,
     proposalInfo,
+    waitingForPurchase,
 });
