@@ -1,4 +1,4 @@
-const propertyReducer = ({ defaultState, actionType }) => (state = defaultState, action) => {
+const propertyReducerCreator = ({ defaultState, actionType }) => (state = defaultState, action) => {
     switch (action.type) {
         case actionType:
             return action.payload;
@@ -7,4 +7,4 @@ const propertyReducer = ({ defaultState, actionType }) => (state = defaultState,
     }
 };
 
-export default propertyReducer;
+export default propertyReducerCreator;

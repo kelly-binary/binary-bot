@@ -1,10 +1,10 @@
-import propertyReducer from './';
+import propertyReducerCreator from './';
 
 const defaultState = { something: 'something' };
 const actionType = 'SomeAction';
 const payload = { somethingElse: 'somethingElse' };
 
-const reducer = propertyReducer({ defaultState, actionType });
+const reducer = propertyReducerCreator({ defaultState, actionType });
 
 describe('value reducer creator', () => {
     it('should start with the default state', () =>
