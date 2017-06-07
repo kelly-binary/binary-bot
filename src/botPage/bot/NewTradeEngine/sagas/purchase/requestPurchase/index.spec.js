@@ -12,12 +12,12 @@ const askPrice = 1;
 
 const proposal = {
     id,
-    askPrice,
+    ask_price: askPrice,
 };
 
 describe('requestPurchase', () => {
     it('should request purchase for the given proposal', async () => {
         await requestPurchase({ $scope, proposal });
-        expect(api.buyContact).toBeCalledWith(id, askPrice);
+        expect(api.buyContract).toBeCalledWith(id, askPrice);
     });
 });
