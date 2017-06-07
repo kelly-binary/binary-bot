@@ -13,10 +13,15 @@ const proposal = {
     amount: 1,
 };
 
+const passthrough = {
+    uuid        : uuid1,
+    contractType: 'CALL',
+};
+
+const expectedProposal = { ...proposal, ...passthrough };
+
 const proposalResponse1 = {
-    passthrough: {
-        uuid: uuid1,
-    },
+    passthrough,
     proposal,
 };
 
@@ -40,13 +45,13 @@ describe('handleProposalStream saga', () => {
             .next(proposalResponse1)
             .select(selectors.forgottenProposals)
             .next(forgottenProposals)
-            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid1]: proposal } })
+            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid1]: expectedProposal } })
             .next()
             .take(fakeChannel)
             .next(proposalResponse1)
             .select(selectors.forgottenProposals)
             .next(forgottenProposals)
-            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid1]: proposal } })
+            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid1]: expectedProposal } })
             .next()
             .take(fakeChannel)
             .next()

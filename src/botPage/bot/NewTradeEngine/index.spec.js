@@ -58,8 +58,8 @@ describe('Bot API', () => {
         const stayInsideScope = await bot.watch('before');
         expect(stayInsideScope).toEqual(false);
     });
-    it('should dispatch PURCHASE_SAGA with a contract type and scope', () => {
-        bot.purchase(contractType);
+    it('should dispatch PURCHASE_SAGA with a contract type and scope', async () => {
+        await bot.purchase(contractType);
         expect(bot.store.dispatch).toBeCalledWith({ type: actions.PURCHASE_SAGA, payload: { $scope, contractType } });
     });
 });

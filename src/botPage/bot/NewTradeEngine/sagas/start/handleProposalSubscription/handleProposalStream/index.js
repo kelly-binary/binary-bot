@@ -5,11 +5,14 @@ import * as selectors from '../../../selectors';
 export default function* handleProposalStream(channel) {
     let proposalResponse = yield take(channel);
     while (proposalResponse) {
-        const { passthrough: { uuid }, proposal } = proposalResponse;
+        const { passthrough: { uuid, contractType }, proposal } = proposalResponse;
         const forgottenProposals = yield select(selectors.forgottenProposals);
 
         if (!Object.keys(forgottenProposals).includes(uuid)) {
-            yield put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: { [uuid]: proposal } });
+            yield put({
+                type   : `UPDATE_${actions.RECEIVED_PROPOSAL}`,
+                payload: { [uuid]: { ...proposal, uuid, contractType } },
+            });
         }
 
         proposalResponse = yield take(channel);
