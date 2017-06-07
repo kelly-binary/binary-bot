@@ -1,6 +1,6 @@
 import * as actions from '../../constants/actions';
 
-const contractId = (state = '', action) => {
+const contractID = (state = '', action) => {
     switch (action.type) {
         case actions.PURCHASE_SUCCESSFULLY:
             return action.payload;
@@ -9,4 +9,4 @@ const contractId = (state = '', action) => {
     }
 };
 
-export default contractId;
+export default contractID;

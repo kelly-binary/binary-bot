@@ -8,8 +8,8 @@ export default function* purchase({ $scope, contractType }) {
     yield put({ type: actions.REQUEST_PURCHASE });
     const proposal = Object.values(receivedProposals).find(p => p.contractType === contractType);
     try {
-        yield call(requestPurchase, { $scope, proposal });
-        yield put({ type: actions.PURCHASE_SUCCESSFULLY });
+        const { buy: { contract_id: contractID } } = yield call(requestPurchase, { $scope, proposal });
+        yield put({ type: actions.PURCHASE_SUCCESSFULLY, payload: contractID });
     } catch (e) {
         yield put({ type: actions.PURCHASE_UNSUCCESSFULLY, payload: e, error: true });
     }

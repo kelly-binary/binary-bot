@@ -15,6 +15,10 @@ const receivedProposals = {
     uuid2: selectedProposal,
 };
 
+const contractID = '1';
+
+const receivedPurchase = { buy: { contract_id: contractID } };
+
 const error = Error('Unsuccesssful Purchase');
 
 describe('Purchase saga', () => {
@@ -26,8 +30,8 @@ describe('Purchase saga', () => {
             .put({ type: actions.REQUEST_PURCHASE })
             .next()
             .call(requestPurchase, { $scope, proposal: selectedProposal })
-            .next()
-            .put({ type: actions.PURCHASE_SUCCESSFULLY })
+            .next(receivedPurchase)
+            .put({ type: actions.PURCHASE_SUCCESSFULLY, payload: contractID })
             .next()
             .isDone();
     });
