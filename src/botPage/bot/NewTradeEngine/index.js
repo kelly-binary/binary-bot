@@ -35,6 +35,10 @@ class Bot {
 
         return waitForCondition(this.store, createCondition(false), createCondition(true));
     }
+    purchase(contractType) {
+        this.store.dispatch({ type: actions.PURCHASE_SAGA, payload: { $scope: this.$scope, contractType } });
+        return Promise.resolve();
+    }
 }
 
 export default Bot;
