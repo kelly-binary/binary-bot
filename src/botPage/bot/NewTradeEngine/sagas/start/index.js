@@ -1,4 +1,4 @@
-import { select, put, fork, call } from 'redux-saga/effects';
+import { select, put, spawn, call } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
@@ -48,5 +48,5 @@ export default function* start({ tradeOption, $scope }) {
         return;
     }
     const proposalRequests = yield call(tradeOptionToProposal, tradeOption);
-    yield fork(handleProposalSubscription, { proposalRequests, $scope });
+    yield spawn(handleProposalSubscription, { proposalRequests, $scope });
 }

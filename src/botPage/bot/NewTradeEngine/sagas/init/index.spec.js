@@ -14,12 +14,12 @@ describe('init saga', () => {
 
     it('should wait for tick stream and balance to put INIT_DATA', () => {
         expectSaga(init, { $scope, token, initOption })
-            .provide([[matchers.fork.fn(tick), {}]])
-            .provide([[matchers.fork.fn(balance), {}]])
+            .provide([[matchers.spawn.fn(tick), {}]])
+            .provide([[matchers.spawn.fn(balance), {}]])
             .dispatch({ type: actions.NEW_TICK, payload: {} })
             .dispatch({ type: actions.BALANCE_RECEIVED, payload: {} })
-            .fork(tick, { $scope, symbol })
-            .fork(balance, { $scope, token })
+            .spawn(tick, { $scope, symbol })
+            .spawn(balance, { $scope, token })
             .take(actions.NEW_TICK)
             .take(actions.BALANCE_RECEIVED)
             .put({ type: actions.INIT_DATA, payload: initOption })

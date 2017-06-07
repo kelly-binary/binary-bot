@@ -14,7 +14,7 @@ describe('tick saga', () => {
             .next()
             .call(dataStream, { $scope, symbol, type: 'tick' })
             .next(fakeChannel)
-            .fork(tickLoop, fakeChannel)
+            .spawn(tickLoop, fakeChannel)
             .next()
             .isDone();
     });

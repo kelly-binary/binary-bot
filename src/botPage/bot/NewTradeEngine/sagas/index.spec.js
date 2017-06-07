@@ -10,7 +10,7 @@ import purchase from './purchase';
 import rootSaga from './';
 
 describe('root saga', () => {
-    it('should fork all sagas', () => {
+    it('should spawn all sagas', () => {
         testSaga(rootSaga)
             .next()
             .inspect(fn => expect(fn).toEqual(takeEvery('*', error)))

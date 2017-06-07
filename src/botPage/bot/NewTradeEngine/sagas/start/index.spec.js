@@ -52,7 +52,7 @@ describe('start saga', () => {
             .next()
             .call(tradeOptionToProposal, oneContract)
             .next(proposalRequests)
-            .fork(handleProposalSubscription, { proposalRequests, $scope })
+            .spawn(handleProposalSubscription, { proposalRequests, $scope })
             .next()
             .isDone();
     });

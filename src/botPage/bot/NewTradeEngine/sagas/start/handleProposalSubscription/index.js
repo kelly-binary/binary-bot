@@ -1,4 +1,4 @@
-import { call, fork, select, put } from 'redux-saga/effects';
+import { call, spawn, select, put } from 'redux-saga/effects';
 import * as actions from '../../../constants/actions';
 import * as selectors from '../../selectors';
 import dataStream from '../../dataStream';
@@ -12,7 +12,7 @@ export default function* handleProposalSubscription({ proposalRequests, $scope }
     const receivedProposalsPayload = Object.values(receivedProposals);
 
     for (let i = 0; i < receivedProposalsPayload.length; i++) {
-        yield fork(handleForgottenProposal, { $scope, proposal: receivedProposalsPayload[i] });
+        yield spawn(handleForgottenProposal, { $scope, proposal: receivedProposalsPayload[i] });
     }
     try {
         for (let i = 0; i < proposalRequests.length; i++) {
@@ -20,8 +20,8 @@ export default function* handleProposalSubscription({ proposalRequests, $scope }
         }
         yield call(requestProposals, { proposalRequests, $scope });
         const channel = yield call(dataStream, { type: 'proposal', $scope });
-        yield fork(handleProposalStream, channel);
-        yield fork(handleProposalReady);
+        yield spawn(handleProposalStream, channel);
+        yield spawn(handleProposalReady);
     } catch (error) {
         yield put({ type: 'RECEIVE_PROPOSAL_ERROR', payload: error, error: true });
     }
