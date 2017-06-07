@@ -34,3 +34,4 @@ export const CONTINUE_SCOPE = 'CONTINUE_SCOPE';
 export const INIT_SAGA = 'INIT_SAGA';
 export const START_SAGA = 'START_SAGA';
 export const WATCH_SAGA = 'WATCH_SAGA';
+export const PURCHASE_SAGA = 'PURCHASE_SAGA';
