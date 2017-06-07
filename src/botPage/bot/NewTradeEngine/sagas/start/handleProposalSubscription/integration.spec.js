@@ -12,23 +12,29 @@ const { api } = $scope;
 
 const ids = ['id1', 'id2'];
 
-const expectedToReceivedProposals = {
-    uuid1: { id: ids[0] },
-    uuid2: { id: ids[1] },
+const uuid1 = 'uuid1';
+const uuid2 = 'uuid2';
+
+const contractType1 = 'DIGITEVEN';
+const contractType2 = 'DIGITODD';
+
+const expectedToReceiveProposals = {
+    uuid1: { id: ids[0], uuid: uuid1, contractType: contractType1 },
+    uuid2: { id: ids[1], uuid: uuid2, contractType: contractType2 },
 };
 
 const proposalResponses = [
     {
         passthrough: {
-            uuid        : 'uuid1',
-            contractType: 'DIGITEVEN',
+            uuid        : uuid1,
+            contractType: contractType1,
         },
         proposal: { id: ids[0] },
     },
     {
         passthrough: {
-            uuid        : 'uuid2',
-            contractType: 'DIGITODD',
+            uuid        : uuid2,
+            contractType: contractType2,
         },
         proposal: { id: ids[1] },
     },
@@ -47,10 +53,10 @@ const fakeChannel = dataStream({ $scope, type: 'proposal' });
 
 let index = 0;
 
-const proposalResponseList = Object.entries(expectedToReceivedProposals).map(([u, p]) => ({ [u]: p }));
+const proposalResponseList = Object.entries(expectedToReceiveProposals).map(([u, p]) => ({ [u]: p }));
 
 api.subscribeToPriceForContractProposal = proposal =>
-    api.events.emit('proposal', expectedToReceivedProposals[proposal.passthrough.uuid]);
+    api.events.emit('proposal', expectedToReceiveProposals[proposal.passthrough.uuid]);
 
 describe('proposal subscription integration', () => {
     it('should put RECEIVE ALL PROPOSALS', () =>
