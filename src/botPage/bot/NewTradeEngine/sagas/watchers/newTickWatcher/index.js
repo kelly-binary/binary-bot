@@ -1,4 +1,5 @@
-import { select, put, take } from 'redux-saga/effects';
+import { select, put, take, call } from 'redux-saga/effects';
+import { throwUpdateWaitingForPurchase, updateWaitingForPurchase } from '../../../actionCreators';
 import * as actions from '../../../constants/actions';
 import * as states from '../../../constants/states';
 import * as selectors from '../../selectors';
@@ -6,26 +7,26 @@ import * as selectors from '../../selectors';
 export default function* newTickWatcher(newTick) {
     const stage = yield select(selectors.stage);
     switch (stage) {
-        case states.INITIALIZED:
+        case states.INITIALIZED: {
+            const errorAction = yield call(throwUpdateWaitingForPurchase);
+            yield put(errorAction);
             break;
-        case states.PROPOSALS_READY:
-            yield put({
-                type   : actions.UPDATE_WAITING_FOR_PURCHASE,
-                payload: { timestamp: newTick, stayInsideScope: true },
-            });
+        }
+        case states.PROPOSALS_READY: {
+            const stayAction = yield call(updateWaitingForPurchase, newTick, true);
+            yield put(stayAction);
             break;
-        case states.STARTED:
+        }
+        case states.STARTED: {
             yield take(actions.RECEIVE_ALL_PROPOSALS);
-            yield put({
-                type   : actions.UPDATE_WAITING_FOR_PURCHASE,
-                payload: { timestamp: newTick, stayInsideScope: true },
-            });
+            const stayAction = yield call(updateWaitingForPurchase, newTick, true);
+            yield put(stayAction);
             break;
-        default:
-            yield put({
-                type   : actions.UPDATE_WAITING_FOR_PURCHASE,
-                payload: { timestamp: newTick, stayInsideScope: false },
-            });
+        }
+        default: {
+            const exitAction = yield call(updateWaitingForPurchase, newTick, false);
+            yield put(exitAction);
             break;
+        }
     }
 }

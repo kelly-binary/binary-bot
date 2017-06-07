@@ -1,21 +1,35 @@
 import { testSaga } from 'redux-saga-test-plan';
+import { throwUpdateWaitingForPurchase, updateWaitingForPurchase } from '../../../actionCreators';
 import * as actions from '../../../constants/actions';
 import * as states from '../../../constants/states';
 import * as selectors from '../../selectors';
 import newTickWatcher from './';
 
 const newTick = 12345;
+const dummyErrorAction = { error: true };
+const dummyStayInsideAction = { stayInsideScope: true };
+const dummyGoOutAction = { stayInsideScope: false };
 
 describe('newTickWatcher saga', () => {
-    it('should do nothing if stage is INITIALIZED', () => {
-        testSaga(newTickWatcher, newTick).next().select(selectors.stage).next(states.INITIALIZED).isDone();
+    it('should throw error if stage is INITIALIZED', () => {
+        testSaga(newTickWatcher, newTick)
+            .next()
+            .select(selectors.stage)
+            .next(states.INITIALIZED)
+            .call(throwUpdateWaitingForPurchase)
+            .next(dummyErrorAction)
+            .put(dummyErrorAction)
+            .next()
+            .isDone();
     });
     it('should UPDATE_WAITING_FOR_PURCHASE if stage is PROPOSALS_READY', () => {
         testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
             .next(states.PROPOSALS_READY)
-            .put({ type: actions.UPDATE_WAITING_FOR_PURCHASE, payload: { timestamp: newTick, stayInsideScope: true } })
+            .call(updateWaitingForPurchase, newTick, true)
+            .next(dummyStayInsideAction)
+            .put(dummyStayInsideAction)
             .next()
             .isDone();
     });
@@ -26,7 +40,9 @@ describe('newTickWatcher saga', () => {
             .next(states.STARTED)
             .take(actions.RECEIVE_ALL_PROPOSALS)
             .next()
-            .put({ type: actions.UPDATE_WAITING_FOR_PURCHASE, payload: { timestamp: newTick, stayInsideScope: true } })
+            .call(updateWaitingForPurchase, newTick, true)
+            .next(dummyStayInsideAction)
+            .put(dummyStayInsideAction)
             .next()
             .isDone();
     });
@@ -35,7 +51,9 @@ describe('newTickWatcher saga', () => {
             .next()
             .select(selectors.stage)
             .next(states.SUCCESSFUL_PURCHASE)
-            .put({ type: actions.UPDATE_WAITING_FOR_PURCHASE, payload: { timestamp: newTick, stayInsideScope: false } })
+            .call(updateWaitingForPurchase, newTick, false)
+            .next(dummyGoOutAction)
+            .put(dummyGoOutAction)
             .next()
             .isDone();
     });
