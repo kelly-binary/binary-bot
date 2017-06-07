@@ -15,7 +15,7 @@ const store = {
     getState: () => ({
         stage             : states.INITIALIZED,
         initData,
-        waitingForPurchase: { timestamp: 1, stayInsideTheScope: true },
+        waitingForPurchase: { timestamp: 1, stayInsideScope: true },
     }),
 };
 bot.store = store;
@@ -24,9 +24,9 @@ const startOption = { amount: 1 };
 
 describe('Bot API', () => {
     it('should dispatch INIT_SAGA', async () => {
-        const stayInsideTheScope = await bot.init(token, initOption);
+        const stayInsideScope = await bot.init(token, initOption);
         expect(bot.store.dispatch).toBeCalledWith({ type: actions.INIT_SAGA, payload: { token, initOption, $scope } });
-        expect(stayInsideTheScope).toEqual(true);
+        expect(stayInsideScope).toEqual(true);
     });
     it('should dispatch START_SAGA', () => {
         bot.start(startOption);
@@ -35,26 +35,26 @@ describe('Bot API', () => {
             payload: { $scope, tradeOption: { ...startOption, ...initData } },
         });
     });
-    it('should resolve true by changes in [watchName] timestamp when stayInsideTheScope == true', async () => {
+    it('should resolve true by changes in [watchName] timestamp when stayInsideScope == true', async () => {
         store.subscribe = f => {
             setTimeout(() => {
-                store.getState = () => ({ waitingForPurchase: { timestamp: 3, stayInsideTheScope: true } });
+                store.getState = () => ({ waitingForPurchase: { timestamp: 3, stayInsideScope: true } });
                 f();
             }, 1000);
             return () => {};
         };
-        const stayInsideTheScope = await bot.watch('before');
-        expect(stayInsideTheScope).toEqual(true);
+        const stayInsideScope = await bot.watch('before');
+        expect(stayInsideScope).toEqual(true);
     });
-    it('should resolve false by changes in [watchName] timestamp when stayInsideTheScope == false', async () => {
+    it('should resolve false by changes in [watchName] timestamp when stayInsideScope == false', async () => {
         store.subscribe = f => {
             setTimeout(() => {
-                store.getState = () => ({ waitingForPurchase: { timestamp: 4, stayInsideTheScope: false } });
+                store.getState = () => ({ waitingForPurchase: { timestamp: 4, stayInsideScope: false } });
                 f();
             }, 1000);
             return () => {};
         };
-        const stayInsideTheScope = await bot.watch('before');
-        expect(stayInsideTheScope).toEqual(false);
+        const stayInsideScope = await bot.watch('before');
+        expect(stayInsideScope).toEqual(false);
     });
 });

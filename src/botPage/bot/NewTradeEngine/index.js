@@ -30,8 +30,8 @@ class Bot {
         const watchName = arg === 'before' ? 'waitingForPurchase' : 'waitingForSell';
         const { [watchName]: { timestamp } } = this.store.getState();
 
-        const createCondition = (stop = false) => ({ [watchName]: { timestamp: newTimestamp, stayInsideTheScope } }) =>
-            newTimestamp !== timestamp && ((stop && !stayInsideTheScope) || (!stop && stayInsideTheScope));
+        const createCondition = (stop = false) => ({ [watchName]: { timestamp: newTimestamp, stayInsideScope } }) =>
+            newTimestamp !== timestamp && ((stop && !stayInsideScope) || (!stop && stayInsideScope));
 
         return waitForCondition(this.store, createCondition(false), createCondition(true));
     }

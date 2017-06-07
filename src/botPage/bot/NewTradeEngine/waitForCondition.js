@@ -1,12 +1,15 @@
 const waitForCondition = (store, condition, stopCondition = () => false) =>
     new Promise(resolve => {
         const unsubscribe = store.subscribe(() => {
-            if (stopCondition(store.getState())) {
+            const state = store.getState();
+
+            const shouldStopWaiting = stopCondition(state);
+            const shouldContinue = condition(state);
+
+            if (shouldStopWaiting) {
                 resolve(false);
                 unsubscribe();
-                return;
-            }
-            if (condition(store.getState())) {
+            } else if (shouldContinue) {
                 resolve(true);
                 unsubscribe();
             }
