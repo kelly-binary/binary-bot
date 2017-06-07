@@ -3,6 +3,8 @@ import * as selectors from '../selectors';
 import requestPurchase from './requestPurchase';
 import purchase from './';
 
+const $scope = {};
+
 const contractType = 'CALL';
 
 const selectedProposal = { contract_type: 'CALL' };
@@ -14,11 +16,11 @@ const receivedProposals = {
 
 describe('Purchase saga', () => {
     it('should select a proposal using the contract type and purchase it', () => {
-        testSaga(purchase, contractType)
+        testSaga(purchase, { $scope, contractType })
             .next()
             .select(selectors.receivedProposals)
             .next(receivedProposals)
-            .call(requestPurchase, selectedProposal)
+            .call(requestPurchase, { $scope, proposal: selectedProposal })
             .next()
             .isDone();
     });
