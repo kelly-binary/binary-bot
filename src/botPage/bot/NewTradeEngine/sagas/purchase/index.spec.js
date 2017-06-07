@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
-import * as selectors from '../selectors';
 import * as actions from '../../constants/actions';
+import * as selectors from '../selectors';
 import requestPurchase from './requestPurchase';
 import purchase from './';
 
@@ -28,6 +28,7 @@ describe('Purchase saga', () => {
             .call(requestPurchase, { $scope, proposal: selectedProposal })
             .next()
             .put({ type: actions.PURCHASE_SUCCESSFULLY })
+            .next()
             .isDone();
     });
     it('should put PURCHASE_UNSUCCESSFULLY if requestPurchase fails', () => {
@@ -40,6 +41,7 @@ describe('Purchase saga', () => {
             .call(requestPurchase, { $scope, proposal: selectedProposal })
             .throw(error)
             .put({ type: actions.PURCHASE_UNSUCCESSFULLY, payload: error, error: true })
+            .next()
             .isDone();
     });
 });
