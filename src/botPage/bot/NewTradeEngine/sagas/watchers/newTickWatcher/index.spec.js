@@ -1,5 +1,5 @@
 import { testSaga } from 'redux-saga-test-plan';
-import { throwUpdateWaitingForPurchase, updateWaitingForPurchase } from '../../../actionCreators';
+import { updateWaitingForPurchase } from '../../../actions';
 import * as actions from '../../../constants/actions';
 import * as states from '../../../constants/states';
 import * as selectors from '../../selectors';
@@ -16,7 +16,7 @@ describe('newTickWatcher saga', () => {
             .next()
             .select(selectors.stage)
             .next(states.INITIALIZED)
-            .call(throwUpdateWaitingForPurchase)
+            .call(updateWaitingForPurchase, { error: true })
             .next(dummyErrorAction)
             .put(dummyErrorAction)
             .next()
@@ -27,7 +27,7 @@ describe('newTickWatcher saga', () => {
             .next()
             .select(selectors.stage)
             .next(states.PROPOSALS_READY)
-            .call(updateWaitingForPurchase, newTick, true)
+            .call(updateWaitingForPurchase, { timestamp: newTick, stayInsideScope: true })
             .next(dummyStayInsideAction)
             .put(dummyStayInsideAction)
             .next()
@@ -40,7 +40,7 @@ describe('newTickWatcher saga', () => {
             .next(states.STARTED)
             .take(actions.RECEIVE_ALL_PROPOSALS)
             .next()
-            .call(updateWaitingForPurchase, newTick, true)
+            .call(updateWaitingForPurchase, { timestamp: newTick, stayInsideScope: true })
             .next(dummyStayInsideAction)
             .put(dummyStayInsideAction)
             .next()
@@ -51,7 +51,7 @@ describe('newTickWatcher saga', () => {
             .next()
             .select(selectors.stage)
             .next(states.SUCCESSFUL_PURCHASE)
-            .call(updateWaitingForPurchase, newTick, false)
+            .call(updateWaitingForPurchase, { timestamp: newTick, stayInsideScope: false })
             .next(dummyGoOutAction)
             .put(dummyGoOutAction)
             .next()
