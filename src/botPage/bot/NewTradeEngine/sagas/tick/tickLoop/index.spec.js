@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
 import { eventChannel } from 'redux-saga';
-import * as actions from '../../../constants/actions';
+import newTick from '../../../actions/newTick';
 import tickLoop from './';
 
 const fakeChannel = eventChannel(() => () => {});
@@ -13,7 +13,7 @@ describe('tickLoop saga', () => {
             .next()
             .take(fakeChannel)
             .next(payload)
-            .put({ type: actions.NEW_TICK, payload: epoch })
+            .put(newTick(epoch))
             .next()
             .take(fakeChannel)
             .next(undefined) // end of channel

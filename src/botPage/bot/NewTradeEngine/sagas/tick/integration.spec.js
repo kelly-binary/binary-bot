@@ -1,6 +1,6 @@
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { expectSaga } from 'redux-saga-test-plan';
-import * as actions from '../../constants/actions';
+import newTick from '../../actions/newTick';
 import createScope from '../createScope';
 import dataStream from '../dataStream';
 import tick from './';
@@ -26,7 +26,7 @@ describe('tick channel integration', () => {
                     },
                 },
             ])
-            .put({ type: actions.NEW_TICK, payload: epoch })
-            .put({ type: actions.NEW_TICK, payload: epoch + 1 })
+            .put(newTick(epoch))
+            .put(newTick(epoch + 1))
             .run());
 });

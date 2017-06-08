@@ -1,12 +1,13 @@
 import { take, put } from 'redux-saga/effects';
-import * as actions from '../../../constants/actions';
+import newTick from '../../../actions/newTick';
 
 export default function* tickLoop(channel) {
     const takeFromChannel = take(channel);
     let payload = yield takeFromChannel;
 
     while (payload) {
-        yield put({ type: actions.NEW_TICK, payload: payload.epoch });
+        const { epoch } = payload;
+        yield put(newTick(epoch));
         payload = yield takeFromChannel;
     }
 }
