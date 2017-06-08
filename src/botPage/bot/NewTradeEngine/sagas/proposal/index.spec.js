@@ -8,7 +8,7 @@ import requestProposals from './requestProposals';
 import handleProposalReady from './handleProposalReady';
 import handleProposalStream from './handleProposalStream';
 import handleForgottenProposal from './handleForgottenProposal';
-import requestProposalSubscription from './';
+import proposal from './';
 
 const fakeChannel = eventChannel(() => () => {});
 const $scope = {};
@@ -40,9 +40,9 @@ const arg = { tradeOption, $scope };
 
 const requestProposalsArg = { proposalRequests, $scope };
 
-describe('requestProposalSubscription', () => {
+describe('proposal', () => {
     it('should not forget propsoals if there is no proposalsReceived', () => {
-        testSaga(requestProposalSubscription, arg)
+        testSaga(proposal, arg)
             .next()
             .call(tradeOptionToProposal, tradeOption)
             .next(proposalRequests)
@@ -63,7 +63,7 @@ describe('requestProposalSubscription', () => {
             .isDone();
     });
     it('should request a new proposal and create a dataStream for proposals', () => {
-        testSaga(requestProposalSubscription, arg)
+        testSaga(proposal, arg)
             .next()
             .call(tradeOptionToProposal, tradeOption)
             .next(proposalRequests)
@@ -88,7 +88,7 @@ describe('requestProposalSubscription', () => {
             .isDone();
     });
     it('should put RECEIVE_PROPOSAL_ERROR if requestProposals fails', () => {
-        testSaga(requestProposalSubscription, arg)
+        testSaga(proposal, arg)
             .next()
             .call(tradeOptionToProposal, tradeOption)
             .next(proposalRequests)

@@ -2,7 +2,7 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 import { expectSaga } from 'redux-saga-test-plan';
 import { select } from 'redux-saga/effects';
 import { tradeOptionToProposal } from '../../../tools';
-import requestProposalSubscription from './';
+import proposal from './';
 import * as actions from '../../constants/actions';
 import * as selectors from '../selectors';
 import createScope from '../createScope';
@@ -66,7 +66,7 @@ api.subscribeToPriceForContractProposal = proposal =>
 
 describe('proposal subscription integration', () => {
     it('should put RECEIVE ALL PROPOSALS', () =>
-        expectSaga(requestProposalSubscription, { tradeOption, $scope })
+        expectSaga(proposal, { tradeOption, $scope })
             .provide([
                 [matchers.call.fn(tradeOptionToProposal), proposalRequests],
                 [matchers.call.fn(dataStream), fakeChannel],

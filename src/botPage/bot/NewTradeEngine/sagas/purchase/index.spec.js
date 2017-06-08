@@ -1,7 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as selectors from '../selectors';
-import requestProposalSubscription from '../requestProposalSubscription';
+import proposal from '../proposal';
 import requestPurchase from './requestPurchase';
 import purchase from './';
 
@@ -38,7 +38,7 @@ describe('Purchase saga', () => {
             .next()
             .select(selectors.tradeOption)
             .next(tradeOption)
-            .spawn(requestProposalSubscription, { $scope, tradeOption })
+            .spawn(proposal, { $scope, tradeOption })
             .next()
             .isDone();
     });
@@ -55,7 +55,7 @@ describe('Purchase saga', () => {
             .next()
             .select(selectors.tradeOption)
             .next(tradeOption)
-            .spawn(requestProposalSubscription, { $scope, tradeOption })
+            .spawn(proposal, { $scope, tradeOption })
             .next()
             .isDone();
     });

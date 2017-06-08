@@ -2,7 +2,7 @@ import { select, put, spawn } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
-import requestProposalSubscription from '../requestProposalSubscription';
+import proposal from '../proposal';
 
 const isTradeOptionTheSame = (oldOpt, newOpt) =>
     [
@@ -47,5 +47,5 @@ export default function* start(arg) {
     if (isTradeOptionTheSame(currentTradeOption, tradeOption)) {
         return;
     }
-    yield spawn(requestProposalSubscription, arg);
+    yield spawn(proposal, arg);
 }

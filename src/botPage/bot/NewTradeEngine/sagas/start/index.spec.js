@@ -2,7 +2,7 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
-import requestProposalSubscription from '../requestProposalSubscription';
+import proposal from '../proposal';
 import start from './';
 
 const twoContracts = {
@@ -47,7 +47,7 @@ describe('start saga', () => {
             .next(twoContracts)
             .put({ type: actions.START, payload: oneContract })
             .next()
-            .spawn(requestProposalSubscription, { tradeOption: oneContract, $scope })
+            .spawn(proposal, { tradeOption: oneContract, $scope })
             .next()
             .isDone();
     });

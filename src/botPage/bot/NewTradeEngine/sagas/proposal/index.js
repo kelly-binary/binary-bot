@@ -8,7 +8,7 @@ import handleProposalReady from './handleProposalReady';
 import handleProposalStream from './handleProposalStream';
 import handleForgottenProposal from './handleForgottenProposal';
 
-export default function* handleProposalSubscription({ tradeOption, $scope }) {
+export default function* proposal({ tradeOption, $scope }) {
     const proposalRequests = yield call(tradeOptionToProposal, tradeOption);
 
     const receivedProposals = yield select(selectors.receivedProposals);
