@@ -22,17 +22,17 @@ describe('balance saga', () => {
             .next(fakeChannel)
             .take(fakeChannel)
             .next(data)
-            .put({ type: actions.BALANCE_RECEIVED, payload })
+            .put({ type: actions.UPDATE_RECEIVED_BALANCE, payload })
             .next()
             .isDone();
     });
-    it('should put BALANCE_RECEIVED_ERROR with the thrown error', () => {
+    it('should put UPDATE_RECEIVED_BALANCE_ERROR with the thrown error', () => {
         const errorPayload = new Error('some error');
 
         testSaga(balance, { ...arg, token: 'some invalid token' })
             .next()
             .throw(errorPayload)
-            .put({ type: actions.BALANCE_RECEIVED_ERROR, payload: errorPayload, error: true })
+            .put({ type: actions.UPDATE_RECEIVED_BALANCE_ERROR, payload: errorPayload, error: true })
             .next()
             .isDone();
     });

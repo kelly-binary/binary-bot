@@ -14,7 +14,7 @@ describe('Balance Reducer', () => {
     it('Balance received', () => {
         expect(
             (state = init(state, {
-                type   : actions.BALANCE_RECEIVED,
+                type   : actions.UPDATE_RECEIVED_BALANCE,
                 payload: {
                     balance : '123.00',
                     currency: 'USD',
@@ -28,7 +28,7 @@ describe('Balance Reducer', () => {
     it('Balance received', () => {
         expect(
             (state = init(state, {
-                type   : actions.BALANCE_RECEIVED,
+                type   : actions.UPDATE_RECEIVED_BALANCE,
                 payload: {
                     balance : '124.00',
                     currency: 'USD',

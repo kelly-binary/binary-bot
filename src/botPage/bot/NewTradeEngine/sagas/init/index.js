@@ -8,6 +8,6 @@ export default function* init({ $scope, token, initOption }) {
     yield spawn(tick, { $scope, symbol });
     yield spawn(balance, { $scope, token });
     yield take(actions.NEW_TICK);
-    yield take(actions.BALANCE_RECEIVED);
+    yield take(actions.UPDATE_RECEIVED_BALANCE);
     yield put({ type: actions.INIT_DATA, payload: initOption });
 }

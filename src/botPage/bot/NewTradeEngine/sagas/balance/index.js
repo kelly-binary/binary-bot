@@ -9,8 +9,8 @@ export default function* balance(arg) {
         yield call(requestBalance, arg);
         const channel = yield call(dataStream, { $scope, type: 'balance' });
         const { balance: payload } = yield take(channel);
-        yield put({ type: actions.BALANCE_RECEIVED, payload });
+        yield put({ type: actions.UPDATE_RECEIVED_BALANCE, payload });
     } catch (payload) {
-        yield put({ type: actions.BALANCE_RECEIVED_ERROR, payload, error: true });
+        yield put({ type: actions.UPDATE_RECEIVED_BALANCE_ERROR, payload, error: true });
     }
 }

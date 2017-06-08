@@ -7,7 +7,7 @@ const initialState = {
 
 const init = (state = initialState, action) => {
     switch (action.type) {
-        case actions.BALANCE_RECEIVED:
+        case actions.UPDATE_RECEIVED_BALANCE:
             return action.payload;
         default:
             return state;

@@ -17,11 +17,11 @@ describe('init saga', () => {
             .provide([[matchers.spawn.fn(tick), {}]])
             .provide([[matchers.spawn.fn(balance), {}]])
             .dispatch({ type: actions.NEW_TICK, payload: {} })
-            .dispatch({ type: actions.BALANCE_RECEIVED, payload: {} })
+            .dispatch({ type: actions.UPDATE_RECEIVED_BALANCE, payload: {} })
             .spawn(tick, { $scope, symbol })
             .spawn(balance, { $scope, token })
             .take(actions.NEW_TICK)
-            .take(actions.BALANCE_RECEIVED)
+            .take(actions.UPDATE_RECEIVED_BALANCE)
             .put({ type: actions.INIT_DATA, payload: initOption })
             .run();
     });
