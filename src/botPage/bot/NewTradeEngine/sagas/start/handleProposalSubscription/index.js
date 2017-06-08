@@ -16,10 +16,7 @@ export default function* handleProposalSubscription({ proposalRequests, $scope }
     }
     try {
         for (let i = 0; i < proposalRequests.length; i++) {
-            yield put({
-                type   : `UPDATE_${actions.REQUESTED_PROPOSAL}`,
-                payload: { [proposalRequests[i].uuid]: proposalRequests[i] },
-            });
+            yield put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: { [proposalRequests[i].uuid]: true } });
         }
         yield call(requestProposals, { proposalRequests, $scope });
         const channel = yield call(dataStream, { type: 'proposal', $scope });
