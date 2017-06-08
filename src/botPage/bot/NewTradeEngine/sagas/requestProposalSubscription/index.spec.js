@@ -15,6 +15,7 @@ const proposalRequests = {};
 describe('requestProposalSubscription saga', () => {
     it('should call proposal subscription saga with given tradeOption', () => {
         testSaga(requestProposalSubscription, { $scope, tradeOption })
+            .next()
             .call(tradeOptionToProposal, tradeOption)
             .next(proposalRequests)
             .call(handleProposalSubscription, { $scope, proposalRequests })
