@@ -19,6 +19,10 @@ describe('handleForgottenProposal saga', () => {
     it('should dispatch forget proposal', () => {
         testSaga(handleForgottenProposal, arg)
             .next()
+            .put({ type: `REMOVE_${actions.RECEIVED_PROPOSAL}`, payload: proposalID })
+            .next()
+            .put({ type: `REMOVE_${actions.REQUESTED_PROPOSAL}`, payload: proposalID })
+            .next()
             .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
             .next()
             .call([api, api.unsubscribeByID], proposal.id)
@@ -29,6 +33,10 @@ describe('handleForgottenProposal saga', () => {
     });
     it('should put FORGET_PROPOSAL_ERROR with the thrown error', () => {
         testSaga(handleForgottenProposal, arg)
+            .next()
+            .put({ type: `REMOVE_${actions.RECEIVED_PROPOSAL}`, payload: proposalID })
+            .next()
+            .put({ type: `REMOVE_${actions.REQUESTED_PROPOSAL}`, payload: proposalID })
             .next()
             .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
             .next()
