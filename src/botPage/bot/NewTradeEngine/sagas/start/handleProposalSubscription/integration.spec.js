@@ -40,14 +40,14 @@ const proposalResponses = [
     },
 ];
 
-const proposalRequests = [{ uuid: 'uuid1', request: {} }, { uuid: 'uuid2', request: {} }];
-
 const requestedProposals = {
-    uuid1: proposalRequests[0],
-    uuid2: proposalRequests[1],
+    uuid1: true,
+    uuid2: true,
 };
 
 const requestProposalsList = Object.entries(requestedProposals).map(([uuid, val]) => ({ [uuid]: val }));
+
+const proposalRequests = [{ uuid: 'uuid1', request: {} }, { uuid: 'uuid2', request: {} }];
 
 const fakeChannel = dataStream({ $scope, type: 'proposal' });
 
