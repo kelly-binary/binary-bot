@@ -1,6 +1,7 @@
-import { select, call, put } from 'redux-saga/effects';
+import { select, call, put, spawn } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as selectors from '../selectors';
+import requestProposalSubscription from '../requestProposalSubscription';
 import requestPurchase from './requestPurchase';
 
 export default function* purchase({ $scope, contractType }) {
@@ -13,4 +14,6 @@ export default function* purchase({ $scope, contractType }) {
     } catch (e) {
         yield put({ type: actions.PURCHASE_UNSUCCESSFULLY, payload: e, error: true });
     }
+    const tradeOption = yield select(selectors.tradeOption);
+    yield spawn(requestProposalSubscription, { $scope, tradeOption });
 }
