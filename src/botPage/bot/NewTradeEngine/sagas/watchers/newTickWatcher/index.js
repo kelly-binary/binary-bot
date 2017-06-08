@@ -1,5 +1,5 @@
 import { select, put, take, call } from 'redux-saga/effects';
-import { updateWaitingForPurchase } from '../../../actions';
+import updateWaitingForPurchase from '../../../actions/updateWaitingForPurchase';
 import * as actions from '../../../constants/actions';
 import * as states from '../../../constants/states';
 import * as selectors from '../../selectors';

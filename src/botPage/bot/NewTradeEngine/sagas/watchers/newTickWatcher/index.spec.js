@@ -1,5 +1,5 @@
 import { testSaga } from 'redux-saga-test-plan';
-import { updateWaitingForPurchase } from '../../../actions';
+import updateWaitingForPurchase from '../../../actions/updateWaitingForPurchase';
 import * as actions from '../../../constants/actions';
 import * as states from '../../../constants/states';
 import * as selectors from '../../selectors';

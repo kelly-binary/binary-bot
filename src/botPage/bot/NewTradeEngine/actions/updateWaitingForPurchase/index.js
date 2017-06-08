@@ -1,5 +1,5 @@
-import { translate } from '../../../../common/i18n';
-import * as actions from '../constants/actions';
+import { translate } from '../../../../../common/i18n';
+import * as actions from '../../constants/actions';
 
 export default function({ timestamp, stayInsideScope, error }) {
     if (error) {

@@ -1,5 +1,5 @@
-import { translate } from '../../../../common/i18n';
-import * as actions from '../constants/actions';
+import { translate } from '../../../../../common/i18n';
+import * as actions from '../../constants/actions';
 import updateWaitingForPurchase from './';
 
 const timestamp = 123456;
