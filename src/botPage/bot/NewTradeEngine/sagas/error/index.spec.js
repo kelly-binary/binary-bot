@@ -11,7 +11,7 @@ describe('error saga', () => {
             .next()
             .call([globalObserver, globalObserver.emit], 'Error', payload)
             .next()
-            .put({ type: actions.ERROR_OCCURRED, payload, error: true })
+            .put({ type: actions.STOP_BECAUSE_OF_ERROR, payload, error: true })
             .next()
             .isDone();
     });

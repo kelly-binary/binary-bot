@@ -5,6 +5,6 @@ import * as actions from '../../constants/actions';
 export default function* errorSaga({ payload, error }) {
     if (error) {
         yield call([globalObserver, globalObserver.emit], 'Error', payload);
-        yield put({ type: actions.ERROR_OCCURRED, payload, error: true });
+        yield put({ type: actions.STOP_BECAUSE_OF_ERROR, payload, error: true });
     }
 }

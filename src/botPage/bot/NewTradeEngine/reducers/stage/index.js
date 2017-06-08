@@ -5,7 +5,7 @@ const initialState = states.STOPPED;
 
 const stage = (state = initialState, action) => {
     switch (action.type) {
-        case actions.ERROR_OCCURRED:
+        case actions.STOP_BECAUSE_OF_ERROR:
             return states.STOPPED;
         case actions.SELL_SUCCESSFULLY:
         case actions.INIT_DATA:
