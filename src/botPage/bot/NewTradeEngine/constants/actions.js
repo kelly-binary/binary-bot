@@ -27,7 +27,6 @@ export const ADD_CONTRACT = 'ADD_CONTRACT';
 export const NEW_TICK = 'NEW_TICK';
 export const INIT_DATA = 'INIT_DATA';
 export const REQUEST_PURCHASE = 'REQUEST_PURCHASE';
-export const UPDATE_RECEIVED_BALANCE_ERROR = 'UPDATE_RECEIVED_BALANCE_ERROR';
 export const EXIT_SCOPE = 'EXIT_SCOPE';
 export const CONTINUE_SCOPE = 'CONTINUE_SCOPE';
 // SAGA actions
