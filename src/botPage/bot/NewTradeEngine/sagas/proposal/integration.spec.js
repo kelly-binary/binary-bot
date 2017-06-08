@@ -61,8 +61,8 @@ let index = 0;
 
 const proposalResponseList = Object.entries(expectedToReceiveProposals).map(([u, p]) => ({ [u]: p }));
 
-api.subscribeToPriceForContractProposal = proposal =>
-    api.events.emit('proposal', expectedToReceiveProposals[proposal.passthrough.uuid]);
+api.subscribeToPriceForContractProposal = ({ passthrough }) =>
+    api.events.emit('proposal', expectedToReceiveProposals[passthrough.uuid]);
 
 describe('proposal subscription integration', () => {
     it('should put RECEIVE ALL PROPOSALS', () =>
