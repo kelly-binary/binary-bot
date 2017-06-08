@@ -1,6 +1,6 @@
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { expectSaga } from 'redux-saga-test-plan';
-import * as actions from '../../constants/actions';
+import updateReceivedBalance from '../../actions/updateReceivedBalance';
 import createScope from '../createScope';
 import dataStream from '../dataStream';
 import requestBalance from './requestBalance';
@@ -28,6 +28,6 @@ describe('balance channel integration', () => {
                     },
                 },
             ])
-            .put({ type: actions.UPDATE_RECEIVED_BALANCE, payload })
+            .put(updateReceivedBalance({ payload }))
             .run());
 });

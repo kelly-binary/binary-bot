@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
 import { eventChannel } from 'redux-saga';
-import * as actions from '../../constants/actions';
+import updateReceivedBalance from '../../actions/updateReceivedBalance';
 import dataStream from '../dataStream';
 import requestBalance from './requestBalance';
 import balance from './';
@@ -22,7 +22,7 @@ describe('balance saga', () => {
             .next(fakeChannel)
             .take(fakeChannel)
             .next(data)
-            .put({ type: actions.UPDATE_RECEIVED_BALANCE, payload })
+            .put(updateReceivedBalance({ payload }))
             .next()
             .isDone();
     });
@@ -32,7 +32,7 @@ describe('balance saga', () => {
         testSaga(balance, { ...arg, token: 'some invalid token' })
             .next()
             .throw(errorPayload)
-            .put({ type: actions.UPDATE_RECEIVED_BALANCE_ERROR, payload: errorPayload, error: true })
+            .put(updateReceivedBalance({ payload: errorPayload, error: true }))
             .next()
             .isDone();
     });
