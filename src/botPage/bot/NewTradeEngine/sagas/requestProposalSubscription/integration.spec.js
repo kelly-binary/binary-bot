@@ -1,26 +1,34 @@
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { expectSaga } from 'redux-saga-test-plan';
 import { select } from 'redux-saga/effects';
-import handleProposalSubscription from './';
-import * as actions from '../../../constants/actions';
-import * as selectors from '../../selectors';
-import createScope from '../../createScope';
-import dataStream from '../../dataStream';
+import { tradeOptionToProposal } from '../../../tools';
+import requestProposalSubscription from './';
+import * as actions from '../../constants/actions';
+import * as selectors from '../selectors';
+import createScope from '../createScope';
+import dataStream from '../dataStream';
 
 const $scope = createScope();
 const { api } = $scope;
 
 const ids = ['id1', 'id2'];
 
-const uuid1 = 'uuid1';
-const uuid2 = 'uuid2';
+const tradeOption = {
+    contractTypes: [contractType1, contractType2],
+    amount       : 12,
+};
+
+const proposalRequests = tradeOptionToProposal(tradeOption);
+
+const uuid1 = proposalRequests[0].uuid;
+const uuid2 = proposalRequests[1].uuid;
 
 const contractType1 = 'DIGITEVEN';
 const contractType2 = 'DIGITODD';
 
 const expectedToReceiveProposals = {
-    uuid1: { id: ids[0], uuid: uuid1, contractType: contractType1 },
-    uuid2: { id: ids[1], uuid: uuid2, contractType: contractType2 },
+    [uuid1]: { id: ids[0], uuid: uuid1, contractType: contractType1 },
+    [uuid2]: { id: ids[1], uuid: uuid2, contractType: contractType2 },
 };
 
 const proposalResponses = [
@@ -41,13 +49,11 @@ const proposalResponses = [
 ];
 
 const requestedProposals = {
-    uuid1: true,
-    uuid2: true,
+    [uuid1]: true,
+    [uuid2]: true,
 };
 
 const requestProposalsList = Object.entries(requestedProposals).map(([uuid, val]) => ({ [uuid]: val }));
-
-const proposalRequests = [{ uuid: 'uuid1', request: {} }, { uuid: 'uuid2', request: {} }];
 
 const fakeChannel = dataStream({ $scope, type: 'proposal' });
 
@@ -60,8 +66,10 @@ api.subscribeToPriceForContractProposal = proposal =>
 
 describe('proposal subscription integration', () => {
     it('should put RECEIVE ALL PROPOSALS', () =>
-        expectSaga(handleProposalSubscription, { proposalRequests, $scope })
+        expectSaga(requestProposalSubscription, { tradeOption, $scope })
             .provide([
+                [matchers.call.fn(tradeOptionToProposal), proposalRequests],
+                [matchers.call.fn(dataStream), fakeChannel],
                 [matchers.call.fn(dataStream), fakeChannel],
                 [select(selectors.forgottenProposals), {}],
                 [select(selectors.receivedProposals), {}],

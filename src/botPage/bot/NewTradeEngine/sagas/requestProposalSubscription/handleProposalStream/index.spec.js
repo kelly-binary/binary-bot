@@ -1,7 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import { eventChannel } from 'redux-saga';
-import * as actions from '../../../../constants/actions';
-import * as selectors from '../../../selectors';
+import * as actions from '../../../constants/actions';
+import * as selectors from '../../selectors';
 import handleProposalStream from './';
 
 const fakeChannel = eventChannel(() => () => {});

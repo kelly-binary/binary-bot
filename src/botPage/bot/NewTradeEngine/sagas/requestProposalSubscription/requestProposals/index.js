@@ -1,4 +1,4 @@
-import { doUntilDone } from '../../../../../tools';
+import { doUntilDone } from '../../../../tools';
 
 export default function requestProposals({ proposalRequests, $scope: { api } }) {
     proposalRequests.forEach(({ request, uuid }) =>

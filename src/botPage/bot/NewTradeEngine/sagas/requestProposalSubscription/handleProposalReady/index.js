@@ -1,6 +1,6 @@
 import { put, select, take } from 'redux-saga/effects';
-import * as actions from '../../../../constants/actions';
-import * as selectors from '../../../selectors';
+import * as actions from '../../../constants/actions';
+import * as selectors from '../../selectors';
 
 export default function* handleProposalReady() {
     const requestedProposals = yield select(selectors.requestedProposals);

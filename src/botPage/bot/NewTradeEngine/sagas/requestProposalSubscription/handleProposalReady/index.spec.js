@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
-import * as actions from '../../../../constants/actions';
-import * as selectors from '../../../selectors';
+import * as actions from '../../../constants/actions';
+import * as selectors from '../../selectors';
 import handleProposalReady from './';
 
 const proposalRequests = {

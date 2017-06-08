@@ -1,4 +1,4 @@
-import createScope from '../../../createScope';
+import createScope from '../../createScope';
 import requestProposals from './';
 
 const $scope = createScope();
