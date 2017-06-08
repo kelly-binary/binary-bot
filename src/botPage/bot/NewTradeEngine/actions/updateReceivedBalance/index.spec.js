@@ -13,7 +13,7 @@ describe('updateReceivedBalance action creator', () => {
     });
     it('should handle error receiving balance', () => {
         expect(updateReceivedBalance({ payload: error, error: true })).toEqual({
-            type   : `${actions.UPDATE_RECEIVED_BALANCE}_ERROR`,
+            type   : actions.UPDATE_RECEIVED_BALANCE,
             payload: error,
             error  : true,
         });

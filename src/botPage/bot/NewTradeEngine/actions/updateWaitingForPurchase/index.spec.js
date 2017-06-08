@@ -8,7 +8,7 @@ const stayInsideScope = true;
 describe('throw waitingForPurchase action creator', () => {
     it('should return an error action', () => {
         expect(updateWaitingForPurchase({ error: true })).toEqual({
-            type   : `${actions.UPDATE_WAITING_FOR_PURCHASE}_ERROR`,
+            type   : actions.UPDATE_WAITING_FOR_PURCHASE,
             payload: Error(translate('Bot should be started before calling watch function')),
             error  : true,
         });

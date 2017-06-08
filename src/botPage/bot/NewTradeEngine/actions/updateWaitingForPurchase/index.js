@@ -4,7 +4,7 @@ import * as actions from '../../constants/actions';
 export default function({ timestamp, stayInsideScope, error }) {
     if (error) {
         return {
-            type   : `${actions.UPDATE_WAITING_FOR_PURCHASE}_ERROR`,
+            type   : actions.UPDATE_WAITING_FOR_PURCHASE,
             payload: Error(translate('Bot should be started before calling watch function')),
             error  : true,
         };
