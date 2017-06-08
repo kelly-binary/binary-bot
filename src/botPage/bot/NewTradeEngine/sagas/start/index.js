@@ -1,9 +1,8 @@
-import { select, put, spawn, call } from 'redux-saga/effects';
+import { select, put, spawn } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
-import handleProposalSubscription from './handleProposalSubscription';
-import { tradeOptionToProposal } from '../../../tools';
+import requestProposalSubscription from '../requestProposalSubscription';
 
 const isTradeOptionTheSame = (oldOpt, newOpt) =>
     [
@@ -31,7 +30,8 @@ const isTradeOptionTheSame = (oldOpt, newOpt) =>
         return false;
     });
 
-export default function* start({ tradeOption, $scope }) {
+export default function* start(arg) {
+    const { tradeOption } = arg;
     const stage = yield select(selectors.stage);
     const startEffect = put({ type: actions.START, payload: tradeOption });
 
@@ -47,6 +47,5 @@ export default function* start({ tradeOption, $scope }) {
     if (isTradeOptionTheSame(currentTradeOption, tradeOption)) {
         return;
     }
-    const proposalRequests = yield call(tradeOptionToProposal, tradeOption);
-    yield spawn(handleProposalSubscription, { proposalRequests, $scope });
+    yield spawn(requestProposalSubscription, arg);
 }
