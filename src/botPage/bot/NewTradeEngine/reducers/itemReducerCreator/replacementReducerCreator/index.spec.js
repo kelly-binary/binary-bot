@@ -10,5 +10,5 @@ describe('replacement reducer creator', () => {
     it('should start with the default state', () =>
         expect(reducer(undefined, { type: 'INVALID' })).toEqual(defaultState));
     it('should save the payload for the itemName', () =>
-        expect(reducer({}, { type: `UPDATE_${itemName}`, payload })).toEqual(payload));
+        expect(reducer({}, { type: updatePropertyAction(itemName), payload })).toEqual(payload));
 });

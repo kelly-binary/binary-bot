@@ -10,7 +10,7 @@ export default function* handleProposalStream(channel) {
 
         if (!Object.keys(forgottenProposals).includes(uuid)) {
             yield put({
-                type   : `UPDATE_${actions.RECEIVED_PROPOSAL}`,
+                type   : updatePropertyAction(actions.RECEIVED_PROPOSAL),
                 payload: { [uuid]: { ...proposal, uuid, contractType } },
             });
         }

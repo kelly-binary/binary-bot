@@ -3,12 +3,12 @@ export default function proposalInfo({ itemName, payload, meta = {} }) {
 
     if (remove) {
         return {
-            type: `REMOVE_${itemName}`,
+            type: removePropertyAction(itemName),
             payload,
         };
     }
     return {
-        type: `UPDATE_${itemName}`,
+        type: updatePropertyAction(itemName),
         payload,
     };
 }

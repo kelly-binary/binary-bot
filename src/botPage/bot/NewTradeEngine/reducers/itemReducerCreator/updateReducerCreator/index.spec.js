@@ -13,13 +13,13 @@ describe('update reducer creator', () => {
         let state;
 
         expect((state = reducer(state, { type: 'invalid' }))).toEqual({});
-        expect((state = reducer(state, { type: `UPDATE_${itemName}`, payload: payload1 }))).toEqual(payload1);
-        expect((state = reducer(state, { type: `UPDATE_${itemName}`, payload: payload2 }))).toEqual(payload2);
-        expect((state = reducer(state, { type: `UPDATE_${itemName}`, payload: payload3 }))).toEqual({
+        expect((state = reducer(state, { type: updatePropertyAction(itemName), payload: payload1 }))).toEqual(payload1);
+        expect((state = reducer(state, { type: updatePropertyAction(itemName), payload: payload2 }))).toEqual(payload2);
+        expect((state = reducer(state, { type: updatePropertyAction(itemName), payload: payload3 }))).toEqual({
             ...payload2,
             ...payload3,
         });
-        expect((state = reducer(state, { type: `REMOVE_${itemName}`, payload: key1 }))).toEqual(payload3);
-        expect((state = reducer(state, { type: `REMOVE_${itemName}`, payload: key2 }))).toEqual({});
+        expect((state = reducer(state, { type: removePropertyAction(itemName), payload: key1 }))).toEqual(payload3);
+        expect((state = reducer(state, { type: removePropertyAction(itemName), payload: key2 }))).toEqual({});
     });
 });

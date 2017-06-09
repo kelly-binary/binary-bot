@@ -4,7 +4,7 @@ const replacementReducerCreator = ({ defaultState, itemName }) => (state = defau
         return state;
     }
     switch (action.type) {
-        case `UPDATE_${itemName}`:
+        case updatePropertyAction(itemName):
             return action.payload;
         default:
             return state;

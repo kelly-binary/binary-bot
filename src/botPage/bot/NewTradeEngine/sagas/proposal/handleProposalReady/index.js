@@ -8,7 +8,7 @@ export default function* handleProposalReady() {
     const proposals = {};
 
     while (Object.keys(proposals).length !== Object.keys(requestedProposals).length) {
-        const { payload } = yield take(`UPDATE_${properties.RECEIVED_PROPOSAL}`);
+        const { payload } = yield take(updatePropertyAction(properties.RECEIVED_PROPOSAL));
         const [uuid] = Object.keys(payload);
         if (Object.keys(requestedProposals).includes(uuid)) {
             proposals[uuid] = true;

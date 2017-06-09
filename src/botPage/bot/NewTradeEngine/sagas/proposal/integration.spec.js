@@ -83,10 +83,10 @@ describe('proposal subscription integration', () => {
                     },
                 },
             ])
-            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: proposalResponseList[0] })
-            .put({ type: `UPDATE_${actions.RECEIVED_PROPOSAL}`, payload: proposalResponseList[1] })
-            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestProposalsList[0] })
-            .put({ type: `UPDATE_${actions.REQUESTED_PROPOSAL}`, payload: requestProposalsList[1] })
+            .put({ type: updatePropertyAction(actions.RECEIVED_PROPOSAL), payload: proposalResponseList[0] })
+            .put({ type: updatePropertyAction(actions.RECEIVED_PROPOSAL), payload: proposalResponseList[1] })
+            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: requestProposalsList[0] })
+            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: requestProposalsList[1] })
             .put({ type: actions.RECEIVE_ALL_PROPOSALS })
             .run());
 });
