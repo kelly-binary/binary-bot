@@ -1,5 +1,5 @@
 import { testSaga } from 'redux-saga-test-plan';
-import * as actions from '../../constants/actions';
+import startAction from '../../actions/start';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
 import proposal from '../proposal';
@@ -23,7 +23,7 @@ describe('start saga', () => {
             .next()
             .select(selectors.stage)
             .next(states.STOPPED)
-            .put({ type: actions.START, payload: twoContracts })
+            .put(startAction(twoContracts))
             .next()
             .isDone();
     });
@@ -34,7 +34,7 @@ describe('start saga', () => {
             .next(states.INITIALIZED)
             .select(selectors.tradeOption)
             .next(oneContract)
-            .put({ type: actions.START, payload: oneContract })
+            .put(startAction(oneContract))
             .next()
             .isDone();
     });
@@ -45,7 +45,7 @@ describe('start saga', () => {
             .next(states.INITIALIZED)
             .select(selectors.tradeOption)
             .next(twoContracts)
-            .put({ type: actions.START, payload: oneContract })
+            .put(startAction(oneContract))
             .next()
             .spawn(proposal, { tradeOption: oneContract, $scope })
             .next()

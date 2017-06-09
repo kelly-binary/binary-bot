@@ -1,6 +1,6 @@
 import { select, put, spawn } from 'redux-saga/effects';
 import { isTradeOptionTheSame } from '../../../tools';
-import * as actions from '../../constants/actions';
+import startAction from '../../actions/start';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
 import proposal from '../proposal';
@@ -8,7 +8,7 @@ import proposal from '../proposal';
 export default function* start(arg) {
     const { tradeOption } = arg;
     const stage = yield select(selectors.stage);
-    const startEffect = put({ type: actions.START, payload: tradeOption });
+    const startEffect = put(startAction(tradeOption));
 
     if (stage !== states.INITIALIZED) {
         yield startEffect;
