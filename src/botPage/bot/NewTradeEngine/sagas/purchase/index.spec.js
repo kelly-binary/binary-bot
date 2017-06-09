@@ -1,4 +1,5 @@
 import { testSaga } from 'redux-saga-test-plan';
+import requestPurchaseAction from '../../actions/requestPurchase';
 import * as actions from '../../constants/actions';
 import * as selectors from '../selectors';
 import proposal from '../proposal';
@@ -30,7 +31,7 @@ describe('Purchase saga', () => {
             .next()
             .select(selectors.receivedProposals)
             .next(receivedProposals)
-            .put({ type: actions.REQUEST_PURCHASE })
+            .put(requestPurchaseAction())
             .next()
             .call(requestPurchase, { $scope, proposal: selectedProposal })
             .next(receivedPurchase)
@@ -47,7 +48,7 @@ describe('Purchase saga', () => {
             .next()
             .select(selectors.receivedProposals)
             .next(receivedProposals)
-            .put({ type: actions.REQUEST_PURCHASE })
+            .put(requestPurchaseAction())
             .next()
             .call(requestPurchase, { $scope, proposal: selectedProposal })
             .throw(error)
