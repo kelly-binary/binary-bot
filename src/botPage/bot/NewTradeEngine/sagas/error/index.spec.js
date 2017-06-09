@@ -1,17 +1,17 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { testSaga } from 'redux-saga-test-plan';
-import * as actions from '../../constants/actions';
+import stopBecauseOfError from '../../actions/stopBecauseOfError';
 import errorSaga from './';
 
 const payload = Error('some error');
 
 describe('error saga', () => {
     it('should call globalObserver with the error', () => {
-        testSaga(errorSaga, { type: 'SOMETHING', payload })
+        testSaga(errorSaga, { type: 'SOMETHING', payload, error: true })
             .next()
             .call([globalObserver, globalObserver.emit], 'Error', payload)
             .next()
-            .put({ type: actions.STOP_BECAUSE_OF_ERROR, payload, error: true })
+            .put(stopBecauseOfError(payload))
             .next()
             .isDone();
     });
