@@ -1,9 +1,9 @@
-export default function objectReducerCreator(actionType) {
+export default function updateReducerCreator(itemName) {
     return (state = {}, action) => {
         switch (action.type) {
-            case `UPDATE_${actionType}`:
+            case `UPDATE_${itemName}`:
                 return { ...state, ...action.payload };
-            case `REMOVE_${actionType}`: {
+            case `REMOVE_${itemName}`: {
                 const newState = { ...state };
                 delete newState[action.payload];
                 return newState;
