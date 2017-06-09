@@ -1,5 +1,6 @@
 import { put, select, take } from 'redux-saga/effects';
-import * as actions from '../../../constants/actions';
+import receiveAllProposals from '../../../actions/receiveAllProposals';
+import * as properties from '../../../constants/properties';
 import * as selectors from '../../selectors';
 
 export default function* handleProposalReady() {
@@ -7,12 +8,12 @@ export default function* handleProposalReady() {
     const proposals = {};
 
     while (Object.keys(proposals).length !== Object.keys(requestedProposals).length) {
-        const { payload } = yield take(`UPDATE_${actions.RECEIVED_PROPOSAL}`);
+        const { payload } = yield take(`UPDATE_${properties.RECEIVED_PROPOSAL}`);
         const [uuid] = Object.keys(payload);
         if (Object.keys(requestedProposals).includes(uuid)) {
             proposals[uuid] = true;
         }
     }
 
-    yield put({ type: actions.RECEIVE_ALL_PROPOSALS });
+    yield put(receiveAllProposals());
 }

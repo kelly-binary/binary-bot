@@ -1,5 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
-import * as actions from '../../../constants/actions';
+import receiveAllProposals from '../../../actions/receiveAllProposals';
+import * as properties from '../../../constants/properties';
 import * as selectors from '../../selectors';
 import handleProposalReady from './';
 
@@ -28,17 +29,17 @@ describe('handleProposalReady saga', () => {
             .next()
             .select(selectors.requestedProposals)
             .next(proposalRequests)
-            .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
+            .take(`UPDATE_${properties.RECEIVED_PROPOSAL}`)
             .next(proposal3)
-            .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
+            .take(`UPDATE_${properties.RECEIVED_PROPOSAL}`)
             .next(proposal4)
-            .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
+            .take(`UPDATE_${properties.RECEIVED_PROPOSAL}`)
             .next(proposal1)
-            .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
+            .take(`UPDATE_${properties.RECEIVED_PROPOSAL}`)
             .next(proposal1)
-            .take(`UPDATE_${actions.RECEIVED_PROPOSAL}`)
+            .take(`UPDATE_${properties.RECEIVED_PROPOSAL}`)
             .next(proposal2)
-            .put({ type: actions.RECEIVE_ALL_PROPOSALS })
+            .put(receiveAllProposals())
             .next()
             .isDone();
     });
