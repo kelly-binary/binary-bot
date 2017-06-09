@@ -1,7 +1,7 @@
 import { eventChannel } from 'redux-saga';
 import { testSaga } from 'redux-saga-test-plan';
 import { tradeOptionToProposal } from '../../../tools';
-import { updatePropertyAction } from '../../tools';
+import proposalInfo from '../../actions/proposalInfo';
 import * as properties from '../../constants/properties';
 import dataStream from '../dataStream';
 import * as selectors from '../selectors';
@@ -49,9 +49,9 @@ describe('proposal', () => {
             .next(proposalRequests)
             .select(selectors.receivedProposals)
             .next({})
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: { [proposalID1]: true } }))
             .next()
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: { [proposalID2]: true } }))
             .next()
             .call(requestProposals, requestProposalsArg)
             .next()
@@ -74,9 +74,9 @@ describe('proposal', () => {
             .next()
             .spawn(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: { [proposalID1]: true } }))
             .next()
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: { [proposalID2]: true } }))
             .next()
             .call(requestProposals, requestProposalsArg)
             .next()
@@ -99,14 +99,14 @@ describe('proposal', () => {
             .next()
             .spawn(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: { [proposalID1]: true } }))
             .next()
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: { [proposalID2]: true } }))
             .next()
             .call(requestProposals, requestProposalsArg)
             .next()
             .throw(error)
-            .put({ type: 'RECEIVE_PROPOSAL_ERROR', payload: error, error: true })
+            .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: error, error: true }))
             .next()
             .isDone();
     });

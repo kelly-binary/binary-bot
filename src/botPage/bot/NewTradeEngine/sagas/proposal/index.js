@@ -1,6 +1,6 @@
 import { call, spawn, select, put } from 'redux-saga/effects';
 import { tradeOptionToProposal } from '../../../tools';
-import { updatePropertyAction } from '../../tools';
+import proposalInfo from '../../actions/proposalInfo';
 import * as properties from '../../constants/properties';
 import * as selectors from '../selectors';
 import dataStream from '../dataStream';
@@ -20,16 +20,15 @@ export default function* proposal({ tradeOption, $scope }) {
     }
     try {
         for (let i = 0; i < proposalRequests.length; i++) {
-            yield put({
-                type   : updatePropertyAction(properties.REQUESTED_PROPOSAL),
-                payload: { [proposalRequests[i].uuid]: true },
-            });
+            yield put(
+                proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: { [proposalRequests[i].uuid]: true } })
+            );
         }
         yield call(requestProposals, { proposalRequests, $scope });
         const channel = yield call(dataStream, { type: 'proposal', $scope });
         yield spawn(handleProposalStream, channel);
         yield spawn(handleProposalReady);
     } catch (error) {
-        yield put({ type: 'RECEIVE_PROPOSAL_ERROR', payload: error, error: true });
+        yield put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: error, error: true }));
     }
 }

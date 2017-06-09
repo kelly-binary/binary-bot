@@ -2,7 +2,7 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 import { expectSaga } from 'redux-saga-test-plan';
 import { select } from 'redux-saga/effects';
 import { tradeOptionToProposal } from '../../../tools';
-import { updatePropertyAction } from '../../tools';
+import proposalInfo from '../../actions/proposalInfo';
 import proposal from './';
 import * as properties from '../../constants/properties';
 import * as selectors from '../selectors';
@@ -84,10 +84,10 @@ describe('proposal subscription integration', () => {
                     },
                 },
             ])
-            .put({ type: updatePropertyAction(properties.RECEIVED_PROPOSAL), payload: proposalResponseList[0] })
-            .put({ type: updatePropertyAction(properties.RECEIVED_PROPOSAL), payload: proposalResponseList[1] })
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: requestProposalsList[0] })
-            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: requestProposalsList[1] })
+            .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalResponseList[0] }))
+            .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalResponseList[1] }))
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: requestProposalsList[0] }))
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: requestProposalsList[1] }))
             .put({ type: properties.RECEIVE_ALL_PROPOSALS })
             .run());
 });
