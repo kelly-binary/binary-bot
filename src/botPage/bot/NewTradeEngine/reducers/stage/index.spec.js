@@ -24,15 +24,15 @@ describe('Stage Reducer', () => {
         expect((state = stage(state, action(actions.REQUEST_PURCHASE)))).toEqual(states.PURCHASING);
     });
     it('Purchase failed', () => {
-        expect((state = stage(state, action(actions.PURCHASE_UNSUCCESSFULLY)))).toEqual(states.STARTED);
+        expect((state = stage(state, { type: actions.PURCHASE_DONE, error: true }))).toEqual(states.STARTED);
     });
     it('Purchase succeeded', () => {
-        expect((state = stage(state, action(actions.PURCHASE_SUCCESSFULLY)))).toEqual(states.SUCCESSFUL_PURCHASE);
+        expect((state = stage(state, action(actions.PURCHASE_DONE)))).toEqual(states.SUCCESSFUL_PURCHASE);
     });
     it('Open contract received', () => {
         expect((state = stage(state, action(actions.RECEIVE_OPEN_CONTRACT)))).toEqual(states.OPEN_CONTRACT);
     });
     it('Sell succeeded', () => {
-        expect((state = stage(state, action(actions.SELL_SUCCESSFULLY)))).toEqual(states.INITIALIZED);
+        expect((state = stage(state, action(actions.SELL_DONE)))).toEqual(states.INITIALIZED);
     });
 });
