@@ -1,7 +1,7 @@
 import * as actions from '../constants/actions';
-import propertyReducerCreator from './reducerCreators/property';
+import itemReducerCreator from './itemReducerCreator';
 
-export default propertyReducerCreator({
+export default itemReducerCreator({
     defaultState: { timestamp: 0, stayInsideScope: false },
-    actionType  : actions.UPDATE_WAITING_FOR_PURCHASE,
+    itemName    : actions.WAITING_FOR_PURCHASE,
 });
