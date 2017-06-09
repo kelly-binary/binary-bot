@@ -1,19 +1,22 @@
 import { put, call } from 'redux-saga/effects';
-import * as actions from '../../../constants/actions';
+import * as properties from '../../../constants/properties';
+import proposalInfo from '../../../actions/proposalInfo';
 
 export default function* handleForgottenProposal({ $scope, proposal }) {
     const { uuid: proposalID, id } = proposal;
     const { api } = $scope;
     const payload = { [proposalID]: '' };
 
-    yield put({ type: `REMOVE_${actions.RECEIVED_PROPOSAL}`, payload: proposalID });
-    yield put({ type: `REMOVE_${actions.REQUESTED_PROPOSAL}`, payload: proposalID });
+    yield put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalID, meta: { remove: true } }));
+    yield put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: proposalID, meta: { remove: true } }));
 
-    yield put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload });
+    yield put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload }));
     try {
         yield call([api, api.unsubscribeByID], id);
-        yield put({ type: `REMOVE_${actions.FORGOTTEN_PROPOSAL}`, payload: proposalID });
+        yield put(
+            proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: proposalID, meta: { remove: true } })
+        );
     } catch (error) {
-        yield put({ type: `${actions.FORGOTTEN_PROPOSAL}_ERROR`, payload: error, error: true });
+        yield put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: error, error: true }));
     }
 }

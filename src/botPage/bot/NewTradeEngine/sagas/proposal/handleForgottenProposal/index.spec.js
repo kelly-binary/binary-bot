@@ -1,5 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
-import * as actions from '../../../constants/actions';
+import * as properties from '../../../constants/properties';
+import proposalInfo from '../../../actions/proposalInfo';
 import handleForgottenProposal from './';
 
 const proposalID = '123';
@@ -19,31 +20,31 @@ describe('handleForgottenProposal saga', () => {
     it('should dispatch forget proposal', () => {
         testSaga(handleForgottenProposal, arg)
             .next()
-            .put({ type: `REMOVE_${actions.RECEIVED_PROPOSAL}`, payload: proposalID })
+            .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalID, meta: { remove: true } }))
             .next()
-            .put({ type: `REMOVE_${actions.REQUESTED_PROPOSAL}`, payload: proposalID })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: proposalID, meta: { remove: true } }))
             .next()
-            .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload }))
             .next()
             .call([api, api.unsubscribeByID], proposal.id)
             .next()
-            .put({ type: `REMOVE_${actions.FORGOTTEN_PROPOSAL}`, payload: proposalID })
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: proposalID, meta: { remove: true } }))
             .next()
             .isDone();
     });
     it('should put FORGET_PROPOSAL_ERROR with the thrown error', () => {
         testSaga(handleForgottenProposal, arg)
             .next()
-            .put({ type: `REMOVE_${actions.RECEIVED_PROPOSAL}`, payload: proposalID })
+            .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalID, meta: { remove: true } }))
             .next()
-            .put({ type: `REMOVE_${actions.REQUESTED_PROPOSAL}`, payload: proposalID })
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: proposalID, meta: { remove: true } }))
             .next()
-            .put({ type: `UPDATE_${actions.FORGOTTEN_PROPOSAL}`, payload })
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload }))
             .next()
             .call([api, api.unsubscribeByID], proposal.id)
             .next()
             .throw(error)
-            .put({ type: `${actions.FORGOTTEN_PROPOSAL}_ERROR`, payload: error, error: true })
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: error, error: true }))
             .next()
             .isDone();
     });
