@@ -1,8 +1,4 @@
 import * as actions from '../../constants/actions';
+import standardAction from '../standardAction';
 
-export default function stopBecauseOfError(payload) {
-    return {
-        type: actions.STOP_BECAUSE_OF_ERROR,
-        payload,
-    };
-}
+export default standardAction(actions.STOP_BECAUSE_OF_ERROR);

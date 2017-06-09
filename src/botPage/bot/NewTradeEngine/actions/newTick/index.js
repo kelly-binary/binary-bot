@@ -1,8 +1,4 @@
 import * as actions from '../../constants/actions';
+import standardAction from '../standardAction';
 
-export default function newTick(payload) {
-    return {
-        type: actions.NEW_TICK,
-        payload,
-    };
-}
+export default standardAction(actions.NEW_TICK);

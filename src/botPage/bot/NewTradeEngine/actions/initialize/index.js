@@ -1,8 +1,4 @@
 import * as actions from '../../constants/actions';
+import standardAction from '../standardAction';
 
-export default function initialize(payload) {
-    return {
-        type: actions.INITIALIZE,
-        payload,
-    };
-}
+export default standardAction(actions.INITIALIZE);
