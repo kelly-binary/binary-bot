@@ -1,7 +1,8 @@
 import { eventChannel } from 'redux-saga';
 import { testSaga } from 'redux-saga-test-plan';
 import { tradeOptionToProposal } from '../../../tools';
-import * as actions from '../../constants/actions';
+import { updatePropertyAction } from '../../tools';
+import * as properties from '../../constants/properties';
 import dataStream from '../dataStream';
 import * as selectors from '../selectors';
 import requestProposals from './requestProposals';
@@ -48,9 +49,9 @@ describe('proposal', () => {
             .next(proposalRequests)
             .select(selectors.receivedProposals)
             .next({})
-            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
+            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
             .next()
-            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
+            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
             .next()
             .call(requestProposals, requestProposalsArg)
             .next()
@@ -73,9 +74,9 @@ describe('proposal', () => {
             .next()
             .spawn(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
+            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
             .next()
-            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
+            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
             .next()
             .call(requestProposals, requestProposalsArg)
             .next()
@@ -98,9 +99,9 @@ describe('proposal', () => {
             .next()
             .spawn(handleForgottenProposal, { $scope, proposal: proposal2 })
             .next()
-            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
+            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID1]: true } })
             .next()
-            .put({ type: updatePropertyAction(actions.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
+            .put({ type: updatePropertyAction(properties.REQUESTED_PROPOSAL), payload: { [proposalID2]: true } })
             .next()
             .call(requestProposals, requestProposalsArg)
             .next()

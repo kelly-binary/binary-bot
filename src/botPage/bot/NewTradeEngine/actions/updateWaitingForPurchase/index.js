@@ -1,4 +1,5 @@
 import { translate } from '../../../../../common/i18n';
+import { updatePropertyAction } from '../../tools';
 import * as properties from '../../constants/properties';
 
 export default function({ timestamp, stayInsideScope, error }) {

@@ -1,3 +1,5 @@
+import { removePropertyAction, updatePropertyAction } from '../../tools';
+
 export default function proposalInfo({ itemName, payload, meta = {} }) {
     const { remove } = meta;
 

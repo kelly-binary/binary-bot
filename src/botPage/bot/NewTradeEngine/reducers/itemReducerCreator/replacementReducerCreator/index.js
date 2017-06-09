@@ -1,3 +1,5 @@
+import { updatePropertyAction } from '../../../tools';
+
 const replacementReducerCreator = ({ defaultState, itemName }) => (state = defaultState, action) => {
     const { error } = action;
     if (error) {

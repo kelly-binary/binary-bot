@@ -1,6 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import receiveAllProposals from '../../../actions/receiveAllProposals';
 import * as properties from '../../../constants/properties';
+import { updatePropertyAction } from '../../../tools';
 import * as selectors from '../../selectors';
 import handleProposalReady from './';
 

@@ -1,3 +1,4 @@
+import { updatePropertyAction } from '../../../tools';
 import replacementReducerCreator from './';
 
 const defaultState = { something: 'something' };

@@ -1,6 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import { eventChannel } from 'redux-saga';
-import * as actions from '../../../constants/actions';
+import { updatePropertyAction } from '../../../tools';
+import * as properties from '../../../constants/properties';
 import * as selectors from '../../selectors';
 import handleProposalStream from './';
 
@@ -45,13 +46,13 @@ describe('handleProposalStream saga', () => {
             .next(proposalResponse1)
             .select(selectors.forgottenProposals)
             .next(forgottenProposals)
-            .put({ type: updatePropertyAction(actions.RECEIVED_PROPOSAL), payload: { [uuid1]: expectedProposal } })
+            .put({ type: updatePropertyAction(properties.RECEIVED_PROPOSAL), payload: { [uuid1]: expectedProposal } })
             .next()
             .take(fakeChannel)
             .next(proposalResponse1)
             .select(selectors.forgottenProposals)
             .next(forgottenProposals)
-            .put({ type: updatePropertyAction(actions.RECEIVED_PROPOSAL), payload: { [uuid1]: expectedProposal } })
+            .put({ type: updatePropertyAction(properties.RECEIVED_PROPOSAL), payload: { [uuid1]: expectedProposal } })
             .next()
             .take(fakeChannel)
             .next()

@@ -1,3 +1,4 @@
+import { removePropertyAction, updatePropertyAction } from '../../tools';
 import * as properties from '../../constants/properties';
 import proposalInfo from './';
 

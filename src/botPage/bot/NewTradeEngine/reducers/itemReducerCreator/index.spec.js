@@ -1,3 +1,4 @@
+import { updatePropertyAction } from '../../tools';
 import itemReducerCreator from './';
 
 const itemName = 'some itemName';
