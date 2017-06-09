@@ -15,4 +15,10 @@ describe('itemReducerCreator', () => {
             key2: 2,
         });
     });
+    it('should not update anything if there is an error', () => {
+        const objectReducer = itemReducerCreator({ itemName, defaultState: {} });
+        expect(objectReducer({ key1: 1 }, { type: `UPDATE_${itemName}`, payload: Error('bla'), error: true })).toEqual({
+            key1: 1,
+        });
+    });
 });
