@@ -1,6 +1,6 @@
 import { spawn, take, put } from 'redux-saga/effects';
 import * as actions from '../../constants/actions';
-import initialize from '../../actions/initialize';
+import { initialize } from '../../actions/standard';
 import tick from '../tick';
 import balance from '../balance';
 

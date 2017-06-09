@@ -1,6 +1,6 @@
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { expectSaga } from 'redux-saga-test-plan';
-import newTick from '../../actions/newTick';
+import { newTick } from '../../actions/standard';
 import createScope from '../createScope';
 import dataStream from '../dataStream';
 import tick from './';

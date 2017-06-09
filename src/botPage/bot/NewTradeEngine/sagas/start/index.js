@@ -1,6 +1,6 @@
 import { select, put, spawn } from 'redux-saga/effects';
 import { isTradeOptionTheSame } from '../../../tools';
-import startAction from '../../actions/start';
+import { start as startAction } from '../../actions/standard';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
 import proposal from '../proposal';

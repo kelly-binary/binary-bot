@@ -1,5 +1,5 @@
 import { testSaga } from 'redux-saga-test-plan';
-import startAction from '../../actions/start';
+import { start as startAction } from '../../actions/standard';
 import * as states from '../../constants/states';
 import * as selectors from '../selectors';
 import proposal from '../proposal';

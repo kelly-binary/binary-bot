@@ -1,6 +1,6 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { testSaga } from 'redux-saga-test-plan';
-import stopBecauseOfError from '../../actions/stopBecauseOfError';
+import { stopBecauseOfError } from '../../actions/standard';
 import errorSaga from './';
 
 const payload = Error('some error');

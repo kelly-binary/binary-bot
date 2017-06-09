@@ -1,5 +1,5 @@
 import { take, put } from 'redux-saga/effects';
-import newTick from '../../../actions/newTick';
+import { newTick } from '../../../actions/standard';
 
 export default function* tickLoop(channel) {
     const takeFromChannel = take(channel);

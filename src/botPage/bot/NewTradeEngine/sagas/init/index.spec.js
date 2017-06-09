@@ -1,8 +1,8 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import * as actions from '../../constants/actions';
-import initialize from '../../actions/initialize';
-import newTick from '../../actions/newTick';
+import { initialize } from '../../actions/standard';
+import { newTick } from '../../actions/standard';
 import updateReceivedBalance from '../../actions/updateReceivedBalance';
 import createScope from '../createScope';
 import tick from '../tick';

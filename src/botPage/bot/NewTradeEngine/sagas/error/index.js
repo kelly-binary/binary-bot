@@ -1,6 +1,6 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { call, put } from 'redux-saga/effects';
-import stopBecauseOfError from '../../actions/stopBecauseOfError';
+import { stopBecauseOfError } from '../../actions/standard';
 
 export default function* errorSaga({ payload, error }) {
     if (error) {

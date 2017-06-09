@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
 import { eventChannel } from 'redux-saga';
-import newTick from '../../../actions/newTick';
+import { newTick } from '../../../actions/standard';
 import tickLoop from './';
 
 const fakeChannel = eventChannel(() => () => {});
