@@ -2,18 +2,18 @@ import * as properties from '../../constants/properties';
 import proposalInfo from './';
 
 const payload = {};
-const property = properties.REQUESTED_PROPOSAL;
+const itemName = properties.REQUESTED_PROPOSAL;
 
 describe('proposalInfo action creator', () => {
-    it('should return an action to update a property in proposalInfo', () => {
-        expect(proposalInfo({ property, payload })).toEqual({
-            type: `UPDATE_${property}`,
+    it('should return an action to update a itemName in proposalInfo', () => {
+        expect(proposalInfo({ itemName, payload })).toEqual({
+            type: `UPDATE_${itemName}`,
             payload,
         });
     });
-    it('should return an action to remove a property in proposalInfo', () => {
-        expect(proposalInfo({ property, payload, meta: { remove: true } })).toEqual({
-            type: `REMOVE_${property}`,
+    it('should return an action to remove a itemName in proposalInfo', () => {
+        expect(proposalInfo({ itemName, payload, meta: { remove: true } })).toEqual({
+            type: `REMOVE_${itemName}`,
             payload,
         });
     });

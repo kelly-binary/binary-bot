@@ -1,14 +1,14 @@
-export default function proposalInfo({ property, payload, meta = {} }) {
+export default function proposalInfo({ itemName, payload, meta = {} }) {
     const { remove } = meta;
 
     if (remove) {
         return {
-            type: `REMOVE_${property}`,
+            type: `REMOVE_${itemName}`,
             payload,
         };
     }
     return {
-        type: `UPDATE_${property}`,
+        type: `UPDATE_${itemName}`,
         payload,
     };
 }
