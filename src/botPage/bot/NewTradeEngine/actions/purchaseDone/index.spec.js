@@ -1,6 +1,8 @@
 import * as actions from '../../constants/actions';
 import purchaseDone from './';
 
+const payload = {};
+
 describe('purchaseDone action creator', () => {
     it('should return PURCHASE_DONE action for successful purchase', () => {
         expect(purchaseDone({ payload })).toEqual({
