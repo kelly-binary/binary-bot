@@ -1,5 +1,9 @@
 export default function updateReducerCreator(itemName) {
     return (state = {}, action) => {
+        const { error } = action;
+        if (error) {
+            return state;
+        }
         switch (action.type) {
             case `UPDATE_${itemName}`:
                 return { ...state, ...action.payload };
