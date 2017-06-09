@@ -35,7 +35,7 @@ describe('Purchase saga', () => {
             .next()
             .call(requestPurchase, { $scope, proposal: selectedProposal })
             .next(receivedPurchase)
-            .put({ type: actions.PURCHASE_SUCCESSFULLY, payload: contractID })
+            .put({ type: actions.PURCHASE_DONE, payload: contractID })
             .next()
             .select(selectors.tradeOption)
             .next(tradeOption)
@@ -43,7 +43,7 @@ describe('Purchase saga', () => {
             .next()
             .isDone();
     });
-    it('should put PURCHASE_UNSUCCESSFULLY if requestPurchase fails', () => {
+    it('should put PURCHASE_DONE if requestPurchase fails', () => {
         testSaga(purchase, { $scope, contractType })
             .next()
             .select(selectors.receivedProposals)
@@ -52,7 +52,7 @@ describe('Purchase saga', () => {
             .next()
             .call(requestPurchase, { $scope, proposal: selectedProposal })
             .throw(error)
-            .put({ type: actions.PURCHASE_UNSUCCESSFULLY, payload: error, error: true })
+            .put({ type: actions.PURCHASE_DONE, payload: error, error: true })
             .next()
             .select(selectors.tradeOption)
             .next(tradeOption)
