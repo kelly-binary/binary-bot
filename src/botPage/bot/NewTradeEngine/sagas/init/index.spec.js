@@ -12,7 +12,7 @@ describe('init saga', () => {
     const token = 'some token';
     const $scope = createScope();
 
-    it('should wait for tick stream and balance to put INIT_DATA', () => {
+    it('should wait for tick stream and balance to put INITIALIZE', () => {
         expectSaga(init, { $scope, token, initOption })
             .provide([[matchers.spawn.fn(tick), {}]])
             .provide([[matchers.spawn.fn(balance), {}]])
@@ -22,7 +22,7 @@ describe('init saga', () => {
             .spawn(balance, { $scope, token })
             .take(actions.NEW_TICK)
             .take(actions.UPDATE_RECEIVED_BALANCE)
-            .put({ type: actions.INIT_DATA, payload: initOption })
+            .put({ type: actions.INITIALIZE, payload: initOption })
             .run();
     });
 });

@@ -12,7 +12,7 @@ describe('Stage Reducer', () => {
         expect(stage(states.STARTED, action(actions.STOP_BECAUSE_OF_ERROR))).toEqual(states.STOPPED);
     });
     it('Engine received the initData', () => {
-        expect((state = stage(state, action(actions.INIT_DATA)))).toEqual(states.INITIALIZED);
+        expect((state = stage(state, action(actions.INITIALIZE)))).toEqual(states.INITIALIZED);
     });
     it('Engine started', () => {
         expect((state = stage(state, action(actions.START)))).toEqual(states.STARTED);

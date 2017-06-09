@@ -8,7 +8,7 @@ const stage = (state = initialState, action) => {
         case actions.STOP_BECAUSE_OF_ERROR:
             return states.STOPPED;
         case actions.SELL_SUCCESSFULLY:
-        case actions.INIT_DATA:
+        case actions.INITIALIZE:
             return states.INITIALIZED;
         case actions.START:
         case actions.PURCHASE_UNSUCCESSFULLY:
