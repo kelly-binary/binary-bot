@@ -58,6 +58,6 @@ describe('Bot API', () => {
     });
     it('should dispatch PURCHASE_SAGA with a contract type and scope', async () => {
         await bot.purchase(contractType);
-        expect(bot.store.dispatch).toBeCalledWith({ type: actions.PURCHASE_SAGA, payload: { $scope, contractType } });
+        expect(bot.store.dispatch).toBeCalledWith(standardActions.purchaseSaga({ $scope, contractType }));
     });
 });

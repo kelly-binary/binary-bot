@@ -12,3 +12,5 @@ export const stopBecauseOfError = standardAction(actions.STOP_BECAUSE_OF_ERROR);
 export const initSaga = standardAction(actions.INIT_SAGA);
 
 export const startSaga = standardAction(actions.START_SAGA);
+
+export const purchaseSaga = standardAction(actions.PURCHASE_SAGA);
