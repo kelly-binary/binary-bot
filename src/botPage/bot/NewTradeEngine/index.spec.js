@@ -1,5 +1,4 @@
 import Bot from './';
-import * as actions from './constants/actions';
 import * as states from './constants/states';
 import * as standardActions from './actions/standard';
 
