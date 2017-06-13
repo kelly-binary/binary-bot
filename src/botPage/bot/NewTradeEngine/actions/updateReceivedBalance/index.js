@@ -1,15 +1,16 @@
-import * as actions from '../../constants/actions';
+import * as properties from '../../constants/properties';
+import { updatePropertyAction } from '../../tools';
 
 export default function updateReceivedBalance({ payload, error }) {
     if (error) {
         return {
-            type : actions.UPDATE_RECEIVED_BALANCE,
+            type : updatePropertyAction(properties.RECEIVED_BALANCE),
             payload,
             error: true,
         };
     }
     return {
-        type: actions.UPDATE_RECEIVED_BALANCE,
+        type: updatePropertyAction(properties.RECEIVED_BALANCE),
         payload,
     };
 }
