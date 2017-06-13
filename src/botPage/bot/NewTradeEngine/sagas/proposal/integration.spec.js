@@ -3,6 +3,7 @@ import { expectSaga } from 'redux-saga-test-plan';
 import { select } from 'redux-saga/effects';
 import { tradeOptionToProposal } from '../../../tools';
 import proposalInfo from '../../actions/proposalInfo';
+import receiveAllProposals from '../../actions/receiveAllProposals';
 import proposal from './';
 import * as properties from '../../constants/properties';
 import * as selectors from '../selectors';
@@ -88,6 +89,6 @@ describe('proposal subscription integration', () => {
             .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalResponseList[1] }))
             .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: requestProposalsList[0] }))
             .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: requestProposalsList[1] }))
-            .put({ type: properties.RECEIVE_ALL_PROPOSALS })
+            .put(receiveAllProposals())
             .run());
 });
