@@ -26,7 +26,7 @@ describe('balance saga', () => {
             .next()
             .isDone();
     });
-    it('should put UPDATE_RECEIVED_BALANCE error with the thrown error', () => {
+    it('should put updateReceivedBalance error with the thrown error', () => {
         const errorPayload = new Error('some error');
 
         testSaga(balance, { ...arg, token: 'some invalid token' })
