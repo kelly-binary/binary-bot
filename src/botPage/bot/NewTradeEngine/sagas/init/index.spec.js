@@ -1,5 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
+import * as properties from '../../constants/properties';
+import { updatePropertyAction } from '../../tools';
 import { initialize } from '../../actions/standard';
 import createScope from '../createScope';
 import tick from '../tick';
@@ -21,7 +23,7 @@ describe('init saga', () => {
             .next()
             .take(actions.NEW_TICK)
             .next()
-            .take(actions.UPDATE_RECEIVED_BALANCE)
+            .take(updatePropertyAction(properties.RECEIVED_BALANCE))
             .next()
             .put(initialize(initOption))
             .next()
