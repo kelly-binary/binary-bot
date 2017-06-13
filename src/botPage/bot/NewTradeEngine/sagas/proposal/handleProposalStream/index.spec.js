@@ -39,7 +39,7 @@ const forgottenProposals = {
 };
 
 describe('handleProposalStream saga', () => {
-    it('should wait for new data in the stream and call UPDATE_RECEIVED_PROPOSAL', () => {
+    it('should wait for new data in the stream and update proposalInfo with RECEIVED_PROPOSAL', () => {
         testSaga(handleProposalStream, fakeChannel)
             .next()
             .take(fakeChannel)
