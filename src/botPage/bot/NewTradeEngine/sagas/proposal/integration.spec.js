@@ -55,6 +55,11 @@ const requestedProposals = {
     [uuid2]: true,
 };
 
+const receivedProposals = {
+    uuidOld1: { id: 'idOld1', uuid: 'uuidOld1', contractType: contractType1 },
+    uuidOld2: { id: 'idOld2', uuid: 'uuidOld2', contractType: contractType1 },
+};
+
 const requestProposalsList = Object.entries(requestedProposals).map(([uuid, val]) => ({ [uuid]: val }));
 
 const fakeChannel = dataStream({ $scope, type: 'proposal' });
@@ -66,6 +71,8 @@ const proposalResponseList = Object.entries(expectedToReceiveProposals).map(([u,
 api.subscribeToPriceForContractProposal = ({ passthrough }) =>
     api.events.emit('proposal', expectedToReceiveProposals[passthrough.uuid]);
 
+api.unsubscribeByID = jest.fn();
+
 describe('proposal subscription integration', () => {
     it('should put RECEIVE ALL PROPOSALS', () =>
         expectSaga(proposal, { tradeOption, $scope })
@@ -74,7 +81,7 @@ describe('proposal subscription integration', () => {
                 [matchers.call.fn(dataStream), fakeChannel],
                 [matchers.call.fn(dataStream), fakeChannel],
                 [select(selectors.forgottenProposals), {}],
-                [select(selectors.receivedProposals), {}],
+                [select(selectors.receivedProposals), receivedProposals],
                 [select(selectors.requestedProposals), requestedProposals],
                 {
                     take({ channel }, next) {
@@ -85,6 +92,8 @@ describe('proposal subscription integration', () => {
                     },
                 },
             ])
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: { uuidOld1: '' } }))
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: { uuidOld2: '' } }))
             .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalResponseList[0] }))
             .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalResponseList[1] }))
             .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: requestProposalsList[0] }))
