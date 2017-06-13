@@ -4,6 +4,7 @@ import dataStream from '../dataStream';
 import requestBalance from './requestBalance';
 
 export default function* balance(arg) {
+    console.log(arg);
     const { $scope } = arg;
     try {
         yield call(requestBalance, arg);
