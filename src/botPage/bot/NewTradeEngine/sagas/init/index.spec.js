@@ -1,8 +1,6 @@
-import { expectSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
+import { testSaga } from 'redux-saga-test-plan';
 import * as actions from '../../constants/actions';
-import { initialize, newTick } from '../../actions/standard';
-import updateReceivedBalance from '../../actions/updateReceivedBalance';
+import { initialize } from '../../actions/standard';
 import createScope from '../createScope';
 import tick from '../tick';
 import balance from '../balance';
@@ -15,16 +13,18 @@ describe('init saga', () => {
     const $scope = createScope();
 
     it('should wait for tick stream and balance to put INITIALIZE', () => {
-        expectSaga(init, { $scope, token, initOption })
-            .provide([[matchers.spawn.fn(tick), {}]])
-            .provide([[matchers.spawn.fn(balance), {}]])
-            .dispatch(newTick({}))
-            .dispatch(updateReceivedBalance({}))
+        testSaga(init, { $scope, token, initOption })
+            .next()
             .spawn(tick, { $scope, symbol })
+            .next()
             .spawn(balance, { $scope, token })
+            .next()
             .take(actions.NEW_TICK)
+            .next()
             .take(actions.UPDATE_RECEIVED_BALANCE)
+            .next()
             .put(initialize(initOption))
-            .run();
+            .next()
+            .isDone();
     });
 });
