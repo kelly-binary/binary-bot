@@ -1,4 +1,5 @@
 import { select, call, put, spawn } from 'redux-saga/effects';
+import requestPurchaseAction from '../../actions/requestPurchase';
 import * as actions from '../../constants/actions';
 import * as selectors from '../selectors';
 import proposal from '../proposal';
@@ -7,7 +8,7 @@ import purchaseDone from '../../actions/purchaseDone';
 
 export default function* purchase({ $scope, contractType }) {
     const receivedProposals = yield select(selectors.receivedProposals);
-    yield put({ type: actions.REQUEST_PURCHASE });
+    yield put(requestPurchaseAction());
     const selectedProposal = Object.values(receivedProposals).find(p => p.contractType === contractType);
     try {
         const { buy: { contract_id: contractID } } = yield call(requestPurchase, {
