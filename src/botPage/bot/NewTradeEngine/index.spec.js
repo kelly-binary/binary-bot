@@ -1,6 +1,7 @@
 import Bot from './';
 import * as actions from './constants/actions';
 import * as states from './constants/states';
+import * as standardActions from './actions/standard';
 
 const $scope = {};
 const bot = new Bot($scope);
@@ -26,15 +27,12 @@ const contractType = 'CALL';
 describe('Bot API', () => {
     it('should dispatch INIT_SAGA', async () => {
         const stayInsideScope = await bot.init(token, initOption);
-        expect(bot.store.dispatch).toBeCalledWith({ type: actions.INIT_SAGA, payload: { token, initOption, $scope } });
+        expect(bot.store.dispatch).toBeCalledWith(standardActions.initSaga({ token, initOption, $scope }));
         expect(stayInsideScope).toEqual(true);
     });
     it('should dispatch START_SAGA', () => {
         bot.start(startOption);
-        expect(bot.store.dispatch).toBeCalledWith({
-            type   : actions.START_SAGA,
-            payload: { $scope, tradeOption: { ...startOption, ...initData } },
-        });
+        expect(bot.store.dispatch).toBeCalledWith(standardActions.startSaga({ $scope, ...startOption, ...initData }));
     });
     it('should resolve true by changes in [watchName] timestamp when stayInsideScope == true', async () => {
         store.subscribe = f => {

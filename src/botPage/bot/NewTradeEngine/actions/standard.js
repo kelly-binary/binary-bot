@@ -8,3 +8,7 @@ export const start = standardAction(actions.START);
 export const newTick = standardAction(actions.NEW_TICK);
 
 export const stopBecauseOfError = standardAction(actions.STOP_BECAUSE_OF_ERROR);
+
+export const initSaga = standardAction(actions.INIT_SAGA);
+
+export const startSaga = standardAction(actions.START_SAGA);
