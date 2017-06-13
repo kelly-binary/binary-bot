@@ -22,7 +22,7 @@ describe('newTickWatcher saga', () => {
             .next()
             .isDone();
     });
-    it('should UPDATE_WAITING_FOR_PURCHASE if stage is PROPOSALS_READY', () => {
+    it('should updateWaitingForPurchase if stage is PROPOSALS_READY', () => {
         testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
@@ -33,7 +33,7 @@ describe('newTickWatcher saga', () => {
             .next()
             .isDone();
     });
-    it('should UPDATE_WAITING_FOR_PURCHASE after RECEIVE_ALL_PROPOSALS if stage is STARTED', () => {
+    it('should updateWaitingForPurchase after RECEIVE_ALL_PROPOSALS if stage is STARTED', () => {
         testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
@@ -46,7 +46,7 @@ describe('newTickWatcher saga', () => {
             .next()
             .isDone();
     });
-    it('should UPDATE_WAITING_FOR_PURCHASE with stayInsideScope == false if stage is not STARTED, INITIALIZED, nor PROPOSALS_READY', () => {
+    it('should updateWaitingForPurchase with stayInsideScope == false if stage is not STARTED, INITIALIZED, nor PROPOSALS_READY', () => {
         testSaga(newTickWatcher, newTick)
             .next()
             .select(selectors.stage)
