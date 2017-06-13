@@ -55,9 +55,12 @@ const requestedProposals = {
     [uuid2]: true,
 };
 
+const uuidOld1 = 'uuidOld1';
+const uuidOld2 = 'uuidOld2';
+
 const receivedProposals = {
-    uuidOld1: { id: 'idOld1', uuid: 'uuidOld1', contractType: contractType1 },
-    uuidOld2: { id: 'idOld2', uuid: 'uuidOld2', contractType: contractType1 },
+    [uuidOld1]: { id: 'idOld1', uuid: uuidOld1, contractType: contractType1 },
+    [uuidOld2]: { id: 'idOld2', uuid: uuidOld2, contractType: contractType1 },
 };
 
 const requestProposalsList = Object.entries(requestedProposals).map(([uuid, val]) => ({ [uuid]: val }));
@@ -94,10 +97,16 @@ describe('proposal subscription integration', () => {
             ])
             .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: { uuidOld1: '' } }))
             .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: { uuidOld2: '' } }))
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: uuidOld1, meta: { remove: true } }))
+            .put(proposalInfo({ itemName: properties.FORGOTTEN_PROPOSAL, payload: uuidOld2, meta: { remove: true } }))
             .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalResponseList[0] }))
             .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: proposalResponseList[1] }))
+            .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: uuidOld1, meta: { remove: true } }))
+            .put(proposalInfo({ itemName: properties.RECEIVED_PROPOSAL, payload: uuidOld2, meta: { remove: true } }))
             .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: requestProposalsList[0] }))
             .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: requestProposalsList[1] }))
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: uuidOld1, meta: { remove: true } }))
+            .put(proposalInfo({ itemName: properties.REQUESTED_PROPOSAL, payload: uuidOld2, meta: { remove: true } }))
             .put(receiveAllProposals())
             .run());
 });
